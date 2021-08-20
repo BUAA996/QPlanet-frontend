@@ -14,7 +14,7 @@ function Auth({ form }) {
   const classes = useStyles();
 
   return (
-    <Container className={classes.root} maxWidth="sm">
+    <Container className={classes.root} maxWidth="lg">
       {form}
     </Container>
   );

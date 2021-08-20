@@ -3,6 +3,7 @@ import Auth from "views/Auth";
 import { Box } from "@material-ui/core";
 import SignInForm from "components/auth/SignInForm";
 import SignUpForm from "components/auth/SignUpForm";
+import NotFound  from "views/NotFound";
 // import { useStateStore } from "store";
 
 function AppContent() {
@@ -17,6 +18,9 @@ function AppContent() {
         </Route>
         <Route exact path="/signup">
           <Auth form={<SignUpForm />} />
+        </Route>
+        <Route exact path="*">
+          <Auth form={<NotFound />} />
         </Route>
       </Switch>
     </Box>
