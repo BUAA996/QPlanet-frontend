@@ -11,7 +11,7 @@ function AppContent() {
   const isLogin = false;
 
   return (
-    <Box component="main" height="85vh" width="100vw">
+    <Box component="main" height="85vh" width="100%">
       <Switch>
         <Route exact path="/signin">
           {isLogin ? <Redirect to="/" /> : <Auth form={<SignInForm />} />}
