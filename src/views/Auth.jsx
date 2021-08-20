@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     left: 0,
     top: 0,
-    height: "90vh",
-    width: "100vw",
+    height: "89vh",
+    width: "99vw",
   },
 }));
 
