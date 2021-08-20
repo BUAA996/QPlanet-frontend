@@ -28,10 +28,10 @@ function AppContent() {
         <Route exact path="/design">
           <Design />
         </Route>
-        <Route exact path="/feedback">
+        <Route exact path="/feedback/:id">
           <Feedback />
         </Route>
-        <Route exact path="/overview">
+        <Route exact path="/overview/:id">
           <Overview />
         </Route>
         <Route exact path="*">
