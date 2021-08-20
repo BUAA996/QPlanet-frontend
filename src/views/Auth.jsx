@@ -1,5 +1,6 @@
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import banner from "assets/banner.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -8,16 +9,26 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
+  banner: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    height: "90vh",
+    width: "100vw",
+  },
 }));
 
 function Auth({ form }) {
   const classes = useStyles();
 
   return (
-    <Container className={classes.root} maxWidth="lg">
-      {form}
-    </Container>
+    <>
+      <img src={banner} className={classes.banner} alt="banner" />;
+      <Container className={classes.root} maxWidth="lg">
+        {form}
+      </Container>
+    </>
   );
 }
 
-export default Auth; 
+export default Auth;

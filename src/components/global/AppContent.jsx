@@ -14,7 +14,7 @@ function AppContent() {
   const isLogin = useStateStore().isLogin;
 
   return (
-    <Box component="main" height="85vh" width="100%">
+    <Box component="main" height="85vh" width="100%" position="relative">
       <Switch>
         <Route exact path="/">
           <Home />

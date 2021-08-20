@@ -43,7 +43,7 @@ function AppHeader() {
   return showHeader ? (
     <AppBar position="sticky" className={classes.root}>
       <Toolbar>
-        <Link to="/good" className={classes.title}>
+        <Link to="/" className={classes.title}>
           问卷星球
         </Link>
         <Box flexGrow={1} />
