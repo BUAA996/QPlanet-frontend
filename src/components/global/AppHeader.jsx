@@ -3,6 +3,8 @@ import { useDispatchStore } from "store";
 import { useStateStore } from "store";
 import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { logout } from "api/auth";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,12 +32,20 @@ function AppHeader() {
   const isLogin = useStateStore().isLogin;
   const dispatch = useDispatchStore();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   const showHeader = true;
 
-  const logout = () => {
-    dispatch({ type: "logout" });
-    history.push("/signin");
+  const onLogout = () => {
+    logout().then((res) => {
+      if (res.data.result) {
+        dispatch({ type: "logout" });
+        enqueueSnackbar("退出账号成功", { variant: "success" });
+        history.push("/signin");
+      } else {
+        enqueueSnackbar(res.data.message, { variant: "warning" });
+      }
+    });
   };
 
   return showHeader ? (
@@ -46,7 +56,7 @@ function AppHeader() {
         </Link>
         <Box flexGrow={1} />
         {isLogin ? (
-          <Button className={classes.link} onClick={logout}>
+          <Button className={classes.link} onClick={onLogout}>
             登出
           </Button>
         ) : (
