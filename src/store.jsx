@@ -1,15 +1,8 @@
 import { createContext, useContext, useReducer } from "react";
-import { isLogin } from "api/auth";
 
 const initialState = {
   isLogin: false,
 };
-
-isLogin().then((res) => {
-  if (res.data.result === 1) {
-    initialState.isLogin = true;
-  }
-});
 
 function reducer(state, action) {
   switch (action.type) {
