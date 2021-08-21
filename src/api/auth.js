@@ -24,3 +24,5 @@ function logout(data) {
 function getCaptcha(data) {
   return axios.post("user/captcha/", data);
 }
+
+export { register, getCaptcha, getRegisterId, login, logout };
