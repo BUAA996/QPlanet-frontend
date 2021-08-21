@@ -72,7 +72,7 @@ function SignUpForm() {
       password1: password,
       password2: password,
       email,
-      captcha,
+      code: captcha,
     };
     signUp(newData).then((res) => {
       if (res.data.result) {
@@ -85,8 +85,8 @@ function SignUpForm() {
   };
   const clickGetCaptcha = () => {
     let email = getValues("email");
-    if (/[a-z0-9]+@[a-z0-9]+(\.[a-z0-9]+)+/i.test(email)) {
-      getCaptcha(email).then((res) => {
+    if (/[a-z0-9]+@buaa.edu.cn/i.test(email)) {
+      getCaptcha({ email: email }).then((res) => {
         if (res.data.result) {
           enqueueSnackbar(res.data.message, { variant: "success" });
           setBtnOpen(false);
@@ -97,7 +97,7 @@ function SignUpForm() {
         }
       });
     } else {
-      enqueueSnackbar("请正确输入获取验证码的邮箱", { variant: "warning" });
+      enqueueSnackbar("请正确输入北航邮箱", { variant: "warning" });
     }
   };
 
