@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function QuestionnaireList() {
+export default function QuestionnaireList(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
