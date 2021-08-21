@@ -1,8 +1,9 @@
-import axios from 'axios'
+import axios from "axios";
 
-const instance=axios.create({
-    baseURL:"http://mockjs.docway.net/mock/1hWdPyYUfGCuser/",
-    timeout:3000
-})
+const instance = axios.create({
+  baseURL: "https://api.matrix53.top/",
+  timeout: 3000,
+  withCredentials: true,
+});
 
 export default instance;

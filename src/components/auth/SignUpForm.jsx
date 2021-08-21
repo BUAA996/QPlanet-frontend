@@ -1,6 +1,6 @@
 import { TextField, Button, Grid, Typography, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-// import { getCaptcha, register as signUp } from "api/auth";
+import { getRegisterId as getCaptcha, register as signUp } from "api/auth";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "normal",
     width: "100%",
     fontWeight: "bolder",
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(2),
   },
   form: {
     width: "100%",
@@ -26,12 +26,13 @@ const useStyles = makeStyles((theme) => ({
   formBtn: {
     borderRadius: theme.shape.borderRadius * 8,
     height: "50px",
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
   },
   link: {
     width: "100%",
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(2),
     textAlign: "center",
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -44,7 +45,7 @@ function SignUpForm() {
     formState: { errors },
   } = useForm();
   const [btnOpen, setBtnOpen] = useState(true);
-  // const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   const username = register("username", {
@@ -54,10 +55,10 @@ function SignUpForm() {
     required: { value: true, message: "密码不能为空" },
   });
   const email = register("email", {
-    required: { value: true, message: "邮箱不能为空" },
+    required: { value: true, message: "北航邮箱不能为空" },
     pattern: {
-      value: /[a-z0-9]+@[a-z0-9]+(\.[a-z0-9]+)+/i,
-      message: "请输入格式正确的邮箱",
+      value: /[a-z0-9]+@buaa.edu.cn/i,
+      message: "请输入格式正确的北航邮箱",
     },
   });
   const captcha = register("captcha", {
@@ -65,31 +66,39 @@ function SignUpForm() {
   });
 
   const onSubmit = (data) => {
-    // signUp(data).then((res) => {
-    //   if (res.data.success) {
-    //     enqueueSnackbar(res.data.message, { variant: "success" });
-    //     history.push("/signin");
-    //   } else {
-    //     enqueueSnackbar(res.data.message, { variant: "warning" });
-    //   }
-    // });
+    let { username, password, email, captcha } = data;
+    let newData = {
+      username,
+      password1: password,
+      password2: password,
+      email,
+      code: captcha,
+    };
+    signUp(newData).then((res) => {
+      if (res.data.result) {
+        enqueueSnackbar(res.data.message, { variant: "success" });
+        history.push("/signin");
+      } else {
+        enqueueSnackbar(res.data.message, { variant: "warning" });
+      }
+    });
   };
   const clickGetCaptcha = () => {
-    // let email = getValues("email");
-    // if (/[a-z0-9]+@[a-z0-9]+(\.[a-z0-9]+)+/i.test(email)) {
-    //   getCaptcha(email).then((res) => {
-    //     if (res.data.message) {
-    //       enqueueSnackbar(res.data.message, { variant: "success" });
-    //       setBtnOpen(false);
-    //     } else {
-    //       enqueueSnackbar("验证码发送失败，请检查网络设置", {
-    //         variant: "warning",
-    //       });
-    //     }
-    //   });
-    // } else {
-    //   enqueueSnackbar("请正确输入获取验证码的邮箱", { variant: "warning" });
-    // }
+    let email = getValues("email");
+    if (/[a-z0-9]+@buaa.edu.cn/i.test(email)) {
+      getCaptcha({ email: email }).then((res) => {
+        if (res.data.result) {
+          enqueueSnackbar(res.data.message, { variant: "success" });
+          setBtnOpen(false);
+        } else {
+          enqueueSnackbar("验证码发送失败，请检查网络设置", {
+            variant: "warning",
+          });
+        }
+      });
+    } else {
+      enqueueSnackbar("请正确输入北航邮箱", { variant: "warning" });
+    }
   };
 
   return (
@@ -121,7 +130,7 @@ function SignUpForm() {
           variant="outlined"
         />
         <TextField
-          label="邮箱"
+          label="北航邮箱"
           margin="normal"
           fullWidth
           onChange={email.onChange}
@@ -168,16 +177,15 @@ function SignUpForm() {
           注册
         </Button>
       </form>
-      
-      {/* <Link
+
+      <Link
         component={RouterLink}
         variant="body1"
         to="/signin"
         className={classes.link}
       >
         Already have an account? Sign In
-      </Link> */}
-
+      </Link>
     </>
   );
 }

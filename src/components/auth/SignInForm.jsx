@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "normal",
     width: "100%",
     fontWeight: "bolder",
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(2),
   },
   form: {
     width: "100%",
@@ -20,17 +20,18 @@ const useStyles = makeStyles((theme) => ({
   formBtn: {
     borderRadius: theme.shape.borderRadius * 8,
     height: "50px",
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
   },
   link: {
     width: "100%",
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(2),
     textAlign: "center",
+    marginBottom: theme.spacing(2),
   },
 }));
 
 function SignInForm() {
-  // const dispatch = useDispatchStore();
+  const dispatch = useDispatchStore();
   const { enqueueSnackbar } = useSnackbar();
   const {
     register,
@@ -47,14 +48,14 @@ function SignInForm() {
   });
 
   const onSubmit = (data) => {
-    // login(data).then((res) => {
-    //   if (res.data.success) {
-    //     enqueueSnackbar(res.data.message, { variant: "success" });
-    //     dispatch({ type: "login", data: res.data.userId });
-    //   } else {
-    //     enqueueSnackbar(res.data.message, { variant: "warning" });
-    //   }
-    // });
+    login(data).then((res) => {
+      if (res.data.result) {
+        enqueueSnackbar("登录成功", { variant: "success" });
+        dispatch({ type: "login" });
+      } else {
+        enqueueSnackbar(res.data.message, { variant: "warning" });
+      }
+    });
   };
 
   return (
@@ -84,6 +85,7 @@ function SignInForm() {
           error={!!errors.password}
           helperText={errors.password && errors.password.message}
           variant="outlined"
+          type="password"
         />
         <Button
           type="submit"
