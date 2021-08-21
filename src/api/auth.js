@@ -26,10 +26,8 @@ function getCaptcha(data) {
 }
 
 // islogin
-// 这个比较特殊
-async function isLogin() {
-  let res = await axios.get("user/islogin/");
-  return res.data.result === 1;
+function isLogin() {
+  return axios.get("user/islogin/");
 }
 
 export { register, getCaptcha, getRegisterId, login, logout, isLogin };
