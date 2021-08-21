@@ -1,5 +1,7 @@
 import { Container, Typography, Grid, Paper, Divider, Button, Box } from "@material-ui/core";
+import { getQuestionnaires } from "api/questionaire"
 import { makeStyles } from "@material-ui/core/styles";
+import { useEffect, useState } from "react";
 import SearchInputButton from "components/utils/SearchInputButton";
 import QuestionnaireList from "components/utils/QuestionnaireList";
 
@@ -57,6 +59,30 @@ function HeadBar() {
 
 function Overview() {
   const classes = useStyles();
+  const [data, setData] = useState([])
+
+  useEffect(
+    () => {
+      getQuestionnaires().then((res) => {
+        var tmp = []
+        for (let i = 0;i < res.data.questionnaires.length; ++i) {
+          tmp.push({
+            "id": res.data.questionnaires[i].id,
+            "title": res.data.questionnaires[i].title,
+            "description": res.data.questionnaires[i].description,
+            "type": res.data.questionnaires[i].type,
+            "count": res.data.questionnaires[i].count,
+            "hash": res.data.questionnaires[i].hash,
+            "status": res.data.questionnaires[i].status,
+            "createTime": res.data.questionnaires[i].create_time,
+            "uploadTime": res.data.questionnaires[i].upload_time,
+            "key": res.data.questionnaires[i].id,
+          })
+        }
+        setData(tmp)
+      })
+    }, []
+  );
   return (
     <Container fixed className={classes.root}>
       <Grid
@@ -72,7 +98,7 @@ function Overview() {
           <HeadBar />
         </Grid>
         <Grid item xs={12}>
-          <QuestionnaireList />
+          <QuestionnaireList Questionares={data} />
         </Grid>
       </Grid>
     </Container>

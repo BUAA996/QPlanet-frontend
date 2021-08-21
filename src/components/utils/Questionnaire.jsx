@@ -25,7 +25,7 @@ function Questionare(props) {
 	const classes = useStyles();
 
 	return (
-		(props.showType === -1 || props.showType === 3 || props.showType === props.status) ? 
+		(props.showType === -1 || props.showType === 5 || props.showType === props.status) ? 
 		<Card className={classes.root}>
 			<Grid container>
 				<Grid item xs={7}>

@@ -21,7 +21,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          <Typography component="span">{children}</Typography>
         </Box>
       )}
     </div>
@@ -80,8 +80,10 @@ export default function QuestionnaireList(props) {
   const [value, setValue] = React.useState(0);
 
 
-	var childPropsList = getProps();
-
+	// var childPropsList = getProps();
+	var childPropsList = props.Questionares;
+	// console.log(childPropsList)
+	// console.log(props.Questionares)
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -101,29 +103,34 @@ export default function QuestionnaireList(props) {
 					<Tab label="未发布问卷" {...a11yProps(1)} />
 					<Tab label="已发布问卷" {...a11yProps(2)} />
 					<Tab label="已完成问卷" {...a11yProps(3)} />
+					<Tab label="回收站" {...a11yProps(4)} />
 				</Tabs>
 			</Grid>
 			<Grid item xs={10}>
 				<TabPanel value={value} index={0}>
 					全部问卷
 					&nbsp;<Button variant="contained" color="primary" onClick={() => {setValue(4)}}> 测试一下搜索能不能用 (x </Button>
-					{childPropsList.map((childProps) => <Questionare {...childProps} showType={-1}/>)};
+					{childPropsList.map((childProps) => <Questionare {...childProps} showType={-1}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={1}>
 					未发布问卷
-					{childPropsList.map((childProps) => <Questionare {...childProps} showType={0}/>)};
+					{childPropsList.map((childProps) => <Questionare {...childProps} showType={0}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={2}>
 					已发布问卷
-					{childPropsList.map((childProps) => <Questionare {...childProps} showType={1}/>)};
+					{childPropsList.map((childProps) => <Questionare {...childProps} showType={1}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={3}>
 					已完成问卷
-					{childPropsList.map((childProps) => <Questionare {...childProps} showType={2}/>)};
+					{childPropsList.map((childProps) => <Questionare {...childProps} showType={2}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={4}>
+					回收站
+					{childPropsList.map((childProps) => <Questionare {...childProps} showType={3}/>)}
+				</TabPanel>
+				<TabPanel value={value} index={5}>
 					搜索结果
-					{childPropsList.map((childProps) => <Questionare {...childProps} showType={3}/>)};
+					{childPropsList.map((childProps) => <Questionare {...childProps} showType={4}/>)}
 				</TabPanel>
 			</Grid>
       
