@@ -55,10 +55,10 @@ function SignUpForm() {
     required: { value: true, message: "密码不能为空" },
   });
   const email = register("email", {
-    required: { value: true, message: "邮箱不能为空" },
+    required: { value: true, message: "北航邮箱不能为空" },
     pattern: {
-      value: /[a-z0-9]+@[a-z0-9]+(\.[a-z0-9]+)+/i,
-      message: "请输入格式正确的邮箱",
+      value: /[a-z0-9]+@buaa.edu.cn/i,
+      message: "请输入格式正确的北航邮箱",
     },
   });
   const captcha = register("captcha", {
@@ -130,7 +130,7 @@ function SignUpForm() {
           variant="outlined"
         />
         <TextField
-          label="邮箱"
+          label="北航邮箱"
           margin="normal"
           fullWidth
           onChange={email.onChange}
