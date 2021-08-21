@@ -5,6 +5,7 @@ import { Container } from "@material-ui/core";
 function NotFound () {
   const Questionare = [
     {
+      id: 1,
       kind: 0,
       must: 1,
       title: '第一题 balabalabalabala',
@@ -16,6 +17,7 @@ function NotFound () {
       ]
     },
     {
+      id: 2,
       kind: 1,
       must: 1,
       title: '第二题 balabalabalabala',
@@ -27,12 +29,14 @@ function NotFound () {
       ]
     },
     {
+      id: 3,
       kind: 2,
       must: 0,
       title: '第三题',
       choices: []
     },
     {
+      id: 4,
       kind: 1,
       must: 0,
       title: '第四题',
@@ -44,6 +48,7 @@ function NotFound () {
       ]
     },
     {
+      id: 5,
       kind: 2,
       must: 1,
       title: '第五题',

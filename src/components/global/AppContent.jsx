@@ -32,7 +32,7 @@ function AppContent() {
         <Route exact path="/feedback/:id">
           <Feedback />
         </Route>
-        <Route exact path="/overview/:id">
+        <Route exact path="/overview">
           <Overview />
         </Route>
         <Route exact path="/fill/:id">
