@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from "axios";
 
-const instance=axios.create({
-    baseURL:"http://mockjs.docway.net/mock/1hWdPyYUfGCuser/",
-    timeout:3000
-})
+const instance = axios.create({
+  baseURL: "123.57.194.168:8000/",
+  timeout: 3000,
+});
 
 export default instance;

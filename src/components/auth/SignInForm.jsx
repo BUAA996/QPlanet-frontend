@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SignInForm() {
-  // const dispatch = useDispatchStore();
+  const dispatch = useDispatchStore();
   const { enqueueSnackbar } = useSnackbar();
   const {
     register,
@@ -48,14 +48,14 @@ function SignInForm() {
   });
 
   const onSubmit = (data) => {
-    // login(data).then((res) => {
-    //   if (res.data.success) {
-    //     enqueueSnackbar(res.data.message, { variant: "success" });
-    //     dispatch({ type: "login", data: res.data.userId });
-    //   } else {
-    //     enqueueSnackbar(res.data.message, { variant: "warning" });
-    //   }
-    // });
+    login(data).then((res) => {
+      if (res.data.result) {
+        enqueueSnackbar("登录成功", { variant: "success" });
+        dispatch({ type: "login" });
+      } else {
+        enqueueSnackbar(res.data.message, { variant: "warning" });
+      }
+    });
   };
 
   return (
