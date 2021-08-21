@@ -57,7 +57,6 @@ function HeadBar() {
 
 function Overview() {
   const classes = useStyles();
-
   return (
     <Container fixed className={classes.root}>
       <Grid

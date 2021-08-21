@@ -5,7 +5,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { Grid } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
+import Questionare from './Questionnaire';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -45,16 +46,41 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: 'flex',
-    height: '70vh',
+    minHeight: '70vh',
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
   },
 }));
 
+function createProps(index) {
+	return {
+		"id": index,
+		"title": "假装这是个问卷调查",
+		"description": "这一看就是个很正经的问卷调查",
+		"type": 0,
+		"count": 123,
+		"hash": "ASDSAT12314SDA@#4!@#SD!@$E",
+		"status": index % 3,
+		"createTime": "2021.8.21 10:30",
+		"uploadTime": "2021.8.21 10:35",
+	}
+}
+
+function getProps() {
+	var res = new Array(10)
+	for(let i = 0;i < 10; ++i) {
+		res[i] = createProps(i);
+	}
+	return res;
+}
+
 export default function QuestionnaireList(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+
+
+	var childPropsList = getProps();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -72,19 +98,32 @@ export default function QuestionnaireList(props) {
 					className={classes.tabs}
 				>
 					<Tab label="全部问卷" {...a11yProps(0)} />
-					<Tab label="已发布问卷" {...a11yProps(1)} />
-					<Tab label="已完成问卷" {...a11yProps(2)} />
+					<Tab label="未发布问卷" {...a11yProps(1)} />
+					<Tab label="已发布问卷" {...a11yProps(2)} />
+					<Tab label="已完成问卷" {...a11yProps(3)} />
 				</Tabs>
 			</Grid>
 			<Grid item xs={10}>
 				<TabPanel value={value} index={0}>
 					全部问卷
+					&nbsp;<Button variant="contained" color="primary" onClick={() => {setValue(4)}}> 测试一下搜索能不能用 (x </Button>
+					{childPropsList.map((childProps) => <Questionare {...childProps} showType={-1}/>)};
 				</TabPanel>
 				<TabPanel value={value} index={1}>
-					已发布问卷
+					未发布问卷
+					{childPropsList.map((childProps) => <Questionare {...childProps} showType={0}/>)};
 				</TabPanel>
 				<TabPanel value={value} index={2}>
+					已发布问卷
+					{childPropsList.map((childProps) => <Questionare {...childProps} showType={1}/>)};
+				</TabPanel>
+				<TabPanel value={value} index={3}>
 					已完成问卷
+					{childPropsList.map((childProps) => <Questionare {...childProps} showType={2}/>)};
+				</TabPanel>
+				<TabPanel value={value} index={4}>
+					搜索结果
+					{childPropsList.map((childProps) => <Questionare {...childProps} showType={3}/>)};
 				</TabPanel>
 			</Grid>
       
