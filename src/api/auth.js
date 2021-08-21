@@ -25,4 +25,11 @@ function getCaptcha(data) {
   return axios.post("user/captcha/", data);
 }
 
-export { register, getCaptcha, getRegisterId, login, logout };
+// islogin
+// 这个比较特殊
+async function isLogin() {
+  let res = await axios.get("user/islogin/");
+  return res.data.result === 1;
+}
+
+export { register, getCaptcha, getRegisterId, login, logout, isLogin };

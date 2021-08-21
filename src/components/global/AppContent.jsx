@@ -4,6 +4,7 @@ import Home from "views/Home";
 import NotFound from "views/NotFound";
 import Overview from "views/Overview";
 import Feedback from "views/Feedback";
+import Fill from "views/Fill";
 import Design from "views/Design";
 import { Box } from "@material-ui/core";
 import SignInForm from "components/auth/SignInForm";
@@ -33,6 +34,9 @@ function AppContent() {
         </Route>
         <Route exact path="/overview/:id">
           <Overview />
+        </Route>
+        <Route exact path="/fill/:id">
+          <Fill />
         </Route>
         <Route exact path="*">
           <Auth form={<NotFound />} />
