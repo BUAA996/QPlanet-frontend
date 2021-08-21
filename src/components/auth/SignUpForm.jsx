@@ -1,6 +1,6 @@
 import { TextField, Button, Grid, Typography, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-// import { getCaptcha, register as signUp } from "api/auth";
+import { getRegisterId as getCaptcha, register as signUp } from "api/auth";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -45,7 +45,7 @@ function SignUpForm() {
     formState: { errors },
   } = useForm();
   const [btnOpen, setBtnOpen] = useState(true);
-  // const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   const username = register("username", {
@@ -66,31 +66,39 @@ function SignUpForm() {
   });
 
   const onSubmit = (data) => {
-    // signUp(data).then((res) => {
-    //   if (res.data.success) {
-    //     enqueueSnackbar(res.data.message, { variant: "success" });
-    //     history.push("/signin");
-    //   } else {
-    //     enqueueSnackbar(res.data.message, { variant: "warning" });
-    //   }
-    // });
+    let { username, password, email, captcha } = data;
+    let newData = {
+      username,
+      password1: password,
+      password2: password,
+      email,
+      captcha,
+    };
+    signUp(newData).then((res) => {
+      if (res.data.result) {
+        enqueueSnackbar(res.data.message, { variant: "success" });
+        history.push("/signin");
+      } else {
+        enqueueSnackbar(res.data.message, { variant: "warning" });
+      }
+    });
   };
   const clickGetCaptcha = () => {
-    // let email = getValues("email");
-    // if (/[a-z0-9]+@[a-z0-9]+(\.[a-z0-9]+)+/i.test(email)) {
-    //   getCaptcha(email).then((res) => {
-    //     if (res.data.message) {
-    //       enqueueSnackbar(res.data.message, { variant: "success" });
-    //       setBtnOpen(false);
-    //     } else {
-    //       enqueueSnackbar("验证码发送失败，请检查网络设置", {
-    //         variant: "warning",
-    //       });
-    //     }
-    //   });
-    // } else {
-    //   enqueueSnackbar("请正确输入获取验证码的邮箱", { variant: "warning" });
-    // }
+    let email = getValues("email");
+    if (/[a-z0-9]+@[a-z0-9]+(\.[a-z0-9]+)+/i.test(email)) {
+      getCaptcha(email).then((res) => {
+        if (res.data.result) {
+          enqueueSnackbar(res.data.message, { variant: "success" });
+          setBtnOpen(false);
+        } else {
+          enqueueSnackbar("验证码发送失败，请检查网络设置", {
+            variant: "warning",
+          });
+        }
+      });
+    } else {
+      enqueueSnackbar("请正确输入获取验证码的邮箱", { variant: "warning" });
+    }
   };
 
   return (
