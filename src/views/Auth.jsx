@@ -4,10 +4,12 @@ import banner from "assets/banner.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    backgroundColor: theme.palette.background.paper,
+    marginTop: "10vh",
+    width: "28vw",
   },
   banner: {
     position: "absolute",
@@ -15,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     height: "90vh",
     width: "100vw",
+    zIndex: -1,
   },
 }));
 
@@ -24,9 +27,7 @@ function Auth({ form }) {
   return (
     <>
       <img src={banner} className={classes.banner} alt="banner" />;
-      <Container className={classes.root} maxWidth="lg">
-        {form}
-      </Container>
+      <Container className={classes.root}>{form}</Container>
     </>
   );
 }

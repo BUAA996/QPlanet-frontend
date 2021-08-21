@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "normal",
     width: "100%",
     fontWeight: "bolder",
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(2),
   },
   form: {
     width: "100%",
@@ -26,12 +26,13 @@ const useStyles = makeStyles((theme) => ({
   formBtn: {
     borderRadius: theme.shape.borderRadius * 8,
     height: "50px",
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
   },
   link: {
     width: "100%",
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(2),
     textAlign: "center",
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -168,16 +169,15 @@ function SignUpForm() {
           注册
         </Button>
       </form>
-      
-      {/* <Link
+
+      <Link
         component={RouterLink}
         variant="body1"
         to="/signin"
         className={classes.link}
       >
         Already have an account? Sign In
-      </Link> */}
-
+      </Link>
     </>
   );
 }
