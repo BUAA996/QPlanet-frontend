@@ -85,6 +85,7 @@ function SignInForm() {
           error={!!errors.password}
           helperText={errors.password && errors.password.message}
           variant="outlined"
+          type="password"
         />
         <Button
           type="submit"
