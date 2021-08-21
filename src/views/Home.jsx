@@ -3,8 +3,8 @@ import banner from "assets/banner.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "90vh",
-    width: "100vw",
+    height: "89vh",
+    width: "99vw",
   },
 }));
 
