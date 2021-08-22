@@ -1,9 +1,10 @@
 import { Container, Typography, Grid, Paper, Divider, Button, Box } from "@material-ui/core";
-import { getQuestionnaires } from "api/questionaire"
+import { getQuestionnaires, createQuestionnaire } from "api/questionaire"
 import { makeStyles } from "@material-ui/core/styles";
 import { useEffect, useState } from "react";
 import SearchInputButton from "components/utils/SearchInputButton";
 import QuestionnaireList from "components/utils/QuestionnaireList";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,12 +38,38 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const TEMPLEATE = {
+  "title": "请修改标题",
+  "description": "感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！",
+  "validity": 998244353,
+  "limit_time": 998244353,
+  "type": 0,
+  "questions": [],
+};
+
 function SideBar() {
   const classes = useStyles();
+  const history = useHistory();
+
+  function handleCreate() {
+    createQuestionnaire(TEMPLEATE).then((res) => {
+      if (res.data.result == 1) {
+        history.push('/design/' + res.data.hash)
+      }
+    })
+  }
 
   return (
     <Container className={classes.sideBarContainer}>
-      <Button variant="contained" color="primary" fullWidth className={classes.sideBarContainerButton}> +&nbsp;新建问卷 </Button>
+      <Button 
+        variant="contained" 
+        color="primary" 
+        fullWidth 
+        className={classes.sideBarContainerButton}
+        onClick={() => handleCreate()}
+      > 
+        +&nbsp;新建问卷 
+      </Button>
     </Container>
   );
 }
