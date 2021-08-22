@@ -77,6 +77,8 @@ function Overview() {
             "status": res.data.questionnaires[i].status,
             "createTime": res.data.questionnaires[i].create_time,
             "uploadTime": res.data.questionnaires[i].upload_time,
+            "createNum": res.data.questionnaires[i].create_time_int,
+            "uploadNum": res.data.questionnaires[i].upload_time_int,
             "key": res.data.questionnaires[i].id,
           })
         }
