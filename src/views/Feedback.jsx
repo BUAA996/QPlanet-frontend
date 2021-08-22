@@ -9,8 +9,18 @@ const data = [
     kind: 1,
     type: "单选题",
     title: "标题",
-    option: ["选项1", "选项2"],
-    count: [3, 4],
+    choice: [
+      {
+        key: 1,
+        option: "选项1",
+        count: 4,
+      },
+      {
+        key: 2,
+        option: "选项2",
+        count: 3,
+      },
+    ],
     total: 7,
   },
   {
@@ -18,8 +28,23 @@ const data = [
     kind: 1,
     type: "多选题",
     title: "标题",
-    option: ["选项1", "选项2", "选项3"],
-    count: [4, 4, 4],
+    choice: [
+      {
+        key: 1,
+        option: "选项1",
+        count: 4,
+      },
+      {
+        key: 2,
+        option: "选项2",
+        count: 3,
+      },
+      {
+        key: 3,
+        option: "选项3",
+        count: 4,
+      },
+    ],
     total: 4,
   },
   {
@@ -27,8 +52,18 @@ const data = [
     kind: 2,
     type: "填空题",
     title: "标题",
-    option: ["选项1", "选项2"],
-    count: [3, 4],
+    choice: [
+      {
+        key: 1,
+        option: "选项1",
+        count: 4,
+      },
+      {
+        key: 2,
+        option: "选项2",
+        count: 3,
+      },
+    ],
     total: 7,
   },
   {
@@ -36,8 +71,23 @@ const data = [
     kind: 1,
     type: "评分题",
     title: "标题",
-    option: ["0-1", "1-2", "2-3"],
-    count: [3, 4, 7],
+    choice: [
+      {
+        key: 1,
+        option: "0-1",
+        count: 3,
+      },
+      {
+        key: 2,
+        option: "1-2",
+        count: 4,
+      },
+      {
+        key: 3,
+        option: "2-3",
+        count: 7,
+      },
+    ],
     total: 14,
   },
 ];
