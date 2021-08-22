@@ -126,51 +126,6 @@ function SortButtons(props) {
 				</Grid>
 			</Grid>
 		</Container>
-
-		// <>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => a.id - b.id))}
-		// 	>
-		// 		id升序
-		// 	</Button>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => b.id - a.id))}
-		// 	>
-		// 		id降序
-		// 	</Button>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => a.createNum - b.createNum))}
-		// 	>
-		// 		创建时间升序
-		// 	</Button>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => b.createNum - a.createNum))}
-		// 	>
-		// 		创建时间降序
-		// 	</Button>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => a.createNum - b.createNum))}
-		// 	>
-		// 		发布时间升序
-		// 	</Button>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => b.createNum - a.createNum))}
-		// 	>
-		// 		发布时间降序
-		// 	</Button>
-		// </>
 	);
 }
 
