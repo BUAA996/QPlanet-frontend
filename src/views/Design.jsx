@@ -5,6 +5,7 @@ import { Container } from "@material-ui/core"
 import EditLayer from "components/design/EditLayer";
 import ProblemEdit from "components/design/ProblemEdit";
 import TitleEdit from "components/design/TitleEdit";
+import MovableProblemEdit from "components/design/MovableProblemEdit";
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -49,7 +50,7 @@ function Design() {
       {/* <QHead title="Title" detail="Nisi qui enim deserunt sint aute ipsum quis cillum officia." /> */}
       <TitleEdit content={content}/>
 
-      {questions.map((x) => <ProblemEdit content={x} />)}
+      {questions.map((x) => <MovableProblemEdit question={x} />)}
 
       
     </Container>);

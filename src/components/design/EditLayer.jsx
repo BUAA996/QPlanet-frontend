@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 function EditLayer(props) {
   const classes = useStyles();
-  const [hoverRef, isHovered] = useHover();
+  // const [hoverRef, isHovered] = useHover();
   const [open, setOpen] = useState();
 
   const handleOpen = () => {
@@ -41,7 +41,7 @@ function EditLayer(props) {
 
   return (<Box
     class={classes.box}
-    ref={hoverRef}
+    // ref={hoverRef}
   >
     <div
       className={classes.hoverLayer}>
