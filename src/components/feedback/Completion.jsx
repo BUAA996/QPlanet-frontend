@@ -49,11 +49,9 @@ function DialogTemplate({ open, setOpen, title, children }) {
 
 function DetailDialog({ open, setOpen, title }) {
   return (
-    <DialogTemplate
-      open={open}
-      setOpen={setOpen}
-      title={title}
-    ></DialogTemplate>
+    <DialogTemplate open={open} setOpen={setOpen} title={title}>
+      <Box width='100%' height='300px' marginTop={1} marginBottom={2}></Box>
+    </DialogTemplate>
   )
 }
 
@@ -129,7 +127,7 @@ function Completion({ data }) {
   return (
     <>
       <Template title={data.title} type={data.type}>
-        <Button
+        {/* <Button
           variant='outlined'
           className={classes.btn}
           color='primary'
@@ -139,7 +137,7 @@ function Completion({ data }) {
           }}
         >
           查看详细信息
-        </Button>
+        </Button> */}
         <Button
           size='small'
           variant='outlined'

@@ -2,6 +2,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Container } from '@material-ui/core'
 import Completion from 'components/feedback/Completion'
 import Choice from 'components/feedback/Choice'
+import { useEffect } from 'react'
+import { getStatistics } from 'api/result'
 
 const data = [
   {
@@ -107,6 +109,12 @@ const useStyles = makeStyles((theme) => ({
 
 function Feedback() {
   const classes = useStyles()
+
+  useEffect(() => {
+    getStatistics({ qid: 10 }).then((res) => {
+      console.log(res.data)
+    })
+  })
 
   return (
     <Container maxWidth='md' className={classes.root}>
