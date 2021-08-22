@@ -13,6 +13,7 @@ import { useStateStore } from 'store'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useSnackbar } from 'notistack'
+import PropTypes from 'prop-types'
 
 function RedirectWithMsg({ to, message, type, component }) {
   const [loading, setLoading] = useState(true)
@@ -23,7 +24,11 @@ function RedirectWithMsg({ to, message, type, component }) {
     setLoading(false)
   }, [enqueueSnackbar, type, message])
 
-  return <>{loading ? { component } || <div></div> : <Redirect to={to} />}</>
+  return <>{loading ? component : <Redirect to={to} />}</>
+}
+
+RedirectWithMsg.defaultProps = {
+  component: <div></div>,
 }
 
 function AppContent() {
