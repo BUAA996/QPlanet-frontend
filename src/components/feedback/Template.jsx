@@ -1,11 +1,11 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography } from "@material-ui/core";
-import PropTypes from "prop-types";
+import { makeStyles } from '@material-ui/core/styles'
+import { Card, Typography } from '@material-ui/core'
+import PropTypes from 'prop-types'
 
 const useStyles = makeStyles((theme) => ({
   head: {
-    display: "flex",
-    justifyContent: "flex-start",
+    display: 'flex',
+    justifyContent: 'flex-start',
     marginBottom: theme.spacing(1),
   },
   title: {
@@ -15,34 +15,34 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   root: {
-    width: "80%",
+    width: '80%',
     marginTop: theme.spacing(1),
     padding: theme.spacing(2),
   },
-}));
+}))
 
 function Template({ title, type, children }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Card className={classes.root}>
       <div className={classes.head}>
-        <Typography variant="body1" className={classes.title}>
+        <Typography variant='body1' className={classes.title}>
           {title}
         </Typography>
-        <Typography variant="body1" className={classes.type}>
-          {"[" + type + "]"}
+        <Typography variant='body1' className={classes.type}>
+          {'[' + type + ']'}
         </Typography>
       </div>
       {children}
     </Card>
-  );
+  )
 }
 
 Template.propTypes = {
   title: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
-};
+}
 
-export default Template;
+export default Template

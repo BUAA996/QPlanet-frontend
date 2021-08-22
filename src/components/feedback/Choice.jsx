@@ -150,7 +150,6 @@ function ButtonSet({ showTable, setShowTable, graphNum, setGraphNum }) {
 }
 
 function Choice({ data }) {
-  const classes = useStyles()
   const [showTable, setShowTable] = useState(true)
   const [graphNum, setGraphNum] = useState(0)
 
