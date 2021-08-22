@@ -156,7 +156,12 @@ function Choice({ data }) {
 
   return (
     <Template title={data.title} type={data.type}>
-      <Box>{showTable && <DataTable data={data} />}</Box>
+      {showTable && (
+        <Box>
+          {' '}
+          <DataTable data={data} />
+        </Box>
+      )}
       <Box display='flex' justifyContent='flex-end' mt={1}>
         <ButtonSet
           showTable={showTable}
@@ -165,16 +170,18 @@ function Choice({ data }) {
           setGraphNum={setGraphNum}
         />
       </Box>
-      <Box
-        width='100%'
-        height='300px'
-        border={1}
-        borderRadius={50}
-        borderColor='primary.light'
-        marginTop={1}
-      >
-        <Graph type={graphNum} data='test' />
-      </Box>
+      {graphNum !== 0 && (
+        <Box
+          width='100%'
+          height='300px'
+          border={1}
+          borderRadius={50}
+          borderColor='primary.light'
+          marginTop={1}
+        >
+          <Graph type={graphNum} data={data} />
+        </Box>
+      )}
     </Template>
   )
 }
