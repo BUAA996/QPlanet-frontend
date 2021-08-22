@@ -1,15 +1,28 @@
+import { useEffect } from "react";
+import { useState } from "react";
+
 const { makeStyles, Button, IconButton, Grid, Box, TextField } = require("@material-ui/core");
 const { ArrowDropUpRounded, ArrowDropDownRounded, DehazeRounded } = require("@material-ui/icons");
 const { default: ProblemEdit } = require("./ProblemEdit");
 
 const useStyle = makeStyles(theme => ({
-  inputNum:{
+  inputNum: {
     width: theme.spacing(5)
   }
 }))
 
 function MovableProblemEdit(props) {
   const classes = useStyle();
+  const [to, setTo] = useState(props.index);
+  useEffect(() => {
+    setTo(props.index)
+  })
+
+  const moveUp = () => {
+    if (props.index > 0)
+      props.move(props.index - 1)
+  }
+  const moveDown = () => { props.move(props.index + 1) }
 
   return (
     <Grid container
@@ -23,7 +36,8 @@ function MovableProblemEdit(props) {
         justifyContent="space-around"
         xs="1">
         <Grid item >
-          <IconButton >
+          <IconButton
+            onClick={moveUp}>
             <ArrowDropUpRounded
               fontSize="large" />
           </IconButton>
@@ -31,12 +45,15 @@ function MovableProblemEdit(props) {
         <Grid item>
           <DehazeRounded />
         </Grid>
+
         <Grid item>
-          <IconButton>
+          <IconButton
+            onClick={moveDown}>
             <ArrowDropDownRounded
               fontSize="large" />
           </IconButton>
         </Grid>
+
         <Grid item>
           <Box className={classes.inputNum}>
             <TextField
@@ -44,7 +61,7 @@ function MovableProblemEdit(props) {
               label="题号"
               type="number"
               size="small"
-              value="1"
+              value={to + 1}
               shrink
             />
           </Box>
