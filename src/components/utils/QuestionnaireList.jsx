@@ -68,6 +68,7 @@ const options = [
 	{title: '问卷数量降序', id: 4, key: 4},
 	{title: '发布时间升序', id: 5, key: 5},
 	{title: '发布时间降序', id: 6, key: 6},
+	{title: '发布状态排序', id: 7, key: 7},
 ];
 
 function SortButtons(props) {
@@ -126,51 +127,6 @@ function SortButtons(props) {
 				</Grid>
 			</Grid>
 		</Container>
-
-		// <>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => a.id - b.id))}
-		// 	>
-		// 		id升序
-		// 	</Button>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => b.id - a.id))}
-		// 	>
-		// 		id降序
-		// 	</Button>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => a.createNum - b.createNum))}
-		// 	>
-		// 		创建时间升序
-		// 	</Button>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => b.createNum - a.createNum))}
-		// 	>
-		// 		创建时间降序
-		// 	</Button>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => a.createNum - b.createNum))}
-		// 	>
-		// 		发布时间升序
-		// 	</Button>
-		// 	<Button 
-		// 		variant="contained" 
-		// 		className={classes.sortButton}
-		// 		onClick={() => props.setQuestionaires([].concat(props.Questionares).sort((a, b) => b.createNum - a.createNum))}
-		// 	>
-		// 		发布时间降序
-		// 	</Button>
-		// </>
 	);
 }
 
@@ -212,7 +168,10 @@ export default function QuestionnaireList(props) {
 			case 6:
 				setQuestionaires([].concat(props.Questionares).sort((a, b) => b.uploadNum - a.uploadNum));
 				break;
-		
+			case 7:
+				setQuestionaires([].concat(props.Questionares).sort((a, b) => a.status - b.status));
+				break;
+
 			default:
 				break;
 		}
