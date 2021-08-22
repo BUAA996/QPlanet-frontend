@@ -13,9 +13,8 @@ import { useStateStore } from 'store'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useSnackbar } from 'notistack'
-import PropTypes from 'prop-types'
 
-function RedirectWithMsg({ to, message, type, component }) {
+function RedirectWithMsg({ prevent, to, message, type, component }) {
   const [loading, setLoading] = useState(true)
   const { enqueueSnackbar } = useSnackbar()
 

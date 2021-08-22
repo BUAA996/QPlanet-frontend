@@ -120,7 +120,7 @@ function FrequencyDialog({ open, setOpen, data }) {
 }
 
 function Completion({ data }) {
-  const classes = useStyles()
+  // const classes = useStyles()
   const [detailOpen, setDetailOpen] = useState(false)
   const [frequencyOpen, setFrequencyOpen] = useState(false)
 
