@@ -1,6 +1,8 @@
 import { Box, Button, DialogContent, DialogTitle, TextField, FormControl, FormLabel, RadioGroup, Radio, FormControlLabel } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useState } from "react";
 import EditDialog from "./EditDialog";
+import SelectDialogBody from "./SelectDialogBody";
 
 
 
@@ -10,6 +12,9 @@ const useStyle = makeStyles((theme) => ({
 
 function QuestionEditDialog(props) {
   const classes = useStyle();
+
+  const [choices, setChoices] = useState(['aaa', 'bb', 'c']);
+
 
   const dialogTitle = (
     <DialogTitle>
@@ -38,6 +43,11 @@ function QuestionEditDialog(props) {
           </RadioGroup>
         </FormControl>
       </Box>
+
+      <SelectDialogBody
+        choices={choices}
+        setChoices={setChoices}
+      />
     </>
 
   );
