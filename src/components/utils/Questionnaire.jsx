@@ -74,7 +74,7 @@ function Questionare(props) {
 				<Grid item xs={7}>
 					<Button component={RouterLink} to={"/design/" + props.hash} color="primary"> 设计问卷 </Button>
 					<Button color="primary"> 分享问卷 </Button>
-					<Button color="primary"> 分析/下载 </Button>
+					<Button component={RouterLink} to={"/feedback/" + props.hash} color="primary"> 分析/下载 </Button>
 				</Grid>
 				<Grid item xs={5}>
 					{props.status == 0 ? <Button color="primary"> 发布 </Button> : null}
