@@ -1,23 +1,23 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { Container } from "@material-ui/core";
-import Completion from "components/feedback/Completion";
-import Choice from "components/feedback/Choice";
+import { makeStyles } from '@material-ui/core/styles'
+import { Container } from '@material-ui/core'
+import Completion from 'components/feedback/Completion'
+import Choice from 'components/feedback/Choice'
 
 const data = [
   {
     key: 1,
     kind: 1,
-    type: "单选题",
-    title: "标题",
+    type: '单选题',
+    title: '标题',
     choice: [
       {
         key: 1,
-        option: "选项1",
+        option: '选项1',
         count: 4,
       },
       {
         key: 2,
-        option: "选项2",
+        option: '选项2',
         count: 3,
       },
     ],
@@ -26,22 +26,22 @@ const data = [
   {
     key: 2,
     kind: 1,
-    type: "多选题",
-    title: "标题",
+    type: '多选题',
+    title: '标题',
     choice: [
       {
         key: 1,
-        option: "选项1",
+        option: '选项1',
         count: 4,
       },
       {
         key: 2,
-        option: "选项2",
+        option: '选项2',
         count: 3,
       },
       {
         key: 3,
-        option: "选项3",
+        option: '选项3',
         count: 4,
       },
     ],
@@ -50,17 +50,17 @@ const data = [
   {
     key: 3,
     kind: 2,
-    type: "填空题",
-    title: "标题",
+    type: '填空题',
+    title: '标题',
     choice: [
       {
         key: 1,
-        option: "选项1",
+        option: '选项1',
         count: 4,
       },
       {
         key: 2,
-        option: "选项2",
+        option: '选项2',
         count: 3,
       },
     ],
@@ -69,48 +69,48 @@ const data = [
   {
     key: 4,
     kind: 1,
-    type: "评分题",
-    title: "标题",
+    type: '评分题',
+    title: '标题',
     choice: [
       {
         key: 1,
-        option: "0-1",
+        option: '0-1',
         count: 3,
       },
       {
         key: 2,
-        option: "1-2",
+        option: '1-2',
         count: 4,
       },
       {
         key: 3,
-        option: "2-3",
+        option: '2-3',
         count: 7,
       },
     ],
     total: 14,
   },
-];
+]
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
   },
-}));
+}))
 
 function Feedback() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
-    <Container maxWidth="md" className={classes.root}>
+    <Container maxWidth='md' className={classes.root}>
       {data.map((item) => {
-        if (item.kind === 1) return <Choice data={item} key={item.key} />;
-        else return <Completion data={item} key={item.key} />;
+        if (item.kind === 1) return <Choice data={item} key={item.key} />
+        else return <Completion data={item} key={item.key} />
       })}
     </Container>
-  );
+  )
 }
 
-export default Feedback;
+export default Feedback
