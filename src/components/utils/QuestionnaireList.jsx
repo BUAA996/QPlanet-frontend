@@ -83,7 +83,7 @@ export default function QuestionnaireList(props) {
 			<Grid item xs={10}>
 				<TabPanel value={value} index={0}>
 					全部问卷
-					&nbsp;<Button variant="contained" color="primary" onClick={() => {setValue(5)}}> 测试一下搜索能不能用 (x </Button>
+					{/* &nbsp;<Button variant="contained" color="primary" onClick={() => {setValue(5)}}> 测试一下搜索能不能用 (x </Button> */}
 					{childPropsList.map((childProps) => <Questionare {...childProps} showType={-1}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={1}>

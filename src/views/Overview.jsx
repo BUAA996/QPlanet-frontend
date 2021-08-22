@@ -59,7 +59,8 @@ function HeadBar() {
 
 function Overview() {
   const classes = useStyles();
-  const [data, setData] = useState([])
+  const [change, setChange] = useState(0);
+  const [data, setData] = useState([]);
 
   useEffect(
     () => {
@@ -81,7 +82,7 @@ function Overview() {
         }
         setData(tmp)
       })
-    }, []
+    }, [change]
   );
   return (
     <Container fixed className={classes.root}>

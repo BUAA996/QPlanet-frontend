@@ -1,4 +1,6 @@
 import { Button, Card, Container, Divider, Grid, Paper, Typography } from "@material-ui/core";
+import { getQuestionnaires } from "api/questionaire"
+import { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Problem from "components/utils/Problem";
 
@@ -91,6 +93,10 @@ function Fill() {
       ]
     },
   ];
+
+  useEffect(() => {
+    
+  }, []);
 
   return (
     <Container maxWidth='md' className={classes.root}>
