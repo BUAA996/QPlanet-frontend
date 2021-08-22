@@ -70,7 +70,8 @@ function Design() {
     setQuestionare(newQ);
   }
   function delQuestion(index) {
-    const newQ = questionare.splice(index, 1);
+    const newQ = questionare.slice()
+    newQ.splice(index, 1);
     setQuestionare(newQ);
   }
   function editQuestion(index, kind, must, title, choices) {
@@ -86,7 +87,6 @@ function Design() {
     setQuestionare(newQ);
   }
   function move(oriIndex, newIndex) {
-    console.log("hi")
     const item = questionare.slice()[oriIndex];
     const newQ = questionare.slice()
     newQ.splice(oriIndex, 1);
@@ -103,7 +103,6 @@ function Design() {
     />
   );
 
-  // const questions = Questionare.map((x) => <Problem problem={x}></Problem>);
   return (
     <Container maxWidth="md">
       <TitleEdit content={content}

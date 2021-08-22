@@ -32,12 +32,12 @@ function ProblemEdit(props) {
       content: "编辑",
       icon: (<CreateRounded />),
       onClick: (() => handleDialogOpen()),
-    },{
+    }, {
       id: 2,
       content: "删除",
       icon: (<Delete />),
-      onClick: null,
-    },{
+      onClick: props.del,
+    }, {
       id: 3,
       content: "上方插入",
       icon: (<AddCircleOutlineRounded />),
