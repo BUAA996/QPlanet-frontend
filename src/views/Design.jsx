@@ -50,6 +50,8 @@ function Design() {
       <TitleEdit content={content}/>
 
       {questions.map((x) => <ProblemEdit content={x} />)}
+
+      
     </Container>);
 }
 
