@@ -56,9 +56,14 @@ function AppHeader() {
         </Link>
         <Box flexGrow={1} />
         {isLogin ? (
-          <Button className={classes.link} onClick={onLogout}>
-            登出
-          </Button>
+          <>
+            <Button component={Link} to="/overview"  className={classes.link}>
+              进入控制台
+            </Button>
+            <Button className={classes.link} onClick={onLogout}>
+              登出
+            </Button>
+          </>
         ) : (
           <>
             <Button component={Link} to="/signin" className={classes.link}>
@@ -73,7 +78,7 @@ function AppHeader() {
     </AppBar>
   ) : (
     <Box height="10vh" width="100vw"></Box>
-  );
+  )
 }
 
 export default AppHeader;
