@@ -54,15 +54,10 @@ function Design() {
 
   const [questionare, setQuestionare] = useState(Questionare);
 
-  function addQuestion(index, kind, must, title, choices) {
+  function addQuestion(index, item) {
     const newQ = questionare.slice();
-    const newItem = {
-      id: Math.random().toString(36).slice(-6),
-      kind: kind,
-      must: must,
-      title: title,
-      choices: choices
-    }
+    const newItem = JSON.parse(JSON.stringify(item));
+    newItem.id = Math.random().toString(36).slice(-6);
     if (index === -1)
       newQ.push(newItem)
     else
@@ -74,16 +69,9 @@ function Design() {
     newQ.splice(index, 1);
     setQuestionare(newQ);
   }
-  function editQuestion(index, kind, must, title, choices) {
-    const newItem = {
-      id: questionare[index].id,
-      kind: kind,
-      must: must,
-      title: title,
-      choices: choices
-    }
+  function editQuestion(index, item) {
     const newQ = questionare.slice()
-    newQ.splice(index, 1, newItem)
+    newQ.splice(index, 1, item)
     setQuestionare(newQ);
   }
   function move(oriIndex, newIndex) {
@@ -91,7 +79,6 @@ function Design() {
     const newQ = questionare.slice()
     newQ.splice(oriIndex, 1);
     newQ.splice(newIndex, 0, item);
-    console.log(newQ)
     setQuestionare(newQ)
   }
 
@@ -115,11 +102,12 @@ function Design() {
           key={x.id}
           question={(<Problem problem={x}
           />)}
+          questionInfo={x}
           index={index}
           move={(newIndex) => move(index, newIndex)}
           del={() => delQuestion(index)}
           add={addQuestion}
-          edit={(kind, must, title, choices) => editQuestion(index, kind, must, title, choices)}
+          edit={(item) => { editQuestion(index, item) }}
         />)}
 
 

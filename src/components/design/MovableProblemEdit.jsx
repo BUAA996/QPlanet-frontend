@@ -76,6 +76,7 @@ function MovableProblemEdit(props) {
           del={props.del}
           add={props.add}
           edit={props.edit}
+          questionInfo={props.questionInfo}
         />
       </Grid>
     </Grid>
