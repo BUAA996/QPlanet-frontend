@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
   head: {
     display: "flex",
     justifyContent: "flex-start",
+    marginBottom: theme.spacing(1),
   },
   title: {
     marginRight: theme.spacing(1),
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "80%",
     marginTop: theme.spacing(1),
+    padding: theme.spacing(2),
   },
 }));
 
@@ -32,7 +34,6 @@ function Template({ title, type, children }) {
           {"[" + type + "]"}
         </Typography>
       </div>
-
       {children}
     </Card>
   );
