@@ -1,15 +1,30 @@
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import Template from "./Template";
+import { Button } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  btn: {
+    marginRight: theme.spacing(1),
+  },
+}));
 
 function Completion({ data }) {
   const classes = useStyles();
 
   return (
     <Template title={data.title} type={data.type}>
-      hahahah
+      <Button
+        variant="outlined"
+        className={classes.btn}
+        color="primary"
+        size="small"
+      >
+        查看详细信息
+      </Button>
+      <Button size="small" variant="outlined" color="primary">
+        词频分析
+      </Button>
     </Template>
   );
 }
