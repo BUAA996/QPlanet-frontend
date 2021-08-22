@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField } from '@material-ui/core';
+import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Container, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
@@ -10,6 +10,9 @@ const useStyles = makeStyles({
     marginTop: 30,
   },
   title: {
+    textAlign: 'left'
+  },
+  titleContent: {
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -28,10 +31,10 @@ const useStyles = makeStyles({
 function ShowClasses(props) {
   const classes = useStyles();
   return (
-    <p>
-      <span className={classes.must}>{props.must ? '*' : null}</span>
-      <span className={classes.title}>{props.title}</span>
-    </p>
+    <Container fixed className={classes.title}>
+      <Typography component='span' className={classes.must}>{props.must ? '*' : null}</Typography>
+      <Typography component='span' className={classes.titleContent}>{props.title}</Typography>
+    </Container>
   );
 }
 

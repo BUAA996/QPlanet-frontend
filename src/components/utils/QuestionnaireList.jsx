@@ -53,37 +53,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function createProps(index) {
-	return {
-		"id": index,
-		"title": "假装这是个问卷调查",
-		"description": "这一看就是个很正经的问卷调查",
-		"type": 0,
-		"count": 123,
-		"hash": "ASDSAT12314SDA@#4!@#SD!@$E",
-		"status": index % 3,
-		"createTime": "2021.8.21 10:30",
-		"uploadTime": "2021.8.21 10:35",
-	}
-}
-
-function getProps() {
-	var res = new Array(10)
-	for(let i = 0;i < 10; ++i) {
-		res[i] = createProps(i);
-	}
-	return res;
-}
-
 export default function QuestionnaireList(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-
-	// var childPropsList = getProps();
 	var childPropsList = props.Questionares;
-	// console.log(childPropsList)
-	// console.log(props.Questionares)
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -109,7 +83,7 @@ export default function QuestionnaireList(props) {
 			<Grid item xs={10}>
 				<TabPanel value={value} index={0}>
 					全部问卷
-					&nbsp;<Button variant="contained" color="primary" onClick={() => {setValue(4)}}> 测试一下搜索能不能用 (x </Button>
+					&nbsp;<Button variant="contained" color="primary" onClick={() => {setValue(5)}}> 测试一下搜索能不能用 (x </Button>
 					{childPropsList.map((childProps) => <Questionare {...childProps} showType={-1}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={1}>
@@ -133,8 +107,6 @@ export default function QuestionnaireList(props) {
 					{childPropsList.map((childProps) => <Questionare {...childProps} showType={4}/>)}
 				</TabPanel>
 			</Grid>
-      
-      
     </Grid>
   );
 }
