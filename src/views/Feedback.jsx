@@ -110,11 +110,11 @@ const useStyles = makeStyles((theme) => ({
 function Feedback() {
   const classes = useStyles()
 
-  useEffect(() => {
-    getStatistics({ qid: 10 }).then((res) => {
-      console.log(res.data)
-    })
-  })
+  // useEffect(() => {
+  //   getStatistics({ qid: 10 }).then((res) => {
+  //     // console.log(res.data)
+  //   })
+  // })
 
   return (
     <Container maxWidth='md' className={classes.root}>
