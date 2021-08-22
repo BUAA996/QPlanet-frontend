@@ -1,18 +1,19 @@
 import { makeStyles } from '@material-ui/core/styles'
-import * as echarts from 'echarts/core'
-import { BarChart, PieChart } from 'echarts/charts'
-import { GridComponent, TooltipComponent } from 'echarts/components'
-import { CanvasRenderer } from 'echarts/renderers'
+import * as echarts from 'echarts'
+// import { BarChart, PieChart } from 'echarts/charts'
+// import { GridComponent, TooltipComponent } from 'echarts/components'
+// import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect } from 'react'
 import { useRef } from 'react'
+import 'echarts-wordcloud'
 
-echarts.use([
-  PieChart,
-  GridComponent,
-  BarChart,
-  CanvasRenderer,
-  TooltipComponent,
-])
+// echarts.use([
+//   PieChart,
+//   GridComponent,
+//   BarChart,
+//   CanvasRenderer,
+//   TooltipComponent,
+// ])
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,7 +33,8 @@ function Graph({ type, data }) {
     if (type === 1) option = pieOption(data)
     else if (type === 2) option = ringOption(data)
     else if (type === 3) option = barOption(data)
-    else option = histogramOption(data)
+    else if (type === 4) option = histogramOption(data)
+    else if (type === 5) option = cloudOption(data)
 
     chart.setOption(option, true)
   })
@@ -120,6 +122,47 @@ function histogramOption(data) {
       {
         data: data.choice.map((item) => item.count),
         type: 'bar',
+      },
+    ],
+  }
+}
+
+function cloudOption(data) {
+  return {
+    tooltip: {
+      trigger: 'item',
+    },
+    series: [
+      {
+        type: 'wordCloud',
+        sizeRange: [25, 55],
+        textStyle: {
+          fontFamily: 'sans-serif',
+          fontWeight: 'bold',
+          color: function () {
+            let colorSet = [
+              '#FF0000',
+              '#FF7F00',
+              '#FFFF00',
+              '#00FF00',
+              '#00FFFF',
+              '#0000FF',
+              '#8B00FF',
+            ]
+            return colorSet[Math.round(Math.random() * 6)]
+          },
+        },
+        emphasis: {
+          focus: 'self',
+          textStyle: {
+            shadowBlur: 10,
+            shadowColor: '#333',
+          },
+        },
+        data: data.choice.map((item) => ({
+          name: item.option,
+          value: item.count,
+        })),
       },
     ],
   }

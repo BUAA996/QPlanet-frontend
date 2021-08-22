@@ -55,13 +55,18 @@ const data = [
     choice: [
       {
         key: 1,
-        option: '选项1',
+        option: '词汇1',
         count: 4,
       },
       {
         key: 2,
-        option: '选项2',
+        option: '词汇2',
         count: 3,
+      },
+      {
+        key: 3,
+        option: '词汇3',
+        count: 7,
       },
     ],
     total: 7,
