@@ -165,8 +165,15 @@ function Choice({ data }) {
           setGraphNum={setGraphNum}
         />
       </Box>
-      <Box>
-        <Graph type='test' data='test' />
+      <Box
+        width='100%'
+        height='300px'
+        border={1}
+        borderRadius={50}
+        borderColor='primary.light'
+        marginTop={1}
+      >
+        <Graph type={graphNum} data='test' />
       </Box>
     </Template>
   )

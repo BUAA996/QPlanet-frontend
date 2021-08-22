@@ -9,7 +9,10 @@ import { useRef } from 'react'
 echarts.use([PieChart, GridComponent, BarChart, CanvasRenderer])
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    width: '100%',
+    height: '100%',
+  },
 }))
 
 function Graph({ type, data }) {
@@ -17,7 +20,7 @@ function Graph({ type, data }) {
   const ref = useRef()
 
   useEffect(() => {
-    const chart = echarts.init(ref)
+    const chart = echarts.init(ref.current)
 
     const option = {
       xAxis: {
@@ -26,7 +29,6 @@ function Graph({ type, data }) {
       yAxis: {},
       series: [
         {
-          name: '销量',
           type: 'bar',
           data: [5, 20, 36, 10, 10, 20],
         },
@@ -37,6 +39,22 @@ function Graph({ type, data }) {
   })
 
   return <div className={classes.root} ref={ref}></div>
+}
+
+function pieOption() {
+  return null
+}
+
+function ringOption() {
+  return null
+}
+
+function barOption() {
+  return null
+}
+
+function histogramOption() {
+  return null
 }
 
 export default Graph
