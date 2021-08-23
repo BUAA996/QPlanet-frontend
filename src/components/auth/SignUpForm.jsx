@@ -19,21 +19,25 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   captchaBtn: {
-    marginTop: '16px',
-    height: '56px',
+    marginTop: '12px',
+    height: '40px',
     width: '97%',
     borderRadius: theme.shape.borderRadius * 8,
   },
   formBtn: {
     borderRadius: theme.shape.borderRadius * 8,
-    height: '50px',
-    marginTop: theme.spacing(1),
+    height: '45px',
+    marginTop: theme.spacing(1.5),
   },
   link: {
     width: '100%',
     marginTop: theme.spacing(2),
     textAlign: 'center',
     marginBottom: theme.spacing(2),
+  },
+  formItem: {
+    marginTop: theme.spacing(1.5),
+    marginBottom: theme.spacing(0.5),
   },
 }))
 
@@ -54,7 +58,10 @@ function SignUpForm() {
   const username = register('username', {
     required: { value: true, message: '用户名不能为空' },
   })
-  const password = register('password', {
+  const password1 = register('password1', {
+    required: { value: true, message: '密码不能为空' },
+  })
+  const password2 = register('password2', {
     required: { value: true, message: '密码不能为空' },
   })
   const email = register('email', {
@@ -69,11 +76,15 @@ function SignUpForm() {
   })
 
   const onSubmit = (data) => {
-    let { username, password, email, captcha } = data
+    if (data.password1 !== data.password2) {
+      enqueueSnackbar('两次输入的密码不一致', { variant: 'warning' })
+      return
+    }
+    let { captcha } = data
     let newData = {
       username,
-      password1: password,
-      password2: password,
+      password1,
+      password2,
       email,
       code: captcha,
     }
@@ -120,17 +131,36 @@ function SignUpForm() {
           error={!!errors.username}
           helperText={errors.username && errors.username.message}
           variant='outlined'
+          className={classes.formItem}
+          size='small'
         />
         <TextField
           label='密码'
           margin='normal'
           fullWidth
-          onChange={password.onChange}
-          inputRef={password.ref}
-          name={password.name}
-          error={!!errors.password}
-          helperText={errors.password && errors.password.message}
+          onChange={password1.onChange}
+          inputRef={password1.ref}
+          name={password1.name}
+          error={!!errors.password1}
+          helperText={errors.password1 && errors.password1.message}
           variant='outlined'
+          className={classes.formItem}
+          size='small'
+          type='password'
+        />
+        <TextField
+          label='确认密码'
+          margin='normal'
+          fullWidth
+          onChange={password2.onChange}
+          inputRef={password2.ref}
+          name={password2.name}
+          error={!!errors.password2}
+          helperText={errors.password2 && errors.password2.message}
+          variant='outlined'
+          className={classes.formItem}
+          size='small'
+          type='password'
         />
         <TextField
           label='邮箱'
@@ -142,6 +172,8 @@ function SignUpForm() {
           error={!!errors.email}
           helperText={errors.email && errors.email.message}
           variant='outlined'
+          className={classes.formItem}
+          size='small'
         />
         <Grid container>
           <Grid item xs={6}>
@@ -155,6 +187,8 @@ function SignUpForm() {
               error={!!errors.captcha}
               helperText={errors.captcha && errors.captcha.message}
               variant='outlined'
+              className={classes.formItem}
+              size='small'
             />
           </Grid>
           <Grid item xs={6} container justifyContent='flex-end'>
@@ -163,7 +197,6 @@ function SignUpForm() {
               onClick={clickGetCaptcha}
               disabled={!btnOpen}
               variant='contained'
-              size='large'
               color='primary'
             >
               {btnOpen ? '获取验证码' : '验证码已发送'}
