@@ -14,6 +14,7 @@ import QRCode from 'qrcode.react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useSnackbar } from 'notistack'
 import icon from 'assets/favicon.ico'
+import { download } from 'utils'
 
 const useStyles = makeStyles((theme) => ({
   closeBtn: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function QRDialog({ open, setOpen, url, title, openTitle }) {
+function QRDialog({ open, setOpen, url, title, openTitle, downloadTitle }) {
   const classes = useStyles()
   const { enqueueSnackbar } = useSnackbar()
 
@@ -58,6 +59,7 @@ function QRDialog({ open, setOpen, url, title, openTitle }) {
             value={url}
             size={128}
             imageSettings={{ src: `${icon}`, height: 40, width: 40 }}
+            id='qrcode-canvas'
           />
           <Box
             display='flex'
@@ -90,6 +92,11 @@ function QRDialog({ open, setOpen, url, title, openTitle }) {
                 variant='outlined'
                 color='primary'
                 className={classes.btn}
+                onClick={() => {
+                  let canvasElement = document.getElementById('qrcode-canvas')
+                  let imgUrl = canvasElement.toDataURL('image/png')
+                  download(imgUrl, downloadTitle)
+                }}
               >
                 下载二维码
               </Button>
@@ -113,6 +120,7 @@ function QRDialog({ open, setOpen, url, title, openTitle }) {
 
 QRDialog.defaultProps = {
   openTitle: '打开问卷',
+  downloadTitle: '问卷二维码',
 }
 
 export default QRDialog
