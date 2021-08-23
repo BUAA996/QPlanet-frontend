@@ -68,7 +68,7 @@ function AppContent() {
             <Auth form={<SignUpForm />} />
           )}
         </Route>
-        <Route exact path='/design'>
+        <Route exact path='/design/:id'>
           {isLogin ? (
             <Design />
           ) : (
