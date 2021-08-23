@@ -12,8 +12,8 @@ function TitleEditDialog(props) {
   const { register,
     handleSubmit,
     formState: { errors } } = useForm();
-    
-  const onSubmit = (data) => { 
+
+  const onSubmit = (data) => {
     props.save(data.title, data.detail)
   };
 
@@ -32,6 +32,7 @@ function TitleEditDialog(props) {
 
   const saveFunc = handleSubmit(onSubmit);
 
+  console.log(props.title)
   const dialogContent = (
     <>
       <form onSubmit={saveFunc}>

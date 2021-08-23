@@ -1,12 +1,13 @@
 import { makeStyles } from "@material-ui/core/styles";
 import QHead from "components/design/QHead";
 import Problem from "components/utils/Problem";
-import { Container } from "@material-ui/core"
-import EditLayer from "components/design/EditLayer";
-import ProblemEdit from "components/design/ProblemEdit";
+import { Container, Button } from "@material-ui/core"
 import TitleEdit from "components/design/TitleEdit";
 import MovableProblemEdit from "components/design/MovableProblemEdit";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { getQuestionnaire } from "api/design";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -43,16 +44,43 @@ const Questionare = [
 ]
 
 
-function Design() {
+function Design(props) {
   const classes = useStyles();
+
+  const { id } = useParams();
+  const [getQ, setQ] = useState(0);
   const [title, setTitle] = useState("一个标题");
   const [detail, setDetail] = useState("这里是一段描述");
+  const [questionare, setQuestionare] = useState(Questionare);
+
+  useEffect(() => {
+    let didCancel = false;
+
+    async function fetchMyAPI() {
+      const res = await getQuestionnaire(id);
+      const data = res.data
+      setQ(data.data);
+      setTitle(data.title)
+      setDetail(data.description)
+      setQuestionare(data.questions)
+
+      if (!didCancel) { // Ignore if we started fetching something else
+        // console.log(getQ);
+        // console.log(data.questions)
+      }
+    }
+
+    fetchMyAPI();
+    return () => { didCancel = true; }; // Remember if we start fetching something else
+  }, []);
+
+
   const qHeadSetFunc = {
     setTitle: setTitle,
     setDetail: setDetail,
   }
 
-  const [questionare, setQuestionare] = useState(Questionare);
+
 
   function addQuestion(index, item) {
     const newQ = questionare.slice();
@@ -80,6 +108,18 @@ function Design() {
     newQ.splice(oriIndex, 1);
     newQ.splice(newIndex, 0, item);
     setQuestionare(newQ)
+  }
+  function addDefault(index) {
+    const item = {
+      kind: 0,
+      must: 1,
+      title: '题目',
+      choices: [
+        '选项1',
+        '选项2',
+      ]
+    }
+    addQuestion(index, item)
   }
 
 
@@ -109,6 +149,12 @@ function Design() {
           add={addQuestion}
           edit={(item) => { editQuestion(index, item) }}
         />)}
+      <Button
+        color="primary"
+        onClick={addDefault}
+      >
+        添加题目
+      </Button>
 
 
     </Container>);

@@ -50,8 +50,7 @@ function ProblemEdit(props) {
             '选项1',
             '选项2',
           ]
-        }
-        )
+        })
       },
     }
   ].map((btn) =>
