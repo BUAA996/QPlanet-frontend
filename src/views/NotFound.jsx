@@ -1,5 +1,5 @@
 import Problem from 'components/utils/Problem'
-import { Container } from '@material-ui/core'
+import { CardContent, Container } from '@material-ui/core'
 import useTitle from 'hooks/useTitle'
 import {Title, PreviewPage} from 'views/Preview'
 
@@ -44,17 +44,16 @@ function NotFound() {
     },
   ]
 
+  function blankFunction() {}
+
   const title = <Title title="test" description="some description"/>  
-  const Questions = Questionare.map((problem) => (<Problem problem={problem} />));
+  const Questions = Questionare.map((problem) => (<Problem problem={problem} updateAns={(ans) => blankFunction()} />));
 
   return (
     <>
-      <h1>404 Not Found</h1>
 
-      <Container maxWidth='md'>
-        {Questionare.map((problem) => (
-          <Problem problem={problem} />
-        ))}
+      <Container maxWidth="md">
+        <PreviewPage title={title} Questionare={Questions}/>
       </Container>
     </>
   )

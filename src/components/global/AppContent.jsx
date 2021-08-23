@@ -113,7 +113,8 @@ function AppContent() {
           )}
         </Route>
         <Route exact path='*'>
-          <Auth form={<NotFound />} />
+          {/* <Auth form={<NotFound />} /> */}
+          <NotFound />
         </Route>
       </Switch>
     </Box>
