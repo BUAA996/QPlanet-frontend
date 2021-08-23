@@ -155,26 +155,30 @@ function Design(props) {
       </Button>
       <Button
         color="primary"
-        onClick={() => saveQuestionaire({
-          modify_type: "delete_all_results",
-          qid: qid,
-          title: title,
-          description: detail,
-          validity: "2021-8-23 18:20",
-          limit_time: 998244353,
-          questions: questionare.map((x) => {
-            const item = {
-              id: x.id,
-              type: x.kind,
-              content: x.title,
-              is_required: x.must === 1 ? true : false,
-              description: x.description,
-            }
-            if (isSingleChoice(x) || isMultiChoice(x))
-              item.option = x.choices;
-            return item;
-          })
-        })}
+        onClick={() => {
+          saveQuestionaire({
+            modify_type: "delete_all_results",
+            qid: qid,
+            title: title,
+            description: detail,
+            validity: "2021-8-23 18:20",
+            limit_time: 998244353,
+            questions: questionare.map((x) => {
+              const item = {
+                id: x.id,
+                type: x.kind,
+                content: x.title,
+                is_required: x.must === 1 ? true : false,
+                description: x.description,
+              }
+              if (isSingleChoice(x) || isMultiChoice(x))
+                item.option = x.choices;
+              return item;
+            })
+          });
+          history.push("/overview")
+        }
+        }
       >
         保存修改
       </Button>
