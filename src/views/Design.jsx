@@ -32,8 +32,8 @@ function Design(props) {
 
   const { id } = useParams();
   const [getQ, setQ] = useState(0);
-  const [title, setTitle] = useState("一个标题");
-  const [detail, setDetail] = useState("这里是一段描述");
+  const [title, setTitle] = useState();
+  const [detail, setDetail] = useState();
   const [questionare, setQuestionare] = useState([]);
   const [qid, setQid] = useState();
   const history = useHistory();
@@ -126,7 +126,7 @@ function Design(props) {
     addQuestion(index, item)
   }
 
-  const content = <QHead title={title} detail={detail} />
+  const content = <Title title={title} description={detail} />
 
   function blankFunction() { }
 

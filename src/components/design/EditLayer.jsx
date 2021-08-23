@@ -1,15 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
-import useHover from 'hooks/useHover'
 import { Box, Button, Backdrop } from '@material-ui/core'
-import { SpeedDial, SpeedDialIcon } from '@material-ui/lab'
 import { useState } from 'react'
-import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
-import FileCopyIcon from '@material-ui/icons/FileCopyOutlined'
-import SaveIcon from '@material-ui/icons/Save'
-import PrintIcon from '@material-ui/icons/Print'
-import ShareIcon from '@material-ui/icons/Share'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import EditIcon from '@material-ui/icons/Edit'
 
 const useStyles = makeStyles((theme) => ({
   hoverLayer: {
@@ -42,7 +33,7 @@ function EditLayer(props) {
   return (
     <Box
       class={classes.box}
-      // ref={hoverRef}
+    // ref={hoverRef}
     >
       <div className={classes.hoverLayer}>
         <div className={classes.btnRow}>{props.buttons}</div>

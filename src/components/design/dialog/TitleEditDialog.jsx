@@ -1,17 +1,24 @@
-import { Box, Button, DialogContent, DialogTitle, TextField } from "@material-ui/core";
+import { Box, Button, DialogContent, DialogTitle, TextField, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import EditDialog from "./EditDialog";
 
 const useStyle = makeStyles((theme) => ({
-
+  grid: {
+    margin: theme.spacing(1)
+  }
 }))
 
 function TitleEditDialog(props) {
   const classes = useStyle();
   const { register,
     handleSubmit,
-    formState: { errors } } = useForm();
+    formState: { errors } } = useForm({
+      defaultValues: {
+        title: props.title,
+        "detail": props.detail
+      }
+    });
 
   const onSubmit = (data) => {
     props.save(data.title, data.detail)
@@ -32,39 +39,47 @@ function TitleEditDialog(props) {
 
   const saveFunc = handleSubmit(onSubmit);
 
-  console.log(props.title)
+
   const dialogContent = (
     <>
-      <form onSubmit={saveFunc}>
-        <TextField
-          required
-          label="标题"
-          id="filled-required"
-          defaultValue={props.title}
-          onChange={title.onChange}
-          name={title.name}
-          inputRef={title.ref}
-          error={!!errors.title}
-          helperText={errors.title && errors.title.message}
-          variant="outlined"
-        />
+      <Grid container
+        direction="column">
+        <Grid item
+          className={classes.grid}>
+          <TextField
+            required
+            label="标题"
+            id="filled-required"
+            // defaultValue={props.title}
+            onChange={title.onChange}
+            name={title.name}
+            inputRef={title.ref}
+            error={!!errors.title}
+            helperText={errors.title && errors.title.message}
+            variant="outlined"
+          />
+        </Grid>
 
 
-        <TextField
-          required
-          id="filled-required"
-          label="简介"
-          defaultValue={props.detail}
-          onChange={detail.onChange}
-          name={detail.name}
-          inputRef={detail.ref}
-          error={!!errors.detail}
-          helperText={errors.detail && errors.detail.message}
-          variant="outlined"
-          multiline
-          maxRows={4}
-        />
-      </form>
+        <Grid item
+          className={classes.grid}>
+
+          <TextField
+            required
+            id="filled-required"
+            label="简介"
+            // defaultValue={props.detail}
+            onChange={detail.onChange}
+            name={detail.name}
+            inputRef={detail.ref}
+            error={!!errors.detail}
+            helperText={errors.detail && errors.detail.message}
+            variant="outlined"
+            multiline
+            maxRows={4}
+          />
+        </Grid>
+      </Grid>
     </>
 
   );
