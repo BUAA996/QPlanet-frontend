@@ -261,3 +261,4 @@ function Preview() {
 }
 
 export default Preview
+export {Title, PreviewPage}

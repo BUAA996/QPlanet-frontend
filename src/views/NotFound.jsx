@@ -1,6 +1,8 @@
 import Problem from 'components/utils/Problem'
 import { Container } from '@material-ui/core'
 import useTitle from 'hooks/useTitle'
+import {Title, PreviewPage} from 'views/Preview'
+
 
 function NotFound() {
   useTitle('找不到网页')
@@ -41,6 +43,9 @@ function NotFound() {
       choices: ['选项1', '选项2', '选项3', '选项4'],
     },
   ]
+
+  const title = <Title title="test" description="some description"/>  
+  const Questions = Questionare.map((problem) => (<Problem problem={problem} />));
 
   return (
     <>
