@@ -7,7 +7,7 @@ function getStatistics(data) {
 
 // download
 function downloadStatistics(data) {
-  return axios.post('result/download', data)
+  return axios.post('result/download/', data)
 }
 
 export { getStatistics, downloadStatistics }

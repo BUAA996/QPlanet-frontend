@@ -10,7 +10,7 @@ import {
 import Completion from 'components/feedback/Completion'
 import Choice from 'components/feedback/Choice'
 import { useEffect } from 'react'
-import { getStatistics } from 'api/result'
+import { getStatistics, downloadStatistics } from 'api/result'
 import useTitle from 'hooks/useTitle'
 import { useState } from 'react'
 import {
@@ -92,6 +92,19 @@ function Feedback() {
     getStatistics({ hash: hashcode })
       .then((res) => {
         console.log(res.data)
+        let map = ['单选题', '多选题', '填空题', '评分题']
+        let data = res.data.questions.map((item, index) => ({
+          type: map[item.type],
+          total: res.data.total,
+          title: item.content,
+          choice: item.option.map((innerItem, innerIndex) => ({
+            option: innerItem,
+            count: item.count[innerIndex],
+            key: innerIndex,
+          })),
+          key: index,
+        }))
+        setData(data)
       })
       .catch(() => {
         enqueueSnackbar('该问卷不存在', { variant: 'warning' })
@@ -108,10 +121,9 @@ function Feedback() {
 
   const handleClick = (name) => {
     if (name === '下载统计数据') {
-      download(
-        'http://localhost:3000/static/media/banner.8cca1e88.png',
-        'haha.jpg'
-      )
+      downloadStatistics({ hash: hashcode }).then((res) => {
+        download('https://api.matrix53.top/img/' + res.data.name, res.data.name)
+      })
     } else if (name === '发送问卷') {
     } else if (name === '预览问卷') {
       history.push('/preview/' + hashcode)
@@ -147,8 +159,9 @@ function Feedback() {
       <Grid item xs={6} container>
         <Grid item xs={12}>
           {data.map((item) => {
-            if (item.kind === 1) return <Choice data={item} key={item.key} />
-            else return <Completion data={item} key={item.key} />
+            if (item.type === '填空题')
+              return <Completion data={item} key={item.key} />
+            else return <Choice data={item} key={item.key} />
           })}
         </Grid>
       </Grid>
