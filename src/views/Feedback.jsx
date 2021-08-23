@@ -1,10 +1,21 @@
 import { makeStyles } from '@material-ui/core/styles'
-import { Container } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import Completion from 'components/feedback/Completion'
 import Choice from 'components/feedback/Choice'
 import { useEffect } from 'react'
 import { getStatistics } from 'api/result'
 import useTitle from 'hooks/useTitle'
+import { useState } from 'react'
+import {
+  CloudDownload,
+  Send,
+  Visibility,
+  Menu,
+  MenuOpen,
+} from '@material-ui/icons'
+import SpeedDial from '@material-ui/lab/SpeedDial'
+import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
+import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
 
 const data = [
   {
@@ -105,11 +116,18 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
+    // width: '100%',
+  },
+  speedDial: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
 }))
 
 function Feedback() {
   const classes = useStyles()
+  const [open, setOpen] = useState(false)
 
   useTitle('分析&下载 - 问卷星球')
 
@@ -119,13 +137,49 @@ function Feedback() {
     })
   }, [])
 
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const actions = [
+    { icon: <CloudDownload />, name: '下载统计数据' },
+    { icon: <Send />, name: '发送问卷' },
+    { icon: <Visibility />, name: '预览问卷' },
+  ]
+
   return (
-    <Container maxWidth='md' className={classes.root}>
-      {data.map((item) => {
-        if (item.kind === 1) return <Choice data={item} key={item.key} />
-        else return <Completion data={item} key={item.key} />
-      })}
-    </Container>
+    <Grid container className={classes.root}>
+      <Grid item xs={3}></Grid>
+      <Grid item xs={6}>
+        {data.map((item) => {
+          if (item.kind === 1) return <Choice data={item} key={item.key} />
+          else return <Completion data={item} key={item.key} />
+        })}
+      </Grid>
+      <Grid item xs={3}>
+        <SpeedDial
+          ariaLabel='button-menu'
+          className={classes.speedDial}
+          icon={<SpeedDialIcon icon={<Menu />} openIcon={<MenuOpen />} />}
+          onClose={handleClose}
+          onOpen={handleOpen}
+          open={open}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              onClick={handleClose}
+            />
+          ))}
+        </SpeedDial>
+      </Grid>
+    </Grid>
   )
 }
 

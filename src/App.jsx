@@ -4,16 +4,23 @@ import { useEffect } from 'react'
 import { isLogin } from 'api/auth'
 import { useDispatchStore } from 'store'
 import { useStateStore } from 'store'
+import { useSnackbar } from 'notistack'
 
 function App() {
   const dispatch = useDispatchStore()
   const isLoading = useStateStore().isLoading
+  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
-    isLogin().then((res) => {
-      dispatch({ type: 'finishLoading', state: res.data.result })
-    })
-  }, [dispatch])
+    isLogin()
+      .then((res) => {
+        dispatch({ type: 'finishLoading', state: res.data.result })
+      })
+      .catch(() => {
+        dispatch({ type: 'finishLoading', state: true })
+        enqueueSnackbar('请注意，后端正在重启', { variant: 'warning' })
+      })
+  }, [dispatch, enqueueSnackbar])
 
   return (
     <div className='App'>
