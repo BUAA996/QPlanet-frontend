@@ -50,7 +50,7 @@ function SingleChoice(props) {
     let tmp = [];
     for (let i = 0;i < props.problem.choices.length; ++i) {
       tmp.push({
-        key: i,
+        key: "" + i,
         content: props.problem.choices[i],
       })
     }
@@ -59,15 +59,16 @@ function SingleChoice(props) {
 
   const handleChange = (event) => {
     setValue(event.target.value)
-    for (let i = 0;i < choice.length; ++i)
-      if (event.target.value === choice[i].content)
+    console.log(event.target.value)
+    for (let i = 0;i < choice.length; ++i) 
+      if (event.target.value === choice[i].key)
         props.updateAns(['' + i]);
   }
 
   return (
     <RadioGroup className={classes.content} value={value} onChange={handleChange}>
       {choice.map((choice) => 
-        <FormControlLabel value={choice.content} control={<Radio key={choice.key}/>} label={choice.content} key={choice.key}/>
+        <FormControlLabel value={choice.key} control={<Radio key={choice.key}/>} label={choice.content} key={choice.key}/>
       )}
     </RadioGroup>
   );
@@ -82,7 +83,7 @@ function MultiChoice(props) {
     let tmp = [];
     for (let i = 0;i < props.problem.choices.length; ++i) {
       tmp.push({
-        key: i,
+        key: '' + i,
         content: props.problem.choices[i],
       })
     }
@@ -90,18 +91,18 @@ function MultiChoice(props) {
   }, [props])
 
   var option = {};
-  props.problem.choices.map((choice) => option[choice]=false);
+  props.problem.choices.map((choice) => option[choice.key]=false);
 
-  const [state, setState] = React.useState(option);
+  const [state, setState] = useState(option);
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
     let singleAns = [];
     for (let i = 0;i < choice.length; ++i) {
-      if (choice[i].content === event.target.name) {
+      if (choice[i].key === event.target.name) {
         if (event.target.checked) singleAns.push('' + i);
       } else {
-        if (state[choice[i].content]) singleAns.push('' + i);
+        if (state[choice[i].key]) singleAns.push('' + i);
       }
     }
     props.updateAns(singleAns);
@@ -111,7 +112,7 @@ function MultiChoice(props) {
     <RadioGroup className={classes.content}>
       {choice.map((choice) => 
         <FormControlLabel 
-          control={<Checkbox checked={state[choice.content]} onChange={handleChange} name={choice.content} />} 
+          control={<Checkbox checked={choice[choice.key]} onChange={handleChange} name={choice.key} />} 
           label={choice.content} 
           key={choice.key}
         />
