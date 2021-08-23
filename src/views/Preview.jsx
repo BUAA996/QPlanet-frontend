@@ -136,9 +136,6 @@ function PreviewPage(props) {
         alignItems='center'
         spacing={3}
       >
-        <Grid item>
-          提示：在预览状态下不可提交问卷
-        </Grid>
         {props.title}
         <Divider
           flexItem={true}
