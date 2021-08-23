@@ -121,34 +121,37 @@ function Fill() {
     setQuestionare([].concat(QUESTIONAIRE))
 
     view({"hash": id}).then((res) => {
-      const ori = res.data.questions;
-      const settings = res.data;
-      let tmp = [];
-      for (let i = 0;i < ori.length; ++i) {
-        tmp.push({
-          id: ori[i].id, 
-          key: i,
-          description: ori[i].description,
-          kind: ori[i].type,
-          must: ori[i].is_required,
-          title: ori[i].content,
-          choices: ori[i].option,
-        })
-      }
-      setQuestionare([].concat(tmp))
-      setTitle(settings.title);
-      setDescription(settings.description);
-      setID(settings.qid);
-      
-      tmp = new Array(ori.length);
-      for (let i = 0;i < ori.length; ++i) {
-        tmp[i] = {
-          problem_id: ori[i].id,
-          type: ori[i].type,
-          answer: [''],
+      console.log(res);
+      if (res.data.result === 1) {
+        const ori = res.data.questions;
+        const settings = res.data;
+        let tmp = [];
+        for (let i = 0;i < ori.length; ++i) {
+          tmp.push({
+            id: ori[i].id, 
+            key: i,
+            description: ori[i].description,
+            kind: ori[i].type,
+            must: ori[i].is_required,
+            title: ori[i].content,
+            choices: ori[i].option,
+          })
         }
+        setQuestionare([].concat(tmp))
+        setTitle(settings.title);
+        setDescription(settings.description);
+        setID(settings.qid);
+        
+        tmp = new Array(ori.length);
+        for (let i = 0;i < ori.length; ++i) {
+          tmp[i] = {
+            problem_id: ori[i].id,
+            type: ori[i].type,
+            answer: [''],
+          }
+        }
+        setAns(tmp);
       }
-      setAns(tmp);
     })
   }, [])
 

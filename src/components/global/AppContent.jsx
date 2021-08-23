@@ -13,6 +13,7 @@ import { useStateStore } from 'store'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useSnackbar } from 'notistack'
+import Preview from 'views/Preview'
 
 function RedirectWithMsg({ prevent, to, message, type, component }) {
   const [loading, setLoading] = useState(true)
@@ -41,6 +42,9 @@ function AppContent() {
         </Route>
         <Route exact path='/fill/:id'>
           <Fill />
+        </Route>
+        <Route exact path='/preview/:id'>
+          <Preview />
         </Route>
         <Route exact path='/signin'>
           {isLogin ? (

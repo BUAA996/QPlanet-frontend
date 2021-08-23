@@ -53,7 +53,7 @@ function Questionare(props) {
 		<Card className={classes.root}>
 			<Grid container>
 				<Grid item xs={7}>
-					<Link component={RouterLink} to={"/fill/" + props.hash} className={classes.title}>
+					<Link component={RouterLink} to={"/preview/" + props.hash} className={classes.title}>
 						{props.title}
 					</Link>
 				</Grid>

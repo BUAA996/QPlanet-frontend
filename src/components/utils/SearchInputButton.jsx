@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import DirectionsIcon from '@material-ui/icons/Directions';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,17 +29,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchInputButton() {
+export default function SearchInputButton(props) {
   const classes = useStyles();
+
+  const [value, setValue] = useState('');
+  const handleChange = (event) => {
+    setValue(event.target.value);
+    console.log(event.target.value);
+  }
+  const search = (event) => {
+    console.log('search')
+    props.search(value);
+  }
 
   return (
     <Paper component="span" className={classes.root}>
       <InputBase
         className={classes.input}
         placeholder="搜索问卷"
+        value={value}
+        onChange={handleChange}
         inputProps={{ 'aria-label': '搜索问卷' }}
       />
-      <IconButton type="submit" className={classes.iconButton} aria-label="search">
+      <IconButton type="submit" className={classes.iconButton} aria-label="search" onClick={search}>
         <SearchIcon />
       </IconButton>
     </Paper>

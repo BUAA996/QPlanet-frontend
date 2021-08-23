@@ -7,7 +7,7 @@ import {
   Button,
   Box,
 } from '@material-ui/core'
-import { getQuestionnaires, createQuestionnaire } from 'api/questionaire'
+import { getQuestionnaires, createQuestionnaire, search } from 'api/questionaire'
 import { makeStyles } from '@material-ui/core/styles'
 import { useEffect, useState } from 'react'
 import SearchInputButton from 'components/utils/SearchInputButton'
@@ -96,7 +96,7 @@ function SideBar() {
   )
 }
 
-function HeadBar() {
+function HeadBar(props) {
   const classes = useStyles()
   return (
     <Grid container className={classes.headBar}>
@@ -105,7 +105,7 @@ function HeadBar() {
       </Grid>
       <Grid item xs={8}>
         {' '}
-        <SearchInputButton />{' '}
+        <SearchInputButton {...props}/>{' '}
       </Grid>
     </Grid>
   )
@@ -115,6 +115,52 @@ function Overview() {
   const classes = useStyles()
   const [change, setChange] = useState(0)
   const [data, setData] = useState([])
+
+  function handleSearch(searchString) {
+    if (searchString === '') {
+      getQuestionnaires().then((res) => {
+        var tmp = []
+        for (let i = 0; i < res.data.questionnaires.length; ++i) {
+          tmp.push({
+            id: res.data.questionnaires[i].id,
+            title: res.data.questionnaires[i].title,
+            description: res.data.questionnaires[i].description,
+            type: res.data.questionnaires[i].type,
+            count: res.data.questionnaires[i].count,
+            hash: res.data.questionnaires[i].hash,
+            status: res.data.questionnaires[i].status,
+            createTime: res.data.questionnaires[i].create_time,
+            uploadTime: res.data.questionnaires[i].upload_time,
+            createNum: res.data.questionnaires[i].create_time_int,
+            uploadNum: res.data.questionnaires[i].upload_time_int,
+            key: res.data.questionnaires[i].id,
+          })
+        }
+        setData(tmp)
+      })
+    } else {
+      search({query: searchString}).then((res) => {
+        var tmp = []
+        for (let i = 0; i < res.data.message.length; ++i) {
+          tmp.push({
+            id: res.data.message[i].id,
+            title: res.data.message[i].title,
+            description: res.data.message[i].description,
+            type: res.data.message[i].type,
+            count: res.data.message[i].count,
+            hash: res.data.message[i].hash,
+            status: res.data.message[i].status,
+            createTime: res.data.message[i].create_time,
+            uploadTime: res.data.message[i].upload_time,
+            createNum: res.data.message[i].create_time_int,
+            uploadNum: res.data.message[i].upload_time_int,
+            key: res.data.message[i].id,
+          })
+        }
+        setData(tmp)
+      })
+    }
+  }
 
   useTitle('问卷总览 - 问卷星球')
   useEffect(() => {
@@ -151,7 +197,7 @@ function Overview() {
           <SideBar />
         </Grid>
         <Grid item xs={10}>
-          <HeadBar />
+          <HeadBar search={handleSearch}/>
         </Grid>
         <Grid item xs={12}>
           <QuestionnaireList Questionares={data} />
