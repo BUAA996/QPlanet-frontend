@@ -10,7 +10,7 @@ import {
 import Completion from 'components/feedback/Completion'
 import Choice from 'components/feedback/Choice'
 import { useEffect } from 'react'
-import { getStatistics } from 'api/result'
+import { getStatistics, downloadStatistics } from 'api/result'
 import useTitle from 'hooks/useTitle'
 import { useState } from 'react'
 import {
@@ -23,100 +23,9 @@ import {
 import SpeedDial from '@material-ui/lab/SpeedDial'
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
-
-const data = [
-  {
-    key: 1,
-    kind: 1,
-    type: '单选题',
-    title: '标题',
-    choice: [
-      {
-        key: 1,
-        option: '选项1',
-        count: 4,
-      },
-      {
-        key: 2,
-        option: '选项2',
-        count: 3,
-      },
-    ],
-    total: 7,
-  },
-  {
-    key: 2,
-    kind: 1,
-    type: '多选题',
-    title: '标题',
-    choice: [
-      {
-        key: 1,
-        option: '选项1',
-        count: 4,
-      },
-      {
-        key: 2,
-        option: '选项2',
-        count: 3,
-      },
-      {
-        key: 3,
-        option: '选项3',
-        count: 4,
-      },
-    ],
-    total: 4,
-  },
-  {
-    key: 3,
-    kind: 2,
-    type: '填空题',
-    title: '标题',
-    choice: [
-      {
-        key: 1,
-        option: '词汇1',
-        count: 4,
-      },
-      {
-        key: 2,
-        option: '词汇2',
-        count: 3,
-      },
-      {
-        key: 3,
-        option: '词汇3',
-        count: 7,
-      },
-    ],
-    total: 7,
-  },
-  {
-    key: 4,
-    kind: 1,
-    type: '评分题',
-    title: '标题',
-    choice: [
-      {
-        key: 1,
-        option: '0-1',
-        count: 3,
-      },
-      {
-        key: 2,
-        option: '1-2',
-        count: 4,
-      },
-      {
-        key: 3,
-        option: '2-3',
-        count: 7,
-      },
-    ],
-    total: 14,
-  },
-]
+import { useHistory, useParams } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
+import { download } from 'utils'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -170,23 +79,55 @@ const BootstrapInput = withStyles((theme) => ({
 
 function Feedback() {
   const classes = useStyles()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   const [model, setModel] = useState(1)
+  const [data, setData] = useState([])
+  const { id: hashcode } = useParams()
+  const { enqueueSnackbar } = useSnackbar()
+  const history = useHistory()
 
   useTitle('分析&下载 - 问卷星球')
 
   useEffect(() => {
-    getStatistics({ qid: 10 }).then((res) => {
-      console.log(res.data)
-    })
-  }, [])
+    getStatistics({ hash: hashcode })
+      .then((res) => {
+        console.log(res.data)
+        let map = ['单选题', '多选题', '填空题', '评分题']
+        let data = res.data.questions.map((item, index) => ({
+          type: map[item.type],
+          total: res.data.total,
+          title: item.content,
+          choice: item.option.map((innerItem, innerIndex) => ({
+            option: innerItem,
+            count: item.count[innerIndex],
+            key: innerIndex,
+          })),
+          key: index,
+        }))
+        setData(data)
+      })
+      .catch(() => {
+        enqueueSnackbar('该问卷不存在', { variant: 'warning' })
+      })
+  }, [hashcode, enqueueSnackbar])
 
-  const handleOpen = () => {
-    setOpen(true)
+  const handleOpen = (event, reason) => {
+    if (reason === 'toggle') setOpen(true)
   }
 
-  const handleClose = () => {
-    setOpen(false)
+  const handleClose = (event, reason) => {
+    if (reason === 'toggle') setOpen(false)
+  }
+
+  const handleClick = (name) => {
+    if (name === '下载统计数据') {
+      downloadStatistics({ hash: hashcode }).then((res) => {
+        download('https://api.matrix53.top/img/' + res.data.name, res.data.name)
+      })
+    } else if (name === '发送问卷') {
+    } else if (name === '预览问卷') {
+      history.push('/preview/' + hashcode)
+    }
   }
 
   const actions = [
@@ -218,8 +159,9 @@ function Feedback() {
       <Grid item xs={6} container>
         <Grid item xs={12}>
           {data.map((item) => {
-            if (item.kind === 1) return <Choice data={item} key={item.key} />
-            else return <Completion data={item} key={item.key} />
+            if (item.type === '填空题')
+              return <Completion data={item} key={item.key} />
+            else return <Choice data={item} key={item.key} />
           })}
         </Grid>
       </Grid>
@@ -237,7 +179,9 @@ function Feedback() {
               key={action.name}
               icon={action.icon}
               tooltipTitle={action.name}
-              onClick={handleClose}
+              onClick={() => {
+                handleClick(action.name)
+              }}
             />
           ))}
         </SpeedDial>

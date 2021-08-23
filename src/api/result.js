@@ -5,4 +5,9 @@ function getStatistics(data) {
   return axios.post('result/analyze/', data)
 }
 
-export { getStatistics }
+// download
+function downloadStatistics(data) {
+  return axios.post('result/download/', data)
+}
+
+export { getStatistics, downloadStatistics }

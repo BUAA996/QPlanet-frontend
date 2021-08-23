@@ -79,6 +79,17 @@ function AppContent() {
             />
           )}
         </Route>
+        <Route exact path='/preview/:id'>
+          {isLogin ? (
+            <Preview />
+          ) : (
+            <RedirectWithMsg
+              to='/signin'
+              message='未登录时该功能不能使用'
+              type='warning'
+            />
+          )}
+        </Route>
         <Route exact path='/feedback/:id'>
           {isLogin ? (
             <Feedback />
