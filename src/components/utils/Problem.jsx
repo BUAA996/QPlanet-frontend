@@ -55,7 +55,7 @@ function SingleChoice(props) {
       })
     }
     setChoice(tmp);
-  }, [])
+  }, [props])
 
   const handleChange = (event) => {
     setValue(event.target.value)
@@ -85,7 +85,7 @@ function MultiChoice(props) {
       })
     }
     setChoice(tmp);
-  }, [])
+  }, [props])
 
   var option = {};
   props.problem.choices.map((choice) => option[choice]=false);
