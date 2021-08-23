@@ -5,6 +5,7 @@ import QuestionEditDialog from "./dialog/QuestionEditDialog";
 import EditLayer from "./EditLayer";
 import { useState } from "react";
 import TtitleEditDialog from "./dialog/TitleEditDialog";
+import Problem from "components/utils/Problem";
 
 const useStyle = makeStyles((theme) => ({
   editBtn: {
@@ -64,12 +65,16 @@ function ProblemEdit(props) {
   >{btn.content}</Button>)
   )
 
+  function blankFunction() { }
+
   return (
     <>
       <EditLayer
         buttons={buttonList}
         content={props.content}
+        problem={props.questionInfo}
       />
+      {/* <Problem problem={props.problem} updateAns={() => blankFunction()}></Problem> */}
       <QuestionEditDialog
         open={dialogOpen}
         close={handleDialogClose}

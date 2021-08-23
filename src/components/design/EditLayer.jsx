@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles'
 import { Box, Button, Backdrop } from '@material-ui/core'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Problem from 'components/utils/Problem'
 
 const useStyles = makeStyles((theme) => ({
   hoverLayer: {
@@ -30,17 +31,21 @@ function EditLayer(props) {
     setOpen(false)
   }
 
+  function blankFunction() {}
+  
+  useEffect(() => {
+    console.log(props.problem);
+  }, [])
+
   return (
     <Box
-      class={classes.box}
+      // class={classes.box}
     // ref={hoverRef}
     >
-      <div className={classes.hoverLayer}>
-        <div className={classes.btnRow}>{props.buttons}</div>
-
-        {props.content}
-      </div>
+      {props.buttons}
     </Box>
+    
+    // <Problem problem={props.problem} updateAns={() => blankFunction()}></Problem>
   )
 }
 

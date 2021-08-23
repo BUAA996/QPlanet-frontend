@@ -223,9 +223,15 @@ function Preview() {
     // })
   }
 
+  const print = () => {
+    window.document.body.innerHTML = window.document.getElementById('billDetails').innerHTML;  
+    window.print(); 
+    window.location.reload();
+}
+
   return (
     <>
-      <Container maxWidth='md' className={classes.root}>
+      <Container maxWidth='md' className={classes.root} id="billDetails">
         <Card className={classes.card}>
           <Grid
             container
@@ -249,6 +255,7 @@ function Preview() {
             <Grid item className={classes.buttons}>
               <Button variant='contained' color='secondary' onClick={() => handleClick()} className={classes.buttons}> 提交 </Button>
               <Button variant='contained' color='secondary' onClick={() => history.go(-1)} className={classes.buttons}> 返回 </Button>
+              {/* <Button variant='contained' color='secondary' onClick={() => print()} className={classes.buttons}> 打印 </Button> */}
             </Grid>
           </Grid>
         </Card>
