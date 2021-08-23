@@ -120,7 +120,7 @@ function Feedback() {
   }
 
   const handleClick = (name) => {
-    if (name === '下载统计数据') {
+    if (name === '下载原始数据') {
       downloadStatistics({ hash: hashcode }).then((res) => {
         download('https://api.matrix53.top/img/' + res.data.name, res.data.name)
       })
@@ -131,7 +131,7 @@ function Feedback() {
   }
 
   const actions = [
-    { icon: <CloudDownload />, name: '下载统计数据' },
+    { icon: <CloudDownload />, name: '下载原始数据' },
     { icon: <Send />, name: '发送问卷' },
     { icon: <Visibility />, name: '预览问卷' },
   ]
