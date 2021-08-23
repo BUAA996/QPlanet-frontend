@@ -67,11 +67,15 @@ function DataTable({ data }) {
                 <div className={classes.progressBox}>
                   <LinearProgress
                     variant='determinate'
-                    value={(item.count / data.total) * 100}
+                    value={
+                      data.total === 0 ? 0 : (item.count / data.total) * 100
+                    }
                     className={classes.progress}
                   />
                   <Typography className={classes.progressText} variant='body2'>
-                    {((item.count / data.total) * 100).toFixed(1) + '%'}
+                    {(data.total === 0
+                      ? 0
+                      : ((item.count / data.total) * 100).toFixed(1)) + '%'}
                   </Typography>
                 </div>
               </TableCell>
@@ -79,7 +83,7 @@ function DataTable({ data }) {
           ))}
           <TableRow>
             <TableCell component='th' scope='row' align='center'>
-              本题填写有效人数
+              本题有效填写人数
             </TableCell>
             <TableCell align='center'>{data.total}</TableCell>
             <TableCell align='right'></TableCell>
