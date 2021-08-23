@@ -22,6 +22,12 @@ function QuestionEditDialog(props) {
   const classes = useStyle();
 
   const [choices, setChoices] = useState(props.questionInfo.choices);
+  const [must, setMust] = useState("" + props.questionInfo.must);
+
+  const handleChange = (event) => {
+    setMust(event.target.value);
+  };
+
 
   const { register,
     handleSubmit,
@@ -31,13 +37,13 @@ function QuestionEditDialog(props) {
   const title = register("title", {
     required: { value: true, message: "题目标题不能为空" },
   });
-  const must = register("must");
 
   const onSubmit = (data) => {
     const newQ = {
       id: props.questionInfo.id,
+      description: "",
       kind: props.questionInfo.kind,
-      must: data.must,
+      must: must === "1" ? 1 : 0,
       title: data.title,
       choices: choices
     }
@@ -48,7 +54,7 @@ function QuestionEditDialog(props) {
 
   const dialogTitle = (
     <DialogTitle>
-      全局设置
+      修改题目
     </DialogTitle>
   );
   const dialogContent = (
@@ -69,29 +75,25 @@ function QuestionEditDialog(props) {
         />
       </Box>
       <Box>
-
         <FormControl component="fieldset">
           <FormLabel component="legend"> 是否必填：</FormLabel>
           <RadioGroup aria-label="must?"
-            inputRef={must.ref}
-            name={must.name}
-            defaultValue={props.questionInfo.must}
-            // onChange={must.onChange}
-            onChange={(e) => {
-              // onChange(e);
-              must.onChange(e); // will be called this time
-            }}>
-
-            <FormControlLabel value={true} control={<Radio />} label="是" />
-            <FormControlLabel value={false} control={<Radio />} label="否" />
+            onChange={handleChange}
+            value={must}
+            row
+          >
+            <FormControlLabel value={"1"} control={<Radio />} label="是" />
+            <FormControlLabel value={"0"} control={<Radio />} label="否" />
           </RadioGroup>
         </FormControl>
       </Box>
+      {props.questionInfo.kind === 0 || props.questionInfo.kind === 1 ?
+        <SelectDialogBody
+          choices={choices}
+          setChoices={setChoices}
+        /> : null
+      }
 
-      <SelectDialogBody
-        choices={choices}
-        setChoices={setChoices}
-      />
     </>
 
   );
