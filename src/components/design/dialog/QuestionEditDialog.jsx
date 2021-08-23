@@ -1,4 +1,4 @@
-import { Box, DialogTitle, TextField, FormControl, FormLabel, RadioGroup, Radio, FormControlLabel } from "@material-ui/core";
+import { Box, DialogTitle, TextField, FormLabel, Select, RadioGroup, Radio, FormControlLabel, MenuItem, InputLabel, FormControl } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Details, ErrorOutlineSharp } from "@material-ui/icons";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import SelectDialogBody from "./SelectDialogBody";
 const useStyle = makeStyles((theme) => ({
 
 }))
+
 // const example = {
 //   id: 1,
 //   kind: 0,
@@ -23,11 +24,14 @@ function QuestionEditDialog(props) {
 
   const [choices, setChoices] = useState(props.questionInfo.choices);
   const [must, setMust] = useState("" + props.questionInfo.must);
+  const [kind, setKind] = useState("" + props.questionInfo.kind)
 
-  const handleChange = (event) => {
+  const handleChangeMust = (event) => {
     setMust(event.target.value);
   };
-
+  const handleChangeKind = (event) => {
+    setKind(event.target.value);
+  }
 
   const { register,
     handleSubmit,
@@ -42,7 +46,7 @@ function QuestionEditDialog(props) {
     const newQ = {
       id: props.questionInfo.id,
       description: "",
-      kind: props.questionInfo.kind,
+      kind: parseInt(kind),
       must: must === "1" ? 1 : 0,
       title: data.title,
       choices: choices
@@ -78,7 +82,7 @@ function QuestionEditDialog(props) {
         <FormControl component="fieldset">
           <FormLabel component="legend"> 是否必填：</FormLabel>
           <RadioGroup aria-label="must?"
-            onChange={handleChange}
+            onChange={handleChangeMust}
             value={must}
             row
           >
@@ -86,8 +90,21 @@ function QuestionEditDialog(props) {
             <FormControlLabel value={"0"} control={<Radio />} label="否" />
           </RadioGroup>
         </FormControl>
+
       </Box>
-      {props.questionInfo.kind === 0 || props.questionInfo.kind === 1 ?
+
+      <InputLabel id="demo-simple-select-label">题目类型</InputLabel>
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={kind}
+        onChange={handleChangeKind}
+      >
+        <MenuItem value={0}>单选</MenuItem>
+        <MenuItem value={1}>多选</MenuItem>
+        <MenuItem value={2}>填空</MenuItem>
+      </Select>
+      {kind == '0' || kind == '1' ?
         <SelectDialogBody
           choices={choices}
           setChoices={setChoices}
