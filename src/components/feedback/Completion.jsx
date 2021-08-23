@@ -13,6 +13,7 @@ import {
 import { Close } from '@material-ui/icons'
 import { useState } from 'react'
 import Graph from './Graph'
+import { useSnackbar } from 'notistack'
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -123,6 +124,7 @@ function Completion({ data }) {
   // const classes = useStyles()
   const [detailOpen, setDetailOpen] = useState(false)
   const [frequencyOpen, setFrequencyOpen] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
 
   return (
     <>
@@ -143,7 +145,11 @@ function Completion({ data }) {
           variant='outlined'
           color='primary'
           onClick={() => {
-            setFrequencyOpen(true)
+            if (data.total === 0) {
+              enqueueSnackbar('该题暂时还无人填写哦', { variant: 'warning' })
+            } else {
+              setFrequencyOpen(true)
+            }
           }}
         >
           词频分析
