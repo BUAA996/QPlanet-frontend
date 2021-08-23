@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 // };
 
 const TEMPLEATE = {
-  "title": "这是一个有题目的问卷",
+  "title": "123",
   "description": "感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！",
   "validity": 998244353,
   "limit_time": 998244353,
@@ -140,6 +140,7 @@ function Overview() {
       })
     } else {
       search({query: searchString}).then((res) => {
+        console.log(res.data.message);
         var tmp = []
         for (let i = 0; i < res.data.message.length; ++i) {
           tmp.push({
