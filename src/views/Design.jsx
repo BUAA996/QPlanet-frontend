@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import useTitle from "hooks/useTitle";
 import { isSingleChoice } from "components/utils/Problem";
 import { isMultiChoice } from "components/utils/Problem";
+import { Title, PreviewPage } from 'views/Preview'
 
 
 const useStyles = makeStyles((theme) => ({}))
@@ -127,29 +128,38 @@ function Design(props) {
 
   const content = <QHead title={title} detail={detail} />
 
-  function blankFunction() {}
+  function blankFunction() { }
 
   console.log("qid", qid)
   return (
     <Container maxWidth='md'>
-      <TitleEdit
-        content={content}
-        title={title}
-        detail={detail}
-        func={qHeadSetFunc}
-      />
 
-      {questionare.map((x, index) => (
-        <MovableProblemEdit
-          key={x.id}
-          question={<Problem problem={x} key={x.id} updateAns={() => blankFunction()}/>}
-          questionInfo={x}
-          index={index}
-          move={(newIndex) => move(index, newIndex)}
-          del={() => delQuestion(index)}
-          add={addQuestion}
-          edit={(item) => { editQuestion(index, item) }}
-        />))}
+      <Container maxWidth="md">
+        <PreviewPage
+          title={(<TitleEdit
+            content={content}
+            title={title}
+            detail={detail}
+            func={qHeadSetFunc}
+          />)}
+          Questionare={
+            questionare.map((x, index) => (
+              <MovableProblemEdit
+                key={x.id}
+                question={<Problem problem={x} key={x.id} updateAns={() => blankFunction()} />}
+                questionInfo={x}
+                index={index}
+                move={(newIndex) => move(index, newIndex)}
+                del={() => delQuestion(index)}
+                add={addQuestion}
+                edit={(item) => { editQuestion(index, item) }}
+              />))
+          } />
+      </Container>
+
+
+
+
       <Button
         color="primary"
         onClick={() => addDefault(-1)}
