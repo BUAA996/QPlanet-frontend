@@ -59,13 +59,15 @@ function SingleChoice(props) {
 
   const handleChange = (event) => {
     setValue(event.target.value)
-    props.updateAns([event.target.value]);
+    for (let i = 0;i < choice.length; ++i)
+      if (event.target.value === choice[i].content)
+        props.updateAns([i]);
   }
 
   return (
     <RadioGroup className={classes.content} value={value} onChange={handleChange}>
       {choice.map((choice) => 
-        <FormControlLabel value={choice.content} control={<Radio />} label={choice.content} key={choice.key}/>
+        <FormControlLabel value={choice.content} control={<Radio key={choice.key}/>} label={choice.content} key={choice.key}/>
       )}
     </RadioGroup>
   );
@@ -97,9 +99,9 @@ function MultiChoice(props) {
     let singleAns = [];
     for (let i = 0;i < choice.length; ++i) {
       if (choice[i].content === event.target.name) {
-        if (event.target.checked) singleAns.push(event.target.name);
+        if (event.target.checked) singleAns.push(i);
       } else {
-        if (state[choice[i].content]) singleAns.push(choice[i].content);
+        if (state[choice[i].content]) singleAns.push(i);
       }
     }
     props.updateAns(singleAns);

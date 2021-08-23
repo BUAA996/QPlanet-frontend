@@ -25,6 +25,16 @@ function reset(data) {
 	return axios.post("questionnaire/reset/", data);
 }
 
+// release
+function release(data) {
+	return axios.post("questionnaire/release/", data);
+}
+
+// close 
+function close(data) {
+	return axios.post("questionnaire/close/", data);
+}
+
 // view 
 function view(data) {
 	return axios.post("questionnaire/view/", data);
@@ -40,4 +50,9 @@ function search(data) {
   return axios.post("questionnaire/search/", data)
 }
 
-export {createQuestionnaire, deleteQuestionnaire, recover, getQuestionnaires, reset, view, submit, search};
+// copy 
+function copy(data) {
+  return axios.post("questionnaire/copy/", data)
+}
+
+export {createQuestionnaire, deleteQuestionnaire, recover, getQuestionnaires, reset, view, submit, search, release, close, copy};

@@ -1,7 +1,7 @@
 import { Button, Card, Divider, Grid, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link as RouterLink, useHistory } from "react-router-dom";
-import { deleteQuestionnaire, recover } from 'api/questionaire'
+import { deleteQuestionnaire, recover, release, close, reset, copy } from 'api/questionaire'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -48,6 +48,26 @@ function Questionare(props) {
 		history.go(0);
 	}
 
+	function handleRelease() {
+		release({id: props.id});
+		history.go(0);
+	}
+
+	function handleClose() {
+		close({id: props.id});
+		history.go(0);
+	}
+
+	function handleReset() {
+		reset({id: props.id});
+		history.go(0);
+	}
+
+	function handleCopy() {
+		copy({qid: props.id, title: props.title + '-副本'});
+		// history.go(0);
+	}
+
 	return (
 		(props.showType === -1 || props.showType === 5 || props.showType === props.status) ? 
 		<Card className={classes.root}>
@@ -77,9 +97,10 @@ function Questionare(props) {
 					<Button component={RouterLink} to={"/feedback/" + props.hash} color="primary"> 分析/下载 </Button>
 				</Grid>
 				<Grid item xs={5}>
-					{props.status == 0 ? <Button color="primary"> 发布 </Button> : null}
-					{props.status == 1 ? <Button color="primary"> 停止 </Button> : null}
-					<Button color="primary"> 复制 </Button>
+					{props.status == 0 ? <Button color="primary" onClick={() => handleRelease()}> 发布 </Button> : null}
+					{props.status == 1 ? <Button color="primary" onClick={() => handleClose()}> 停止 </Button> : null}
+					{props.status == 1 ? <Button color="primary" onClick={() => handleReset()}> 重置 </Button> : null}
+					<Button color="primary" onClick={() => handleCopy()}> 复制 </Button>
 					<Button color="primary" onClick={() => handleDelete({"id": props.id})}> {props.status === 3 ? '彻底删除' : '删除'} </Button>
 					{props.status == 3 ? <Button color="primary" onClick={() => handleRecover()}> 恢复 </Button> : null}
 				</Grid>
