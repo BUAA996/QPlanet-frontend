@@ -98,6 +98,7 @@ function Problem(props) {
         {props.problem.kind === 0 ? <SingleChoice problem={props.problem}/> : null}
         {props.problem.kind === 1 ? <MultiChoice problem={props.problem}/> : null}
         {props.problem.kind === 2 ? <FillBlanks problem={props.problem}/> : null}
+        {props.children}
       </CardContent>
     </Card>
   );

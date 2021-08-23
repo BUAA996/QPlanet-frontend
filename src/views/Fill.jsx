@@ -1,6 +1,7 @@
 import { Button, Card, Container, Divider, Grid, Paper, Typography } from "@material-ui/core";
 import { getQuestionnaires } from "api/questionaire"
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Problem from "components/utils/Problem";
 
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 const QUESTIONAIRE = [
   {
-    id: 1,
+    id: 1, key: 1,
     kind: 0,
     must: 1,
     title: '第一题 balabalabalabala',
@@ -46,7 +47,7 @@ const QUESTIONAIRE = [
     ]
   },
   {
-    id: 2,
+    id: 2, key: 2,
     kind: 1,
     must: 1,
     title: '第二题 balabalabalabala',
@@ -58,14 +59,14 @@ const QUESTIONAIRE = [
     ]
   },
   {
-    id: 3,
+    id: 3, key: 3,
     kind: 2,
     must: 0,
     title: '第三题',
     choices: []
   },
   {
-    id: 4,
+    id: 4, key: 4,
     kind: 1,
     must: 0,
     title: '第四题',
@@ -77,7 +78,7 @@ const QUESTIONAIRE = [
     ]
   },
   {
-    id: 5,
+    id: 5, key: 5,
     kind: 2,
     must: 1,
     title: '第五题',
@@ -110,7 +111,7 @@ const ANSJSON = {
     },
     {
       "problem_id": 1,
-      "type": 1,
+      "type": 2,
       "answer": ["test4-1", "test4-2", "test4-3",],
     },
   ]
@@ -125,6 +126,7 @@ function Fill() {
   const [Questionare, setQuestionare] = useState([]);
   const [description, setDescription] = useState('');
   const [ansInJson, setAns] = useState([]);
+  const { id } = useParams();
 
   useEffect(() => {
     setQuestionare([].concat(QUESTIONAIRE))
@@ -154,7 +156,7 @@ function Fill() {
           </Grid>
           <Divider flexItem={true} variant={'middle'} className={classes.divider} />
           <Grid item className={classes.problems}>
-            {Questionare.map((problem) => <Problem problem={problem} ans={ansInJson} setAns={setAns}/>)}
+            {Questionare.map((problem) => <Problem problem={problem} ans={ansInJson} setAns={setAns} />)}
           </Grid>
           <Grid item className={classes.buttons}>
             <Button variant='contained' color='secondary'> 提交 </Button>
