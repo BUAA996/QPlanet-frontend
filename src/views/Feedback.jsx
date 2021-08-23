@@ -26,6 +26,7 @@ import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
 import { useHistory, useParams } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { download } from 'utils'
+import QRDialog from 'components/utils/QRDialog'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -85,13 +86,13 @@ function Feedback() {
   const { id: hashcode } = useParams()
   const { enqueueSnackbar } = useSnackbar()
   const history = useHistory()
+  const [shareOpen, setShareOpen] = useState(false)
 
   useTitle('分析&下载 - 问卷星球')
 
   useEffect(() => {
     getStatistics({ hash: hashcode })
       .then((res) => {
-        console.log(res.data)
         let map = ['单选题', '多选题', '填空题', '评分题']
         let data = res.data.questions.map((item, index) => ({
           type: map[item.type],
@@ -125,6 +126,7 @@ function Feedback() {
         download('https://api.matrix53.top/img/' + res.data.name, res.data.name)
       })
     } else if (name === '发送问卷') {
+      setShareOpen(true)
     } else if (name === '预览问卷') {
       history.push('/preview/' + hashcode)
     }
@@ -137,56 +139,63 @@ function Feedback() {
   ]
 
   return (
-    <Grid container>
-      <Grid item xs={3} container alignItems='center' direction='column'>
-        <Typography variant='h4' className={classes.title}>
-          统计&amp;分析
-        </Typography>
-        <FormControl className={classes.formControl}>
-          <Select
-            value={model}
-            onChange={(e) => {
-              setModel(e.target.value)
-            }}
-            variant='filled'
-            input={<BootstrapInput />}
+    <>
+      <Grid container>
+        <Grid item xs={3} container alignItems='center' direction='column'>
+          <Typography variant='h4' className={classes.title}>
+            统计&amp;分析
+          </Typography>
+          <FormControl className={classes.formControl}>
+            <Select
+              value={model}
+              onChange={(e) => {
+                setModel(e.target.value)
+              }}
+              variant='filled'
+              input={<BootstrapInput />}
+            >
+              <MenuItem value={1}>默认报告</MenuItem>
+              <MenuItem value={2}>交叉分析</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={6} container>
+          <Grid item xs={12}>
+            {data.map((item) => {
+              if (item.type === '填空题')
+                return <Completion data={item} key={item.key} />
+              else return <Choice data={item} key={item.key} />
+            })}
+          </Grid>
+        </Grid>
+        <Grid item xs={3}>
+          <SpeedDial
+            ariaLabel='button-menu'
+            className={classes.speedDial}
+            icon={<SpeedDialIcon icon={<Menu />} openIcon={<MenuOpen />} />}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            open={open}
           >
-            <MenuItem value={1}>默认报告</MenuItem>
-            <MenuItem value={2}>交叉分析</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={6} container>
-        <Grid item xs={12}>
-          {data.map((item) => {
-            if (item.type === '填空题')
-              return <Completion data={item} key={item.key} />
-            else return <Choice data={item} key={item.key} />
-          })}
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                onClick={() => {
+                  handleClick(action.name)
+                }}
+              />
+            ))}
+          </SpeedDial>
         </Grid>
       </Grid>
-      <Grid item xs={3}>
-        <SpeedDial
-          ariaLabel='button-menu'
-          className={classes.speedDial}
-          icon={<SpeedDialIcon icon={<Menu />} openIcon={<MenuOpen />} />}
-          onClose={handleClose}
-          onOpen={handleOpen}
-          open={open}
-        >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-              onClick={() => {
-                handleClick(action.name)
-              }}
-            />
-          ))}
-        </SpeedDial>
-      </Grid>
-    </Grid>
+      <QRDialog
+        open={shareOpen}
+        setOpen={setShareOpen}
+        url={'https://qplanet.matrix53.top/fill/' + hashcode}
+      />
+    </>
   )
 }
 
