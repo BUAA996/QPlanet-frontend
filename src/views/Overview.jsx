@@ -57,15 +57,15 @@ const useStyles = makeStyles((theme) => ({
 // };
 
 const TEMPLEATE = {
-  "title": "这是一个有题目的问卷",
-  "description": "感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！",
-  "validity": 998244353,
-  "limit_time": 998244353,
-  "type": 0,
-  "questions":[
-    {"type":0, "content": "What would you like to drink?", "is_required":true, "option":["Cola","Sprite","Lemonade"] },
-    {"type":1, "content": "What would you like to drink?", "is_required":true, "option":["Cola","Sprite","Lemonade"] },
-    {"type":2, "content": "How are you today?", "is_required":false},]
+  "title": "这是一个有题目的问卷",
+  "description": "感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！",
+  "validity": 998244353,
+  "limit_time": 998244353,
+  "type": 0,
+  "questions":[
+    {"type":0, "content": "What would you like to drink?", "is_required":true, "option":["Cola","Sprite","Lemonade"], "description":"" },
+    {"type":1, "content": "What would you like to drink?", "is_required":true, "option":["Cola","Sprite","Lemonade"], "description": "hi" },
+    {"type":2, "content": "How are you today?", "is_required":false, "description": "bye"},]
 };
 
 

@@ -1,5 +1,5 @@
 import { Button, Card, Container, Divider, Grid, Paper, Typography } from "@material-ui/core";
-import { getQuestionnaires } from "api/questionaire"
+import { view, submit } from "api/questionaire"
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -106,13 +106,8 @@ const ANSJSON = {
     },
     {
       "problem_id": 1,
-      "type": 0,
-      "answer": ["test3",],
-    },
-    {
-      "problem_id": 1,
       "type": 2,
-      "answer": ["test4-1", "test4-2", "test4-3",],
+      "answer": ["test3",],
     },
   ]
 }
@@ -122,17 +117,65 @@ const DESCRIPTION = '感谢您能抽时间参与本次问卷，您的意见和�
 
 function Fill() {
   const classes = useStyles();
+  const [questionID, setID] = useState(-1);
   const [title, setTitle] = useState('');
   const [Questionare, setQuestionare] = useState([]);
   const [description, setDescription] = useState('');
-  const [ansInJson, setAns] = useState([]);
+  const [ansList, setAns] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
-    setQuestionare([].concat(QUESTIONAIRE))
     setTitle(TITLE);
     setDescription(DESCRIPTION);
+    setQuestionare([].concat(QUESTIONAIRE))
+
+    view({"hash": id}).then((res) => {
+      const ori = res.data.questions;
+      const settings = res.data;
+      let tmp = [];
+      for (let i = 0;i < ori.length; ++i) {
+        tmp.push({
+          id: ori[i].id, 
+          key: i,
+          description: ori[i].description,
+          kind: ori[i].type,
+          must: ori[i].is_required,
+          title: ori[i].content,
+          choices: ori[i].option,
+        })
+      }
+      setQuestionare([].concat(tmp))
+      setTitle(settings.title);
+      setDescription(settings.description);
+      setID(settings.qid);
+      
+      tmp = new Array(ori.length);
+      for (let i = 0;i < ori.length; ++i) {
+        tmp[i] = {
+          problem_id: ori[i].id,
+          type: ori[i].type,
+          answer: ['a'],
+        }
+      }
+      setAns(tmp);
+    })
   }, [])
+
+
+
+  function handleAns(id, singleAns) {
+    let tmp = [].concat(ansList); 
+    tmp[id] = singleAns;
+    setAns(tmp);
+  }
+
+  function handleClick() {
+    console.log({id: questionID, results: ansList})
+    console.log(ANSJSON)
+    submit({qid: questionID, results: ansList}).then((res) => {
+      console.log(res);
+    })
+  }
 
   return (
     <Container maxWidth='md' className={classes.root}>
@@ -156,10 +199,10 @@ function Fill() {
           </Grid>
           <Divider flexItem={true} variant={'middle'} className={classes.divider} />
           <Grid item className={classes.problems}>
-            {Questionare.map((problem) => <Problem problem={problem} ans={ansInJson} setAns={setAns} />)}
+            {Questionare.map((problem) => <Problem problem={problem} setAns={setAns} />)}
           </Grid>
           <Grid item className={classes.buttons}>
-            <Button variant='contained' color='secondary'> 提交 </Button>
+            <Button variant='contained' color='secondary' onClick={() => handleClick()}> 提交 </Button>
           </Grid>
         </Grid>
       </Card>
