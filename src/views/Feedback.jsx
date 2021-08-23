@@ -86,7 +86,7 @@ function Feedback() {
   const { id: hashcode } = useParams()
   const { enqueueSnackbar } = useSnackbar()
   const history = useHistory()
-  const [shareOpen, setShareOpen] = useState()
+  const [shareOpen, setShareOpen] = useState(false)
   const location = useLocation()
 
   useTitle('分析&下载 - 问卷星球')
@@ -94,7 +94,6 @@ function Feedback() {
   useEffect(() => {
     getStatistics({ hash: hashcode })
       .then((res) => {
-        console.log(res.data)
         let map = ['单选题', '多选题', '填空题', '评分题']
         let data = res.data.questions.map((item, index) => ({
           type: map[item.type],
