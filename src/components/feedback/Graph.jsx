@@ -27,7 +27,8 @@ function Graph({ type, data }) {
   const ref = useRef()
 
   useEffect(() => {
-    const chart = echarts.init(ref.current)
+    let chart = echarts.getInstanceByDom(ref.current)
+    if (chart == null) chart = echarts.init(ref.current)
 
     let option = null
     if (type === 1) option = pieOption(data)
@@ -37,7 +38,7 @@ function Graph({ type, data }) {
     else if (type === 5) option = cloudOption(data)
 
     chart.setOption(option, true)
-  })
+  }, [type, data])
 
   return <div className={classes.root} ref={ref}></div>
 }
