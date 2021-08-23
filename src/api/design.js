@@ -4,7 +4,7 @@ async function getQuestionnaire(id) {
 	const ans = await axios.post("questionnaire/view/", {
 		hash: id
 	});
-
+	console.log(ans.data)
 	return ans;
 }
 

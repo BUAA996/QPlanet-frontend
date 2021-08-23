@@ -55,18 +55,18 @@ function Design(props) {
       setQuestionare(data.questions.map((x) => ({
         id: x.id,
         kind: x.type,
-        must: x.is_required,
+        must: x.is_required ? 1 : 0,
         title: x.content,
         description: x.description,
         choices: x.option,
       })))
 
-      console.log(questionare)
-      if (!didCancel) { // Ignore if we started fetching something else
-        // console.log(getQ);
-        // console.log(data.questions)
-        console.log("load again")
-      }
+      // console.log(questionare)
+      // if (!didCancel) { // Ignore if we started fetching something else
+      //   // console.log(getQ);
+      //   // console.log(data.questions)
+      //   console.log("load again")
+      // }
     }
 
     fetchMyAPI();
@@ -160,14 +160,14 @@ function Design(props) {
           qid: qid,
           title: title,
           description: detail,
-          validity: 1,
+          validity: "2021-8-23 18:20",
           limit_time: 998244353,
           questions: questionare.map((x) => {
             const item = {
               id: x.id,
               type: x.kind,
               content: x.title,
-              is_required: x.must,
+              is_required: x.must === 1 ? true : false,
               description: x.description,
             }
             if (isSingleChoice(x) || isMultiChoice(x))
