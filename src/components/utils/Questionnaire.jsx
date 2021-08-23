@@ -11,6 +11,7 @@ import {
 } from 'api/questionaire'
 import QRDialog from './QRDialog'
 import { useState } from 'react'
+import { useSnackbar } from 'notistack'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +43,7 @@ function Questionare(props) {
   const classes = useStyles()
   const history = useHistory()
   const [openDialog, setOpenDialog] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
 
   function handleDelete(data) {
     deleteQuestionnaire(data)
@@ -118,7 +120,13 @@ function Questionare(props) {
             <Button
               color='primary'
               onClick={() => {
-                setOpenDialog(true)
+                if (props.status == 0) {
+                  enqueueSnackbar('该问卷还未发布，不能分享', {
+                    variant: 'warning',
+                  })
+                } else {
+                  setOpenDialog(true)
+                }
               }}
             >
               {' '}
