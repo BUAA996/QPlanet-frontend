@@ -61,7 +61,7 @@ function SingleChoice(props) {
     setValue(event.target.value)
     for (let i = 0;i < choice.length; ++i)
       if (event.target.value === choice[i].content)
-        props.updateAns([i]);
+        props.updateAns(['' + i]);
   }
 
   return (
@@ -99,9 +99,9 @@ function MultiChoice(props) {
     let singleAns = [];
     for (let i = 0;i < choice.length; ++i) {
       if (choice[i].content === event.target.name) {
-        if (event.target.checked) singleAns.push(i);
+        if (event.target.checked) singleAns.push('' + i);
       } else {
-        if (state[choice[i].content]) singleAns.push(i);
+        if (state[choice[i].content]) singleAns.push('' + i);
       }
     }
     props.updateAns(singleAns);

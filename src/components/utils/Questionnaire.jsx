@@ -65,7 +65,7 @@ function Questionare(props) {
 
 	function handleCopy() {
 		copy({qid: props.id, title: props.title + '-副本'});
-		// history.go(0);
+		history.go(0);
 	}
 
 	return (
