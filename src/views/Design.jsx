@@ -5,8 +5,8 @@ import { Container, Button } from "@material-ui/core"
 import TitleEdit from "components/design/TitleEdit";
 import MovableProblemEdit from "components/design/MovableProblemEdit";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { getQuestionnaire } from "api/design";
+import { useHistory, useParams } from "react-router-dom";
+import { getQuestionnaire, saveQuestionaire } from "api/design";
 import { useEffect } from "react";
 import useTitle from "hooks/useTitle";
 
@@ -21,20 +21,6 @@ const useStyles = makeStyles((theme) => ({}))
 //     title: '第一题 balabalabalabala',
 //     choices: ['选项1', '选项2', '选项3', '选项4'],
 //   },
-//   {
-//     id: 2,
-//     kind: 1,
-//     must: 1,
-//     title: '第二题 balabalabalabala',
-//     choices: ['选项1', '选项2', '选项3', '选项4'],
-//   },
-//   {
-//     id: 3,
-//     kind: 2,
-//     must: 0,
-//     title: '第三题',
-//     choices: [],
-//   },
 // ]
 
 
@@ -46,27 +32,44 @@ function Design(props) {
   const [title, setTitle] = useState("一个标题");
   const [detail, setDetail] = useState("这里是一段描述");
   const [questionare, setQuestionare] = useState([]);
-
+  const [qid, setQid] = useState();
+  const history = useHistory();
   useEffect(() => {
     let didCancel = false;
 
     async function fetchMyAPI() {
       const res = await getQuestionnaire(id);
+      console.log(res)
+      // if (res.result !== 1) {
+      //   history.push("/notFound")
+      // }
+
       const data = res.data
       setQ(data.data);
       setTitle(data.title)
       setDetail(data.description)
-      setQuestionare(data.questions)
+      setQid(data.qid)
+      setQuestionare(data.questions.map((x) => ({
+        id: x.id,
+        kind: x.type,
+        must: x.is_required,
+        title: x.content,
+        description: x.description,
+        choices: x.option,
+      })))
 
-      if (!didCancel) { // Ignore if we started fetching something else
-        // console.log(getQ);
-        // console.log(data.questions)
-      }
+      // console.log(questionare)
+      // if (!didCancel) { // Ignore if we started fetching something else
+      //   // console.log(getQ);
+      //   // console.log(data.questions)
+      //   console.log(qid)
+      // }
     }
 
     fetchMyAPI();
     return () => { didCancel = true; }; // Remember if we start fetching something else
   }, []);
+
 
 
   const qHeadSetFunc = {
@@ -116,7 +119,7 @@ function Design(props) {
   }
 
   const content = <QHead title={title} detail={detail} />
-
+  console.log("qid", qid)
   return (
     <Container maxWidth='md'>
       <TitleEdit
@@ -143,9 +146,33 @@ function Design(props) {
       >
         添加题目
       </Button>
+      <Button
+        color="primary"
+        onClick={() => saveQuestionaire({
+          modify_type: "delete_all_results",
+          qid: qid,
+          title: title,
+          description: detail,
+          validity: 1,
+          limit_time: 998244353,
+          questions: questionare.map((x) => {
+            const item = {
+              id: x.id,
+              type: x.kind,
+              content: x.title,
+              is_required: x.must,
+              description: x.description,
+            }
+            // if()
+            //   item.option = x.choices
+          })
+        })}
+      >
+        保存修改
+      </Button>
 
 
-    </Container>);
+    </Container >);
 }
 
 export default Design

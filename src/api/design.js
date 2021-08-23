@@ -8,5 +8,12 @@ async function getQuestionnaire(id) {
 	return ans;
 }
 
+async function saveQuestionaire(info) {
+	const ans = await axios.post("questionnaire/modify/", info);
+	console.log(info)
+	console.log(ans)
+	return ans;
 
-export { getQuestionnaire };
+}
+
+export { getQuestionnaire, saveQuestionaire };

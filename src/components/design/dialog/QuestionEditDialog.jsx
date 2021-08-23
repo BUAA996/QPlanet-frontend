@@ -87,11 +87,13 @@ function QuestionEditDialog(props) {
           </RadioGroup>
         </FormControl>
       </Box>
+      {props.questionInfo.kind === 0 || props.questionInfo.kind === 1 ?
+        <SelectDialogBody
+          choices={choices}
+          setChoices={setChoices}
+        /> : null
+      }
 
-      <SelectDialogBody
-        choices={choices}
-        setChoices={setChoices}
-      />
     </>
 
   );
