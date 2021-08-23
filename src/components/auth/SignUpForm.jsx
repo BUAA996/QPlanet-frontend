@@ -58,10 +58,10 @@ function SignUpForm() {
     required: { value: true, message: '密码不能为空' },
   })
   const email = register('email', {
-    required: { value: true, message: '北航邮箱不能为空' },
+    required: { value: true, message: '邮箱不能为空' },
     pattern: {
-      value: /[a-z0-9]+@buaa.edu.cn/i,
-      message: '请输入格式正确的北航邮箱',
+      value: /[a-z0-9]+@[a-z0-9]+(\.[a-z0-9]+)+/i,
+      message: '请输入格式正确的邮箱',
     },
   })
   const captcha = register('captcha', {
@@ -88,7 +88,7 @@ function SignUpForm() {
   }
   const clickGetCaptcha = () => {
     let email = getValues('email')
-    if (/[a-z0-9]+@buaa.edu.cn/i.test(email)) {
+    if (/[a-z0-9]+@[a-z0-9]+(\.[a-z0-9]+)+/i.test(email)) {
       getCaptcha({ email: email }).then((res) => {
         if (res.data.result) {
           enqueueSnackbar(res.data.message, { variant: 'success' })
@@ -100,7 +100,7 @@ function SignUpForm() {
         }
       })
     } else {
-      enqueueSnackbar('请正确输入北航邮箱', { variant: 'warning' })
+      enqueueSnackbar('请输入正确的邮箱', { variant: 'warning' })
     }
   }
 
@@ -133,7 +133,7 @@ function SignUpForm() {
           variant='outlined'
         />
         <TextField
-          label='北航邮箱'
+          label='邮箱'
           margin='normal'
           fullWidth
           onChange={email.onChange}
