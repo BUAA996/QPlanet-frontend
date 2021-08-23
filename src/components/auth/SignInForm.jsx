@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { login } from 'api/auth'
 import { useSnackbar } from 'notistack'
 import { Link as RouterLink, useHistory } from 'react-router-dom'
+import useTitle from 'hooks/useTitle'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -40,6 +41,8 @@ function SignInForm() {
   } = useForm()
   const classes = useStyles()
   const history = useHistory()
+
+  useTitle('登录 - 问卷星球')
 
   const username = register('username', {
     required: { value: true, message: '用户名不能为空' },

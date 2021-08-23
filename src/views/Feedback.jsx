@@ -4,6 +4,7 @@ import Completion from 'components/feedback/Completion'
 import Choice from 'components/feedback/Choice'
 import { useEffect } from 'react'
 import { getStatistics } from 'api/result'
+import useTitle from 'hooks/useTitle'
 
 const data = [
   {
@@ -109,6 +110,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Feedback() {
   const classes = useStyles()
+
+  useTitle('分析&下载 - 问卷星球')
 
   useEffect(() => {
     getStatistics({ qid: 10 }).then((res) => {
