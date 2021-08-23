@@ -109,6 +109,50 @@ const ANSJSON = {
 const TITLE = '给zht买女装 & lls小课堂 的问卷调查'
 const DESCRIPTION = '感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！'
 
+function Title(props) {
+  const classes = useStyles();
+
+  return (
+    <>
+      <Grid item className={classes.title}>
+        <Typography variant='h4'>{props.title}</Typography>
+      </Grid>
+      <Grid item className={classes.description}>
+        <Typography varient='h6'>{props.description}</Typography>
+      </Grid>
+    </>
+  );
+}
+
+function PreviewPage(props) {
+  const classes = useStyles();
+
+  return (
+    <Card className={classes.card}>
+      <Grid
+        container
+        direction='column'
+        justifyContent='center'
+        alignItems='center'
+        spacing={3}
+      >
+        <Grid item>
+          提示：在预览状态下不可提交问卷
+        </Grid>
+        {props.title}
+        <Divider
+          flexItem={true}
+          variant={'middle'}
+          className={classes.divider}
+        />
+        <Grid item className={classes.problems}>
+          {props.Questionare}
+        </Grid>
+      </Grid>
+    </Card>
+  );
+}
+
 function Preview() {  
   useTitle('预览问卷 - 问卷星球')
 
@@ -196,12 +240,7 @@ function Preview() {
             <Grid item>
               提示：在预览状态下不可提交问卷
             </Grid>
-            <Grid item className={classes.title}>
-              <Typography variant='h4'>{title}</Typography>
-            </Grid>
-            <Grid item className={classes.description}>
-              <Typography varient='h6'>{description}</Typography>
-            </Grid>
+            <Title title={title} description={description}/>
             <Divider
               flexItem={true}
               variant={'middle'}

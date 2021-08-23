@@ -126,6 +126,9 @@ function Design(props) {
   }
 
   const content = <QHead title={title} detail={detail} />
+
+  function blankFunction() {}
+
   console.log("qid", qid)
   return (
     <Container maxWidth='md'>
@@ -139,7 +142,7 @@ function Design(props) {
       {questionare.map((x, index) => (
         <MovableProblemEdit
           key={x.id}
-          question={<Problem problem={x} />}
+          question={<Problem problem={x} key={x.id} updateAns={() => blankFunction()}/>}
           questionInfo={x}
           index={index}
           move={(newIndex) => move(index, newIndex)}
