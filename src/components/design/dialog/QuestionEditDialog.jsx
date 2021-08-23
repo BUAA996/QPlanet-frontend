@@ -48,7 +48,7 @@ function QuestionEditDialog(props) {
 
   const dialogTitle = (
     <DialogTitle>
-      全局设置
+      修改题目
     </DialogTitle>
   );
   const dialogContent = (
@@ -78,7 +78,6 @@ function QuestionEditDialog(props) {
             defaultValue={props.questionInfo.must}
             // onChange={must.onChange}
             onChange={(e) => {
-              // onChange(e);
               must.onChange(e); // will be called this time
             }}>
 

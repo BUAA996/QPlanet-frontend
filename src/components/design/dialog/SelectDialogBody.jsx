@@ -4,7 +4,12 @@ import { Typography, TextField, IconButton, Button, Grid } from "@material-ui/co
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyle = makeStyles(theme => ({
-
+  row: {
+    margin: theme.spacing(2)
+  },
+  rowButton: {
+    marginLeft: theme.spacing(2)
+  }
 }))
 
 function SelectRow(props) {
@@ -24,7 +29,8 @@ function SelectRow(props) {
   });
 
   return (
-    <Grid container>
+    <Grid container
+      className={classes.row}>
 
       <Grid item>
         {/* <form > */}
@@ -38,6 +44,7 @@ function SelectRow(props) {
           error={!!errors.choiceContent}
           helperText={errors.choiceContent && errors.choiceContent.message}
           variant="outlined"
+          // fullWidth={true}
           onBlur={handleSubmit(onSubmit)}
         />
         {/* </form> */}
@@ -94,6 +101,7 @@ function SelectDialogBody(props) {
       )
       }
       < Button
+        className={classes.rowButton}
         onClick={addChoice}
         startIcon={(<CreateRounded />)}
       >

@@ -46,6 +46,7 @@ function ProblemEdit(props) {
           kind: 0,
           must: 1,
           title: '题目',
+          description: '',
           choices: [
             '选项1',
             '选项2',

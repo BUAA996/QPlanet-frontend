@@ -9,9 +9,12 @@ async function getQuestionnaire(id) {
 }
 
 async function saveQuestionaire(info) {
-	const ans = await axios.post("questionnaire/modify/", info);
 	console.log(info)
+	console.log(JSON.stringify(info))
+	const ans = await axios.post("questionnaire/modify/", info);
+
 	console.log(ans)
+	
 	return ans;
 
 }

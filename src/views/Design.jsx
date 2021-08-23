@@ -9,19 +9,21 @@ import { useHistory, useParams } from "react-router-dom";
 import { getQuestionnaire, saveQuestionaire } from "api/design";
 import { useEffect } from "react";
 import useTitle from "hooks/useTitle";
+import { isSingleChoice } from "components/utils/Problem";
+import { isMultiChoice } from "components/utils/Problem";
 
 
 const useStyles = makeStyles((theme) => ({}))
 
-// const Questionare = [
-//   {
-//     id: 1,
-//     kind: 0,
-//     must: 1,
-//     title: '第一题 balabalabalabala',
-//     choices: ['选项1', '选项2', '选项3', '选项4'],
-//   },
-// ]
+const Questionare = [
+  {
+    id: 1,
+    kind: 0,
+    must: 1,
+    title: '第一题 balabalabalabala',
+    choices: ['选项1', '选项2', '选项3', '选项4'],
+  },
+]
 
 
 function Design(props) {
@@ -34,6 +36,7 @@ function Design(props) {
   const [questionare, setQuestionare] = useState([]);
   const [qid, setQid] = useState();
   const history = useHistory();
+
   useEffect(() => {
     let didCancel = false;
 
@@ -58,12 +61,12 @@ function Design(props) {
         choices: x.option,
       })))
 
-      // console.log(questionare)
-      // if (!didCancel) { // Ignore if we started fetching something else
-      //   // console.log(getQ);
-      //   // console.log(data.questions)
-      //   console.log(qid)
-      // }
+      console.log(questionare)
+      if (!didCancel) { // Ignore if we started fetching something else
+        // console.log(getQ);
+        // console.log(data.questions)
+        console.log("load again")
+      }
     }
 
     fetchMyAPI();
@@ -96,7 +99,9 @@ function Design(props) {
   function editQuestion(index, item) {
     const newQ = questionare.slice()
     newQ.splice(index, 1, item)
+    console.log("newQ:", newQ)
     setQuestionare(newQ)
+    console.log("questionare", questionare)
   }
   function move(oriIndex, newIndex) {
     const item = questionare.slice()[oriIndex]
@@ -110,9 +115,11 @@ function Design(props) {
       kind: 0,
       must: 1,
       title: '题目',
+      description: '',
       choices: [
         '选项1',
         '选项2',
+        '选项3'
       ]
     }
     addQuestion(index, item)
@@ -142,7 +149,7 @@ function Design(props) {
         />))}
       <Button
         color="primary"
-        onClick={addDefault}
+        onClick={() => addDefault(-1)}
       >
         添加题目
       </Button>
@@ -163,8 +170,9 @@ function Design(props) {
               is_required: x.must,
               description: x.description,
             }
-            // if()
-            //   item.option = x.choices
+            if (isSingleChoice(x) || isMultiChoice(x))
+              item.option = x.choices;
+            return item;
           })
         })}
       >
