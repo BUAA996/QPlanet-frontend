@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 import QHead from "components/design/QHead";
 import Problem from "components/utils/Problem";
-import { Container, Button } from "@material-ui/core"
+import { Container, Button, Card, Grid, Divider } from "@material-ui/core"
 import TitleEdit from "components/design/TitleEdit";
 import MovableProblemEdit from "components/design/MovableProblemEdit";
 import { useState } from "react";
@@ -12,9 +12,40 @@ import useTitle from "hooks/useTitle";
 import { isSingleChoice } from "components/utils/Problem";
 import { isMultiChoice } from "components/utils/Problem";
 import { Title, PreviewPage } from 'views/Preview'
+import FormDialog from "components/design/FormDialog";
 
 
-const useStyles = makeStyles((theme) => ({}))
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: theme.spacing(5),
+    textAlign: 'center',
+    paddingBottom: theme.spacing(5),
+  },
+  card: {
+    padding: theme.spacing(3),
+  },
+  title: {
+    color: theme.palette.primary.main,
+  },
+  description: {
+    color: theme.palette.primary.dark,
+    textAlign: 'left',
+    width: '80%',
+  },
+  problems: {
+    minWidth: '90%',
+  },
+  divider: {
+    height: theme.spacing(1),
+  },
+  buttons: {
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
+  },
+  test: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+}))
 
 const Questionare = [
   {
@@ -129,75 +160,75 @@ function Design(props) {
   const content = <Title title={title} description={detail} />
 
   function blankFunction() { }
+  function save() {
+    saveQuestionaire({
+      modify_type: "delete_all_results",
+      qid: qid,
+      title: title,
+      description: detail,
+      validity: "2021-8-23 18:20",
+      limit_time: 998244353,
+      questions: questionare.map((x) => {
+        const item = {
+          id: x.id,
+          type: x.kind,
+          content: x.title,
+          is_required: x.must === 1 ? true : false,
+          description: x.description,
+        }
+        if (isSingleChoice(x) || isMultiChoice(x))
+          item.option = x.choices;
+        return item;
+      })
+    });
+    history.push("/overview")
+  }
 
   console.log("qid", qid)
   return (
-    <Container maxWidth='md'>
-
-      <Container maxWidth="md">
-        <PreviewPage
-          title={(<TitleEdit
-            content={content}
-            title={title}
-            detail={detail}
-            func={qHeadSetFunc}
-          />)}
-          Questionare={
-            questionare.map((x, index) => (
-              <MovableProblemEdit
-                key={x.id}
-                question={<Problem problem={x} key={x.id} updateAns={() => blankFunction()} />}
-                questionInfo={x}
-                index={index}
-                move={(newIndex) => move(index, newIndex)}
-                del={() => delQuestion(index)}
-                add={addQuestion}
-                edit={(item) => { editQuestion(index, item) }}
-              />))
-          } />
+    <>
+      <Container maxWidth='md' className={classes.root}>
+        <Card className={classes.card}>
+          <Grid
+            container
+            direction='column'
+            justifyContent='center'
+            alignItems='center'
+            spacing={3}
+          >
+            <Title title={title} description={detail}/>
+            <FormDialog setTitle={setTitle} setDescription={setDetail}/>
+            <Divider 
+              flexItem={true}
+              variant={'middle'}
+              className={classes.divider}
+            />
+            <Grid item className={classes.problems}>
+              {/* {questionare.map((problem) => <Problem problem={problem} key={problem.key} updateAns={(ans) => blankFunction(problem.key, ans)} />)} */}
+              {questionare.map((x, index) => (
+              <Problem problem={x} key={x.id} updateAns={() => blankFunction()}>
+                <MovableProblemEdit
+                  key={x.id}
+                  questionInfo={x}
+                  index={index}
+                  move={(newIndex) => move(index, newIndex)}
+                  del={() => delQuestion(index)}
+                  add={addQuestion}
+                  edit={(item) => { editQuestion(index, item) }}
+                />
+              </Problem>))}
+            </Grid>
+            <Grid item className={classes.buttons}>
+              <Button variant='contained' color='secondary' onClick={() => addDefault(-1)} className={classes.buttons}> 添加题目 </Button>
+              <Button variant='contained' color='secondary' onClick={() => save()} className={classes.buttons}> 保存并返回 </Button>
+              <Button variant='contained' color='secondary' onClick={() => history.go(-1)} className={classes.buttons}> 取消编辑 </Button>
+              {/* <Button variant='contained' color='secondary' onClick={() => print()} className={classes.buttons}> 打印 </Button> */}
+            </Grid>
+          </Grid>
+        </Card>
       </Container>
-
-
-
-
-      <Button
-        color="primary"
-        onClick={() => addDefault(-1)}
-      >
-        添加题目
-      </Button>
-      <Button
-        color="primary"
-        onClick={() => {
-          saveQuestionaire({
-            modify_type: "delete_all_results",
-            qid: qid,
-            title: title,
-            description: detail,
-            validity: "2021-8-23 18:20",
-            limit_time: 998244353,
-            questions: questionare.map((x) => {
-              const item = {
-                id: x.id,
-                type: x.kind,
-                content: x.title,
-                is_required: x.must === 1 ? true : false,
-                description: x.description,
-              }
-              if (isSingleChoice(x) || isMultiChoice(x))
-                item.option = x.choices;
-              return item;
-            })
-          });
-          history.push("/overview")
-        }
-        }
-      >
-        保存修改
-      </Button>
-
-
-    </Container >);
+    </>
+  );
 }
 
 export default Design

@@ -31,10 +31,10 @@ function MovableProblemEdit(props) {
       justifyContent="space-around"
     >
       <Grid container item
-        direction="column"
+        direction="row"
         alignItems="center"
         justifyContent="space-around"
-        xs="1">
+        xs={4}>
         <Grid item >
           <IconButton
             onClick={moveUp}>
@@ -70,7 +70,7 @@ function MovableProblemEdit(props) {
       </Grid>
 
 
-      <Grid item xs="11">
+      <Grid item xs={8}>
         <ProblemEdit
           content={props.question}
           del={props.del}
