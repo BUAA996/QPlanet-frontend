@@ -25,6 +25,7 @@ import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
 import { useHistory, useParams } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+import { download } from 'utils'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -107,6 +108,10 @@ function Feedback() {
 
   const handleClick = (name) => {
     if (name === '下载统计数据') {
+      download(
+        'http://localhost:3000/static/media/banner.8cca1e88.png',
+        'haha.jpg'
+      )
     } else if (name === '发送问卷') {
     } else if (name === '预览问卷') {
       history.push('/preview/' + hashcode)
