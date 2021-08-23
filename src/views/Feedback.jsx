@@ -23,7 +23,7 @@ import {
 import SpeedDial from '@material-ui/lab/SpeedDial'
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
-import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { download } from 'utils'
 import QRDialog from 'components/utils/QRDialog'
@@ -87,7 +87,6 @@ function Feedback() {
   const { enqueueSnackbar } = useSnackbar()
   const history = useHistory()
   const [shareOpen, setShareOpen] = useState(false)
-  const location = useLocation()
 
   useTitle('分析&下载 - 问卷星球')
 
@@ -194,8 +193,7 @@ function Feedback() {
       <QRDialog
         open={shareOpen}
         setOpen={setShareOpen}
-        url={'https://qplanet.matrix53.top' + location.pathname}
-        title='问卷链接与二维码'
+        url={'https://qplanet.matrix53.top/fill/' + hashcode}
       />
     </>
   )

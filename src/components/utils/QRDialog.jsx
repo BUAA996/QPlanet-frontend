@@ -121,6 +121,7 @@ function QRDialog({ open, setOpen, url, title, openTitle, downloadTitle }) {
 QRDialog.defaultProps = {
   openTitle: '打开问卷',
   downloadTitle: '问卷二维码',
+  title: '问卷链接与二维码',
 }
 
 export default QRDialog
