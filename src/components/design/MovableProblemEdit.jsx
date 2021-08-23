@@ -62,7 +62,6 @@ function MovableProblemEdit(props) {
               type="number"
               size="small"
               value={to + 1}
-              shrink
             />
           </Box>
         </Grid>

@@ -74,7 +74,7 @@ function Design(props) {
 
     async function fetchMyAPI() {
       const res = await getQuestionnaire(id);
-      console.log(res)
+      // console.log(res)
       // if (res.result !== 1) {
       //   history.push("/notFound")
       // }
@@ -131,9 +131,9 @@ function Design(props) {
   function editQuestion(index, item) {
     const newQ = questionare.slice()
     newQ.splice(index, 1, item)
-    console.log("newQ:", newQ)
+    // console.log("newQ:", newQ)
     setQuestionare(newQ)
-    console.log("questionare", questionare)
+    // console.log("questionare", questionare)
   }
   function move(oriIndex, newIndex) {
     const item = questionare.slice()[oriIndex]
@@ -184,7 +184,7 @@ function Design(props) {
     history.push("/overview")
   }
 
-  console.log("qid", qid)
+  // console.log("qid", qid)
   return (
     <>
       <Container maxWidth='md' className={classes.root}>

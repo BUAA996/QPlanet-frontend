@@ -1,7 +1,8 @@
 import { Delete, Title, CreateRounded } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
-import { Typography, TextField, IconButton, Button, Grid } from "@material-ui/core";
+import { Typography, TextField, IconButton, Button, Grid, Dialog, DialogContent } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useEffect } from "react";
 
 const useStyle = makeStyles(theme => ({
   row: {
@@ -85,14 +86,11 @@ function SelectDialogBody(props) {
   }
 
   return (
-    <>
-      <Typography>
-        选项：
-      </Typography>
+    <DialogContent>
 
       {props.choices.map((item, idx) =>
       (<SelectRow
-        key={item} //!!!!!!!!!!!! bug: when same key
+        key={item + idx} //!!!!!!!!!!!! bug: when same key
         choiceContent={item}
         index={idx}
         editChoice={(content) => { editChoice(idx, content) }}
@@ -108,7 +106,7 @@ function SelectDialogBody(props) {
         插入新选项
       </Button>
 
-    </>
+    </DialogContent>
   )
 }
 

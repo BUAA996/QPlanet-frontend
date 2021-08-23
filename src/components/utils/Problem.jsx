@@ -46,7 +46,7 @@ function SingleChoice(props) {
   const [value, setValue] = useState('');
 
   useEffect(() => {
-    console.log(props)
+    // console.log(props)
     let tmp = [];
     for (let i = 0;i < props.problem.choices.length; ++i) {
       tmp.push({
@@ -59,7 +59,7 @@ function SingleChoice(props) {
 
   const handleChange = (event) => {
     setValue(event.target.value)
-    console.log(event.target.value)
+    // console.log(event.target.value)
     for (let i = 0;i < choice.length; ++i) 
       if (event.target.value === choice[i].key)
         props.updateAns(['' + i]);
@@ -79,7 +79,7 @@ function MultiChoice(props) {
 
   const [choice, setChoice] = useState([]);
   useEffect(() => {
-    console.log(props)
+    // console.log(props)
     let tmp = [];
     for (let i = 0;i < props.problem.choices.length; ++i) {
       tmp.push({

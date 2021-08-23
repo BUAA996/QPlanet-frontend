@@ -121,7 +121,7 @@ function Fill() {
     setQuestionare([].concat(QUESTIONAIRE))
 
     view({"hash": id}).then((res) => {
-      console.log(res);
+      // console.log(res);
       if (res.data.result === 1) {
         const ori = res.data.questions;
         const settings = res.data;
@@ -167,13 +167,13 @@ function Fill() {
       answer: singleAns,
     }
     setAns(tmp);
-    console.log(tmp);
+    // console.log(tmp);
   }
 
   function handleClick() {
-    console.log({id: questionID, results: ansList})
+    // console.log({id: questionID, results: ansList})
     submit({qid: questionID, results: ansList}).then((res) => {
-      console.log(res);
+      // console.log(res);
       history.push('/');
     })
   }
