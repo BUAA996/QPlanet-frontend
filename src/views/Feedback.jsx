@@ -1,5 +1,12 @@
-import { makeStyles } from '@material-ui/core/styles'
-import { Grid } from '@material-ui/core'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
+import {
+  Grid,
+  Typography,
+  Select,
+  FormControl,
+  MenuItem,
+  InputBase,
+} from '@material-ui/core'
 import Completion from 'components/feedback/Completion'
 import Choice from 'components/feedback/Choice'
 import { useEffect } from 'react'
@@ -112,22 +119,59 @@ const data = [
 ]
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-    // width: '100%',
+  title: {
+    marginTop: theme.spacing(3),
+    color: theme.palette.primary.main,
   },
   speedDial: {
     position: 'fixed',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
+    right: theme.spacing(10),
+    bottom: theme.spacing(10),
+  },
+  formControl: {
+    marginTop: theme.spacing(2),
   },
 }))
+
+const BootstrapInput = withStyles((theme) => ({
+  root: {
+    'label + &': {
+      marginTop: theme.spacing(3),
+    },
+  },
+  input: {
+    color: theme.palette.primary.main,
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 26px 10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: theme.palette.primary.light,
+      boxShadow: `0 0 0 1 ${theme.palette.primary.light}`,
+    },
+  },
+}))(InputBase)
 
 function Feedback() {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
+  const [model, setModel] = useState(1)
 
   useTitle('分析&下载 - 问卷星球')
 
@@ -152,13 +196,32 @@ function Feedback() {
   ]
 
   return (
-    <Grid container className={classes.root}>
-      <Grid item xs={3}></Grid>
-      <Grid item xs={6}>
-        {data.map((item) => {
-          if (item.kind === 1) return <Choice data={item} key={item.key} />
-          else return <Completion data={item} key={item.key} />
-        })}
+    <Grid container>
+      <Grid item xs={3} container alignItems='center' direction='column'>
+        <Typography variant='h4' className={classes.title}>
+          统计&amp;分析
+        </Typography>
+        <FormControl className={classes.formControl}>
+          <Select
+            value={model}
+            onChange={(e) => {
+              setModel(e.target.value)
+            }}
+            variant='filled'
+            input={<BootstrapInput />}
+          >
+            <MenuItem value={1}>默认报告</MenuItem>
+            <MenuItem value={2}>交叉分析</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={6} container>
+        <Grid item xs={12}>
+          {data.map((item) => {
+            if (item.kind === 1) return <Choice data={item} key={item.key} />
+            else return <Completion data={item} key={item.key} />
+          })}
+        </Grid>
       </Grid>
       <Grid item xs={3}>
         <SpeedDial
