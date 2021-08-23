@@ -198,6 +198,8 @@ function Preview() {
           }
         }
         setAns(tmp);
+      } else {
+        history.push('/404')
       }
     })
   }, [])
