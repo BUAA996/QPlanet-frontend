@@ -13,6 +13,7 @@ import { useStateStore } from 'store'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useSnackbar } from 'notistack'
+import Preview from 'views/Preview'
 
 function RedirectWithMsg({ prevent, to, message, type, component }) {
   const [loading, setLoading] = useState(true)
@@ -67,6 +68,17 @@ function AppContent() {
         <Route exact path='/design'>
           {isLogin ? (
             <Design />
+          ) : (
+            <RedirectWithMsg
+              to='/signin'
+              message='未登录时该功能不能使用'
+              type='warning'
+            />
+          )}
+        </Route>
+        <Route exact path='/preview/:id'>
+          {isLogin ? (
+            <Preview />
           ) : (
             <RedirectWithMsg
               to='/signin'
