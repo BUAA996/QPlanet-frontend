@@ -33,9 +33,9 @@ function EditLayer(props) {
 
   function blankFunction() {}
   
-  useEffect(() => {
-    console.log(props.problem);
-  }, [])
+  // useEffect(() => {
+  //   console.log(props.problem);
+  // }, [])
 
   return (
     <Box

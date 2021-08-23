@@ -168,7 +168,7 @@ function Preview() {
     setQuestionare([].concat(QUESTIONAIRE))
 
     view({"hash": id}).then((res) => {
-      console.log(res);
+      // console.log(res);
       if (res.data.result === 1) {
         const ori = res.data.questions;
         const settings = res.data;

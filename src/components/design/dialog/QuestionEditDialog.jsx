@@ -1,13 +1,16 @@
-import { Box, DialogTitle, TextField, FormLabel, Select, RadioGroup, Radio, FormControlLabel, MenuItem, InputLabel, FormControl } from "@material-ui/core";
+import { Box, DialogTitle, TextField, FormLabel, Select, RadioGroup, Radio, FormControlLabel, MenuItem, InputLabel, FormControl, DialogContent, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Details, ErrorOutlineSharp } from "@material-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import EditDialog from "./EditDialog";
 import SelectDialogBody from "./SelectDialogBody";
 
 const useStyle = makeStyles((theme) => ({
-
+  content: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  }
 }))
 
 // const example = {
@@ -42,13 +45,19 @@ function QuestionEditDialog(props) {
     required: { value: true, message: "题目标题不能为空" },
   });
 
+  useEffect(() => {
+    if (!Boolean(choices)) {
+      setChoices([]);
+    }
+  }, [])
+
   const onSubmit = (data) => {
     const newQ = {
       id: props.questionInfo.id,
       description: "",
       kind: parseInt(kind),
       must: must === "1" ? 1 : 0,
-      title: data.title,
+      title: data.title, 
       choices: choices
     }
     props.edit(newQ)
@@ -62,43 +71,40 @@ function QuestionEditDialog(props) {
     </DialogTitle>
   );
   const dialogContent = (
-    <>
-      <Box>
-        <TextField
-          required
-          id="filled-required"
-          label="题目"
-          defaultValue={props.questionInfo.title}
-          onChange={title.onChange}
-          name={title.name}
-          inputRef={title.ref}
-          error={!!errors.title}
-          helperText={errors.title && errors.title.message}
-          multiline
-          variant="outlined"
-        />
-      </Box>
-      <Box>
-        <FormControl component="fieldset">
-          <FormLabel component="legend"> 是否必填：</FormLabel>
-          <RadioGroup aria-label="must?"
-            onChange={handleChangeMust}
-            value={must}
-            row
-          >
-            <FormControlLabel value={"1"} control={<Radio />} label="是" />
-            <FormControlLabel value={"0"} control={<Radio />} label="否" />
-          </RadioGroup>
-        </FormControl>
+    <DialogContent>
+      <TextField
+        required
+        id="filled-required"
+        label="题目"
+        defaultValue={props.questionInfo.title}
+        onChange={title.onChange}
+        name={title.name}
+        inputRef={title.ref}
+        error={!!errors.title}
+        helperText={errors.title && errors.title.message}
+        multiline
+        fullWidth
+      />
+      <FormControl component="fieldset" className={classes.content}>
+        <FormLabel component="legend"> 是否必填：</FormLabel>
+        <RadioGroup aria-label="must?"
+          onChange={handleChangeMust}
+          value={must}
+          row
+        >
+          <FormControlLabel value={"1"} control={<Radio />} label="是" />
+          <FormControlLabel value={"0"} control={<Radio />} label="否" />
+        </RadioGroup>
+      </FormControl>
 
-      </Box>
 
-      <InputLabel id="demo-simple-select-label">题目类型</InputLabel>
+      <InputLabel id="demo-simple-select-label" >题目类型</InputLabel>
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
         value={kind}
         onChange={handleChangeKind}
+        className={classes.content}
       >
         <MenuItem value={0}>单选</MenuItem>
         <MenuItem value={1}>多选</MenuItem>
@@ -111,7 +117,7 @@ function QuestionEditDialog(props) {
         /> : null
       }
 
-    </>
+    </DialogContent>
 
   );
 

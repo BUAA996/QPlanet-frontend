@@ -43,7 +43,7 @@ function ProblemEdit(props) {
       content: "上方插入",
       icon: (<AddCircleOutlineRounded />),
       onClick: () => {
-        console.log(props);
+        // console.log(props);
         props.add(props.index, {
           kind: 0,
           must: 1,
