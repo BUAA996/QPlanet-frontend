@@ -1,19 +1,19 @@
 import { makeStyles } from '@material-ui/core/styles'
-import * as echarts from 'echarts'
-// import { BarChart, PieChart } from 'echarts/charts'
-// import { GridComponent, TooltipComponent } from 'echarts/components'
-// import { CanvasRenderer } from 'echarts/renderers'
+import * as echarts from 'echarts/core'
+import { BarChart, PieChart } from 'echarts/charts'
+import { GridComponent, TooltipComponent } from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect } from 'react'
 import { useRef } from 'react'
 import 'echarts-wordcloud'
 
-// echarts.use([
-//   PieChart,
-//   GridComponent,
-//   BarChart,
-//   CanvasRenderer,
-//   TooltipComponent,
-// ])
+echarts.use([
+  PieChart,
+  GridComponent,
+  BarChart,
+  CanvasRenderer,
+  TooltipComponent,
+])
 
 const useStyles = makeStyles((theme) => ({
   root: {
