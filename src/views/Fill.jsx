@@ -151,6 +151,8 @@ function Fill() {
           }
         }
         setAns(tmp);
+      } else {
+        history.push('/404/')
       }
     })
   }, [])

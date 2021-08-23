@@ -2,7 +2,39 @@ import Problem from 'components/utils/Problem'
 import { CardContent, Container } from '@material-ui/core'
 import useTitle from 'hooks/useTitle'
 import {Title, PreviewPage} from 'views/Preview'
+import { makeStyles } from '@material-ui/core/styles'
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: theme.spacing(5),
+    textAlign: 'center',
+    paddingBottom: theme.spacing(5),
+  },
+  card: {
+    padding: theme.spacing(3),
+  },
+  title: {
+    color: theme.palette.primary.main,
+  },
+  description: {
+    color: theme.palette.primary.dark,
+    textAlign: 'left',
+    width: '80%',
+  },
+  problems: {
+    minWidth: '90%',
+  },
+  divider: {
+    height: theme.spacing(1),
+  },
+  buttons: {
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
+  },
+  test: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+}))
 
 function NotFound() {
   useTitle('找不到网页')
@@ -44,16 +76,18 @@ function NotFound() {
     },
   ]
 
+  
   function blankFunction() {}
 
-  const title = <Title title="test" description="some description"/>  
+  const classes = useStyles();
+  const title = <Title title="404 NotFound" description="啊呀，问卷走丢了"/>  
   const Questions = Questionare.map((problem) => (<Problem problem={problem} updateAns={(ans) => blankFunction()} />));
 
   return (
     <>
 
-      <Container maxWidth="md">
-        <PreviewPage title={title} Questionare={Questions}/>
+      <Container maxWidth="md" className={classes.root}>
+        <PreviewPage title={title} Questionare={null}/>
       </Container>
     </>
   )
