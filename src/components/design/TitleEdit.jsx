@@ -39,6 +39,9 @@ function TitleEdit(props) {
     },
   ].map((btn) =>
   (<Button
+    style={{
+      backgroundColor: "white",
+    }}
     className={classes.editBtn}
     variant="outlined"
     startIcon={btn.icon}
