@@ -35,4 +35,9 @@ function submit(data) {
 	return axios.post("result/submit/", data);
 }
 
-export {createQuestionnaire, deleteQuestionnaire, recover, getQuestionnaires, reset, view, submit};
+// search 
+function search(data) {
+  return axios.post("questionnaire/search/", data)
+}
+
+export {createQuestionnaire, deleteQuestionnaire, recover, getQuestionnaires, reset, view, submit, search};
