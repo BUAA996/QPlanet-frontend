@@ -104,6 +104,7 @@ const DESCRIPTION = '感谢您能抽时间参与本次问卷，您的意见和�
 
 function Fill() {  
   useTitle('填写问卷 - 问卷星球')
+
   const classes = useStyles();
   const [questionID, setID] = useState(-1);
   const [title, setTitle] = useState('');
@@ -155,6 +156,7 @@ function Fill() {
     let tmp = [].concat(ansList); 
     tmp[id] = singleAns;
     setAns(tmp);
+    console.log(tmp);
   }
 
   function handleClick() {
@@ -186,7 +188,7 @@ function Fill() {
             className={classes.divider}
           />
           <Grid item className={classes.problems}>
-            {Questionare.map((problem) => <Problem problem={problem} setAns={setAns} />)}
+            {Questionare.map((problem) => <Problem problem={problem} updateAns={(ans) => handleAns(problem.key, ans)} />)}
           </Grid>
           <Grid item className={classes.buttons}>
             <Button variant='contained' color='secondary' onClick={() => handleClick()}> 提交 </Button>
