@@ -4,6 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Container, Typography } from '@material-ui/core';
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 const useStyles = makeStyles({
   root: {
@@ -41,15 +42,30 @@ function ShowClasses(props) {
 
 function SingleChoice(props) {
   const classes = useStyles();
+  const [choice, setChoice] = useState([]);
+  const [value, setValue] = useState('');
 
   useEffect(() => {
     console.log(props)
+    let tmp = [];
+    for (let i = 0;i < props.problem.choices.length; ++i) {
+      tmp.push({
+        key: i,
+        content: props.problem.choices[i],
+      })
+    }
+    setChoice(tmp);
   }, [])
 
+  const handleChange = (event) => {
+    setValue(event.target.value)
+    props.updateAns([event.target.value]);
+  }
+
   return (
-    <RadioGroup className={classes.content}>
-      {props.problem.choices.map((choice) => 
-        <FormControlLabel value={choice} control={<Radio />} label={choice}/>
+    <RadioGroup className={classes.content} value={value} onChange={handleChange}>
+      {choice.map((choice) => 
+        <FormControlLabel value={choice.content} control={<Radio />} label={choice.content} key={choice.key}/>
       )}
     </RadioGroup>
   );
@@ -57,21 +73,45 @@ function SingleChoice(props) {
 
 function MultiChoice(props) {
   const classes = useStyles();
+
+  const [choice, setChoice] = useState([]);
+  useEffect(() => {
+    console.log(props)
+    let tmp = [];
+    for (let i = 0;i < props.problem.choices.length; ++i) {
+      tmp.push({
+        key: i,
+        content: props.problem.choices[i],
+      })
+    }
+    setChoice(tmp);
+  }, [])
+
   var option = {};
-  
   props.problem.choices.map((choice) => option[choice]=false);
+
   const [state, setState] = React.useState(option);
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
+    let singleAns = [];
+    for (let i = 0;i < choice.length; ++i) {
+      if (choice[i].content === event.target.name) {
+        if (event.target.checked) singleAns.push(event.target.name);
+      } else {
+        if (state[choice[i].content]) singleAns.push(choice[i].content);
+      }
+    }
+    props.updateAns(singleAns);
   };
 
   return (
     <RadioGroup className={classes.content}>
-      {props.problem.choices.map((choice) => 
+      {choice.map((choice) => 
         <FormControlLabel 
-          control={<Checkbox checked={state[choice]} onChange={handleChange} name={choice} />} 
-          label={choice}
+          control={<Checkbox checked={state[choice.content]} onChange={handleChange} name={choice.content} />} 
+          label={choice.content} 
+          key={choice.key}
         />
       )}
     </RadioGroup>
@@ -80,6 +120,12 @@ function MultiChoice(props) {
 
 function FillBlanks(props) {
   const classes = useStyles();
+  const [value, setValue] = useState('')
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+    props.updateAns([event.target.value]);
+  }
 
   return (
     <TextField
@@ -88,6 +134,9 @@ function FillBlanks(props) {
       multiline
       rows={4}
       variant="outlined"
+      value={value}
+      onChange={handleChange}
+      placeholder='请在此处输入答案'
       fullWidth={true}
     />
   );
@@ -100,9 +149,9 @@ function Problem(props) {
       <CardContent>
         <ShowClasses title={props.problem.title} must={props.problem.must} />
         <Divider />
-        {props.problem.kind === 0 ? <SingleChoice problem={props.problem}/> : null}
-        {props.problem.kind === 1 ? <MultiChoice problem={props.problem}/> : null}
-        {props.problem.kind === 2 ? <FillBlanks problem={props.problem}/> : null}
+        {props.problem.kind === 0 ? <SingleChoice {...props}/> : null}
+        {props.problem.kind === 1 ? <MultiChoice {...props}/> : null}
+        {props.problem.kind === 2 ? <FillBlanks {...props}/> : null}
         {props.children}
       </CardContent>
     </Card>

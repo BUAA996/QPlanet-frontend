@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Problem from 'components/utils/Problem'
 import useTitle from 'hooks/useTitle'
 import { useParams } from 'react-router'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -112,6 +113,7 @@ function Fill() {
   const [description, setDescription] = useState('');
   const [ansList, setAns] = useState([]);
   const { id } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     setTitle(TITLE);
@@ -143,7 +145,7 @@ function Fill() {
         tmp[i] = {
           problem_id: ori[i].id,
           type: ori[i].type,
-          answer: ['a'],
+          answer: [''],
         }
       }
       setAns(tmp);
@@ -154,7 +156,11 @@ function Fill() {
 
   function handleAns(id, singleAns) {
     let tmp = [].concat(ansList); 
-    tmp[id] = singleAns;
+    tmp[id] = {
+      problem_id: tmp[id].problem_id,
+      type: tmp[id].type,
+      answer: singleAns,
+    }
     setAns(tmp);
     console.log(tmp);
   }
@@ -163,6 +169,7 @@ function Fill() {
     console.log({id: questionID, results: ansList})
     submit({qid: questionID, results: ansList}).then((res) => {
       console.log(res);
+      history.push('/');
     })
   }
 
@@ -188,7 +195,7 @@ function Fill() {
             className={classes.divider}
           />
           <Grid item className={classes.problems}>
-            {Questionare.map((problem) => <Problem problem={problem} updateAns={(ans) => handleAns(problem.key, ans)} />)}
+            {Questionare.map((problem) => <Problem problem={problem} key={problem.key} updateAns={(ans) => handleAns(problem.key, ans)} />)}
           </Grid>
           <Grid item className={classes.buttons}>
             <Button variant='contained' color='secondary' onClick={() => handleClick()}> 提交 </Button>
