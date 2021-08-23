@@ -41,37 +41,12 @@ function EditLayer(props) {
 
   return (<Box
     class={classes.box}
-    // ref={hoverRef}
+  // ref={hoverRef}
   >
     <div
       className={classes.hoverLayer}>
       <div className={classes.btnRow}>
         {props.buttons}
-        {/* {isHovered ? <Button
-          className={classes.btn}
-          variant="contained"
-          color="primary"
-        > butn</Button> : null} */}
-        {/* {[<Button
-          className={classes.btn}
-          variant="contained"
-          color="primary"
-        >butn</Button>, <Button
-          className={classes.btn}
-          variant="contained"
-          color="primary"
-        >butn</Button>]} */}
-        {/* <SpeedDial
-        ariaLabel="SpeedDial openIcon example"
-        className={classes.btn}
-        direction="left"
-        icon={<SpeedDialIcon openIcon={<EditIcon />} />}
-        onClose={handleClose}
-        onOpen={handleOpen}
-        open={open}
-      >
-
-      </SpeedDial> */}
       </div>
 
       {props.content}

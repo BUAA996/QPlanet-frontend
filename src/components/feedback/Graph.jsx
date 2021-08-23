@@ -1,19 +1,24 @@
 import { makeStyles } from '@material-ui/core/styles'
-import * as echarts from 'echarts'
-// import { BarChart, PieChart } from 'echarts/charts'
-// import { GridComponent, TooltipComponent } from 'echarts/components'
-// import { CanvasRenderer } from 'echarts/renderers'
+import * as echarts from 'echarts/core'
+import { BarChart, PieChart } from 'echarts/charts'
+import {
+  GridComponent,
+  TooltipComponent,
+  ToolboxComponent,
+} from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect } from 'react'
 import { useRef } from 'react'
 import 'echarts-wordcloud'
 
-// echarts.use([
-//   PieChart,
-//   GridComponent,
-//   BarChart,
-//   CanvasRenderer,
-//   TooltipComponent,
-// ])
+echarts.use([
+  PieChart,
+  GridComponent,
+  BarChart,
+  CanvasRenderer,
+  TooltipComponent,
+  ToolboxComponent,
+])
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +32,8 @@ function Graph({ type, data }) {
   const ref = useRef()
 
   useEffect(() => {
-    const chart = echarts.init(ref.current)
+    let chart = echarts.getInstanceByDom(ref.current)
+    if (chart == null) chart = echarts.init(ref.current)
 
     let option = null
     if (type === 1) option = pieOption(data)
@@ -37,7 +43,7 @@ function Graph({ type, data }) {
     else if (type === 5) option = cloudOption(data)
 
     chart.setOption(option, true)
-  })
+  }, [type, data])
 
   return <div className={classes.root} ref={ref}></div>
 }
@@ -46,6 +52,13 @@ function pieOption(data) {
   return {
     tooltip: {
       trigger: 'item',
+    },
+    toolbox: {
+      show: true,
+      right: '5%',
+      feature: {
+        saveAsImage: { title: '保存为图片', name: data.title + '-饼状图' },
+      },
     },
     series: [
       {
@@ -72,6 +85,13 @@ function ringOption(data) {
     tooltip: {
       trigger: 'item',
     },
+    toolbox: {
+      show: true,
+      right: '5%',
+      feature: {
+        saveAsImage: { title: '保存为图片', name: data.title + '-圆环图' },
+      },
+    },
     series: [
       {
         type: 'pie',
@@ -89,6 +109,13 @@ function barOption(data) {
   return {
     tooltip: {
       trigger: 'item',
+    },
+    toolbox: {
+      show: true,
+      right: '5%',
+      feature: {
+        saveAsImage: { title: '保存为图片', name: data.title + '-柱状图' },
+      },
     },
     xAxis: {
       type: 'category',
@@ -111,6 +138,13 @@ function histogramOption(data) {
     tooltip: {
       trigger: 'item',
     },
+    toolbox: {
+      show: true,
+      right: '5%',
+      feature: {
+        saveAsImage: { title: '保存为图片', name: data.title + '-条形图' },
+      },
+    },
     xAxis: {
       type: 'value',
     },
@@ -131,6 +165,13 @@ function cloudOption(data) {
   return {
     tooltip: {
       trigger: 'item',
+    },
+    toolbox: {
+      show: true,
+      right: '5%',
+      feature: {
+        saveAsImage: { title: '保存为图片', name: data.title + '-词云图' },
+      },
     },
     series: [
       {

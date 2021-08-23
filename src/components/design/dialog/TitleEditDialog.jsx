@@ -1,6 +1,5 @@
 import { Box, Button, DialogContent, DialogTitle, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { ReportProblemSharp } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
 import EditDialog from "./EditDialog";
 
@@ -13,6 +12,7 @@ function TitleEditDialog(props) {
   const { register,
     handleSubmit,
     formState: { errors } } = useForm();
+    
   const onSubmit = (data) => { 
     props.save(data.title, data.detail)
   };

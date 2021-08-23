@@ -70,7 +70,7 @@ function AppContent() {
           ) : (
             <RedirectWithMsg
               to='/signin'
-              message='该功能不能使用，请先登录'
+              message='未登录时该功能不能使用'
               type='warning'
             />
           )}
@@ -81,7 +81,7 @@ function AppContent() {
           ) : (
             <RedirectWithMsg
               to='/signin'
-              message='该功能不能使用，请先登录'
+              message='未登录时该功能不能使用'
               type='warning'
             />
           )}
@@ -92,7 +92,7 @@ function AppContent() {
           ) : (
             <RedirectWithMsg
               to='/signin'
-              message='该功能不能使用，请先登录'
+              message='未登录时该功能不能使用'
               type='warning'
             />
           )}

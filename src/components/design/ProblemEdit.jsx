@@ -32,16 +32,27 @@ function ProblemEdit(props) {
       content: "编辑",
       icon: (<CreateRounded />),
       onClick: (() => handleDialogOpen()),
-    },{
+    }, {
       id: 2,
       content: "删除",
       icon: (<Delete />),
-      onClick: null,
-    },{
+      onClick: props.del,
+    }, {
       id: 3,
       content: "上方插入",
       icon: (<AddCircleOutlineRounded />),
-      onClick: null,
+      onClick: () => {
+        props.add(props.index, {
+          kind: 0,
+          must: 1,
+          title: '题目',
+          choices: [
+            '选项1',
+            '选项2',
+          ]
+        }
+        )
+      },
     }
   ].map((btn) =>
   (<Button
@@ -62,7 +73,11 @@ function ProblemEdit(props) {
       <QuestionEditDialog
         open={dialogOpen}
         close={handleDialogClose}
+        questionInfo={props.questionInfo}
+        del={props.del}
+        edit={props.edit}
       />
+
     </>);
 
 }

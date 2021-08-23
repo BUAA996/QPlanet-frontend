@@ -13,7 +13,7 @@ function App() {
     isLogin().then((res) => {
       dispatch({ type: 'finishLoading', state: res.data.result })
     })
-  })
+  }, [dispatch])
 
   return (
     <div className='App'>
