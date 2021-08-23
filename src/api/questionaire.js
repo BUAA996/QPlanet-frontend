@@ -25,4 +25,14 @@ function reset(data) {
 	return axios.post("questionnaire/reset/", data);
 }
 
-export {createQuestionnaire, deleteQuestionnaire, recover, getQuestionnaires, reset};
+// view 
+function view(data) {
+	return axios.post("questionnaire/view/", data);
+}
+
+// submit
+function submit(data) {
+	return axios.post("result/submit/", data);
+}
+
+export {createQuestionnaire, deleteQuestionnaire, recover, getQuestionnaires, reset, view, submit};

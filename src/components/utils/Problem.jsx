@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Container, Typography } from '@material-ui/core';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles({
   root: {
@@ -40,6 +41,11 @@ function ShowClasses(props) {
 
 function SingleChoice(props) {
   const classes = useStyles();
+
+  useEffect(() => {
+    console.log(props)
+  }, [])
+
   return (
     <RadioGroup className={classes.content}>
       {props.problem.choices.map((choice) => 
@@ -89,7 +95,6 @@ function FillBlanks(props) {
 
 function Problem(props) {
   const classes = useStyles();
-
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -98,9 +103,15 @@ function Problem(props) {
         {props.problem.kind === 0 ? <SingleChoice problem={props.problem}/> : null}
         {props.problem.kind === 1 ? <MultiChoice problem={props.problem}/> : null}
         {props.problem.kind === 2 ? <FillBlanks problem={props.problem}/> : null}
+        {props.children}
       </CardContent>
     </Card>
   );
 }
 
+function isSingleChoice(problem) {return problem.kind === 0;}
+function isMultiChoice(problem) {return problem.kind === 1;}
+function isFillBlank(problem) {return problem.kind === 2;}
+
 export default Problem;
+export { isSingleChoice, isMultiChoice, isFillBlank}
