@@ -118,7 +118,7 @@ function Design(props) {
   function addQuestion(index, item) {
     const newQ = questionare.slice()
     const newItem = JSON.parse(JSON.stringify(item))
-    newItem.id = Math.random().toString(36).slice(-6)
+    newItem.id = 'N' + Math.random().toString(36).slice(-6)
     if (index === -1) newQ.push(newItem)
     else newQ.splice(index, 0, newItem)
     setQuestionare(newQ)

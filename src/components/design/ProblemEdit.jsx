@@ -4,7 +4,6 @@ import { CreateRounded, Delete, AddCircleOutlineRounded } from '@material-ui/ico
 import QuestionEditDialog from "./dialog/QuestionEditDialog";
 import EditLayer from "./EditLayer";
 import { useState } from "react";
-import TtitleEditDialog from "./dialog/TitleEditDialog";
 import Problem from "components/utils/Problem";
 
 const useStyle = makeStyles((theme) => ({
@@ -15,8 +14,8 @@ const useStyle = makeStyles((theme) => ({
 
 function ProblemEdit(props) {
   const classes = useStyle();
-
-  const [dialogOpen, setDialogOpen] = useState(false);
+  console.log(props.questionInfo.id)
+  const [dialogOpen, setDialogOpen] = useState(props.questionInfo.id[0] === 'N');
 
 
   const handleDialogOpen = () => {
