@@ -34,7 +34,7 @@ function MovableProblemEdit(props) {
         direction="row"
         alignItems="center"
         justifyContent="space-around"
-        xs={4}>
+        xs={5}>
         <Grid item >
           <Button
             variant="outlined"
@@ -72,7 +72,7 @@ function MovableProblemEdit(props) {
       </Grid>
 
 
-      <Grid item xs={8}>
+      <Grid item xs={7}>
         <ProblemEdit
           content={props.question}
           del={props.del}
