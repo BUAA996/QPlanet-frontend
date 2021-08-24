@@ -14,6 +14,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { useSnackbar } from 'notistack'
 import Preview from 'views/Preview'
+import Finish from 'views/Finish'
 
 function RedirectWithMsg({ prevent, to, message, type, component }) {
   const [loading, setLoading] = useState(true)
@@ -63,6 +64,9 @@ function AppContent() {
         </Route>
         <Route exact path='/overview'>
           {isLogin ? <Overview /> : <Redirect to='/signin' />}
+        </Route>
+        <Route exact path='/finish'>
+          <Finish />
         </Route>
         <Route exact path='*'>
           <NotFound />
