@@ -31,7 +31,6 @@ export default function FormDialog(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log("ori", " ", props.title, " ", props.description)
   const handleModify = () => {
     setOpen(false);
     props.setTitle(title);
@@ -39,12 +38,10 @@ export default function FormDialog(props) {
   }
 
   const handleTitleChange = (event) => {
-    console.log("title: ", event.target.value)
     setTitle(event.target.value);
   }
 
   const handleDescriptionChange = (event) => {
-    console.log("detail: ", event.target.value)
     setDescription(event.target.value);
   }
 
