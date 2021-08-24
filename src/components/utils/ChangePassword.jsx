@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     right: theme.spacing(1),
   },
+  form: {
+    width: {},
+  },
 }))
 
 function ChangePassword({ open, setOpen }) {
@@ -70,7 +73,7 @@ function ChangePassword({ open, setOpen }) {
         </DialogActions>
       </Box>
       <DialogContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
           <TextField
             label='新密码'
             margin='normal'

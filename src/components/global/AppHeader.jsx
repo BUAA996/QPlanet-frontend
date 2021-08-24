@@ -45,14 +45,16 @@ function AppHeader() {
   })
 
   useEffect(() => {
-    getUserInfo().then((res) => {
-      setUserInfo({
-        username: res.data.username,
-        email: res.data.email,
-        count: res.data.count,
+    if (isLogin) {
+      getUserInfo().then((res) => {
+        setUserInfo({
+          username: res.data.username,
+          email: res.data.email,
+          count: res.data.count,
+        })
       })
-    })
-  }, [])
+    }
+  })
 
   const showHeader = true
 
