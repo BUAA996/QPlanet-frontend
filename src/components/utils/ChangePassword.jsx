@@ -13,6 +13,7 @@ import { Close } from '@material-ui/icons'
 import { changePassword } from 'api/auth'
 import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
+import clsx from 'clsx'
 
 const useStyles = makeStyles((theme) => ({
   closeBtn: {
@@ -20,8 +21,16 @@ const useStyles = makeStyles((theme) => ({
     right: theme.spacing(1),
   },
   form: {
-    width: {},
+    width: '70%',
   },
+  formBox: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  submit: {
+    marginRight: '30%',
+  },
+  btn: {},
 }))
 
 function ChangePassword({ open, setOpen }) {
@@ -72,7 +81,7 @@ function ChangePassword({ open, setOpen }) {
           </IconButton>
         </DialogActions>
       </Box>
-      <DialogContent>
+      <DialogContent className={classes.formBox}>
         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
           <TextField
             label='新密码'
@@ -98,8 +107,12 @@ function ChangePassword({ open, setOpen }) {
             variant='outlined'
             type='password'
           />
-          <Box>
-            <Button type='submit' variant='contained'>
+          <Box display='flex' justifyContent='center' width='100%'>
+            <Button
+              type='submit'
+              variant='contained'
+              className={clsx(classes.submit, classes.btn)}
+            >
               确认
             </Button>
             <Button
@@ -108,6 +121,7 @@ function ChangePassword({ open, setOpen }) {
                 reset({ password1: '', password2: '' })
               }}
               variant='contained'
+              className={classes.btn}
             >
               取消
             </Button>
