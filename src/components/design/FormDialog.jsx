@@ -8,11 +8,21 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { CreateRounded } from '@material-ui/icons';
 import { Grid } from '@material-ui/core';
+import { useEffect } from 'react';
 
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState(props.title);
   const [description, setDescription] = React.useState(props.description);
+
+
+  useEffect(() => {
+    setTitle(props.title);
+  }, [props.title]);
+  useEffect(() => {
+    setDescription(props.description);
+  }, [props.description])
+
 
   const handleClickOpen = () => {
     setOpen(true);
