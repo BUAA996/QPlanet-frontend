@@ -69,6 +69,15 @@ function Design(props) {
   const [qid, setQid] = useState();
   const history = useHistory();
 
+  function handleSetQuestionare(ori) {
+    let tmp = ori.slice();
+    let tmp2 = new Array(tmp.length);
+    tmp.map((problem, index) => {
+      tmp2[index] = {...problem, key: index}
+    })
+    setQuestionare(tmp2);
+  }
+  
   useEffect(() => {
     let didCancel = false;
 
@@ -84,7 +93,7 @@ function Design(props) {
       setTitle(data.title)
       setDetail(data.description)
       setQid(data.qid)
-      setQuestionare(data.questions.map((x) => ({
+      handleSetQuestionare(data.questions.map((x) => ({
         id: x.id,
         kind: x.type,
         must: x.is_required ? 1 : 0,
@@ -121,18 +130,18 @@ function Design(props) {
     newItem.id = 'N' + Math.random().toString(36).slice(-6)
     if (index === -1) newQ.push(newItem)
     else newQ.splice(index, 0, newItem)
-    setQuestionare(newQ)
+    handleSetQuestionare(newQ)
   }
   function delQuestion(index) {
     const newQ = questionare.slice()
     newQ.splice(index, 1)
-    setQuestionare(newQ)
+    handleSetQuestionare(newQ)
   }
   function editQuestion(index, item) {
     const newQ = questionare.slice()
     newQ.splice(index, 1, item)
     // console.log("newQ:", newQ)
-    setQuestionare(newQ)
+    handleSetQuestionare(newQ)
     // console.log("questionare", questionare)
   }
   function move(oriIndex, newIndex) {
@@ -140,7 +149,7 @@ function Design(props) {
     const newQ = questionare.slice()
     newQ.splice(oriIndex, 1)
     newQ.splice(newIndex, 0, item)
-    setQuestionare(newQ)
+    handleSetQuestionare(newQ)
   }
   function addDefault(index) {
     const item = {
@@ -207,7 +216,7 @@ function Design(props) {
             <Grid item className={classes.problems}>
               {/* {questionare.map((problem) => <Problem problem={problem} key={problem.key} updateAns={(ans) => blankFunction(problem.key, ans)} />)} */}
               {questionare.map((x, index) => (
-              <Problem problem={x} key={x.id} updateAns={() => blankFunction()}>
+              <Problem problem={x} key={x.index} updateAns={() => blankFunction()}>
                 <MovableProblemEdit
                   key={x.id}
                   questionInfo={x}

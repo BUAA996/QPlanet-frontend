@@ -165,7 +165,7 @@ function Problem(props) {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <ShowClasses title={props.problem.title} must={props.problem.must} />
+        <ShowClasses title={"第 " + (props.problem.key + 1) + " 题 " + props.problem.title} must={props.problem.must} />
         <Divider />
         {props.problem.kind === 0 ? <SingleChoice {...props}/> : null}
         {props.problem.kind === 1 ? <MultiChoice {...props}/> : null}
