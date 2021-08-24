@@ -96,9 +96,9 @@ function Questionare(props) {
               {Questionaire_STATUS[props.status]} &nbsp;
             </span>
             {props.status === 1 ? (
-              <>发布时间: {props.uploadTime}</>
+              <>发布时间: {props.uploadTime}&nbsp;</>
             ) : (
-              <>创建时间: {props.createTime} </>
+              <>创建时间: {props.createTime}&nbsp; </>
             )}
             填写人数:&nbsp;{props.count}&nbsp;
           </Grid>
