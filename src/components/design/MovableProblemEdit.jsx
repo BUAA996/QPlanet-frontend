@@ -7,7 +7,8 @@ const { default: ProblemEdit } = require("./ProblemEdit");
 
 const useStyle = makeStyles(theme => ({
   inputNum: {
-    width: theme.spacing(5)
+    width: theme.spacing(7),
+    margin: theme.spacing(2)
   },
   moveButton: {
     margin: theme.spacing(1)
@@ -44,7 +45,7 @@ function MovableProblemEdit(props) {
             variant="outlined"
             startIcon={(<ExpandLessRounded />)}
             onClick={moveUp}>
-            上移
+            题目上移
           </Button>
         </Grid>
         {/*         
@@ -58,7 +59,7 @@ function MovableProblemEdit(props) {
             onClick={moveDown}
             variant="outlined"
             startIcon={<ExpandMoreRounded />}>
-            下移
+            题目下移
           </Button>
         </Grid>
 
@@ -66,7 +67,7 @@ function MovableProblemEdit(props) {
           <Box className={classes.inputNum}>
             <TextField
               id="题号"
-              label="题号"
+              label="移动至"
               type="number"
               size="small"
               value={to + 1}
