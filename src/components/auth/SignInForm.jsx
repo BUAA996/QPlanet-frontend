@@ -55,8 +55,8 @@ function SignInForm() {
     login(data).then((res) => {
       if (res.data.result) {
         enqueueSnackbar('登录成功', { variant: 'success' })
-        history.replace('/overview')
         dispatch({ type: 'login' })
+        history.replace('/overview')
       } else {
         enqueueSnackbar(res.data.message, { variant: 'warning' })
       }

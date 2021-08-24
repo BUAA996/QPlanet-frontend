@@ -214,17 +214,24 @@ function Design(props) {
             <Grid item className={classes.problems}>
               {/* {questionare.map((problem) => <Problem problem={problem} key={problem.key} updateAns={(ans) => blankFunction(problem.key, ans)} />)} */}
               {questionare.map((x, index) => (
-              <Problem problem={x} key={x.index} updateAns={() => blankFunction()}>
-                <MovableProblemEdit
-                  key={x.id}
-                  questionInfo={x}
-                  index={index}
-                  move={(newIndex) => move(index, newIndex)}
-                  del={() => delQuestion(index)}
-                  add={addQuestion}
-                  edit={(item) => { editQuestion(index, item) }}
-                />
-              </Problem>))}
+                <Problem
+                  problem={x}
+                  key={x.index}
+                  updateAns={() => blankFunction()}
+                >
+                  <MovableProblemEdit
+                    key={x.id}
+                    questionInfo={x}
+                    index={index}
+                    move={(newIndex) => move(index, newIndex)}
+                    del={() => delQuestion(index)}
+                    add={addQuestion}
+                    edit={(item) => {
+                      editQuestion(index, item)
+                    }}
+                  />
+                </Problem>
+              ))}
             </Grid>
 
             <Grid item className={classes.buttons}>
