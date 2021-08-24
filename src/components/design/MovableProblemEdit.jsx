@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 
-const { makeStyles, Button, IconButton, Grid, Box, TextField } = require("@material-ui/core");
+const { makeStyles, IconButton, Grid, Box, TextField, Button } = require("@material-ui/core");
 const { ArrowDropUpRounded, ArrowDropDownRounded, DehazeRounded } = require("@material-ui/icons");
 const { default: ProblemEdit } = require("./ProblemEdit");
 
@@ -36,25 +36,28 @@ function MovableProblemEdit(props) {
         justifyContent="space-around"
         xs={4}>
         <Grid item >
-          <IconButton
+          <Button
+            startIcon={(<ArrowDropUpRounded
+              fontSize="large" />)}
             onClick={moveUp}>
-            <ArrowDropUpRounded
-              fontSize="large" />
-          </IconButton>
+            题目上移
+          </Button>
         </Grid>
+        {/*         
         <Grid item>
           <DehazeRounded />
-        </Grid>
+        </Grid> */}
 
         <Grid item>
-          <IconButton
-            onClick={moveDown}>
-            <ArrowDropDownRounded
-              fontSize="large" />
-          </IconButton>
+          <Button
+            onClick={moveDown}
+            startIcon={<ArrowDropDownRounded
+              fontSize="large" />}>
+            题目下移
+          </Button>
         </Grid>
 
-        <Grid item>
+        {/* <Grid item>
           <Box className={classes.inputNum}>
             <TextField
               id="题号"
@@ -64,7 +67,7 @@ function MovableProblemEdit(props) {
               value={to + 1}
             />
           </Box>
-        </Grid>
+        </Grid> */}
 
       </Grid>
 
