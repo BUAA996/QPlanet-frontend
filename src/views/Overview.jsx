@@ -65,7 +65,9 @@ const TEMPLEATE = {
   "questions":[
     {"type":0, "content": "What would you like to drink?", "is_required":true, "option":["Cola","Sprite","Lemonade"], "description":"" },
     {"type":1, "content": "What would you like to drink?", "is_required":true, "option":["Cola","Sprite","Lemonade"], "description": "hi" },
-    {"type":2, "content": "How are you today?", "is_required":false, "description": "bye"},]
+    {"type":2, "content": "How are you today?", "is_required":false, "description": "bye"},
+    {"type":3, "content": "How are you today?", "is_required":false, "description": "bye"},
+  ]
 };
 
 
