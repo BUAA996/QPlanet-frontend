@@ -211,7 +211,7 @@ function Design(props) {
               {questionare.map((x, index) => (
                 <Problem
                   problem={x}
-                  key={x.index}
+                  key={x.id}
                   updateAns={() => blankFunction()}
                 >
                   <MovableProblemEdit

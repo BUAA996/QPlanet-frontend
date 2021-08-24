@@ -1,10 +1,11 @@
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { CreateRounded, Delete, AddCircleOutlineRounded,FileCopyRounded } from '@material-ui/icons';
+import { CreateRounded, Delete, AddCircleOutlineRounded, FileCopyRounded } from '@material-ui/icons';
 import QuestionEditDialog from "./dialog/QuestionEditDialog";
 import EditLayer from "./EditLayer";
 import { useState } from "react";
 import Problem from "components/utils/Problem";
+import { useEffect } from "react";
 
 const useStyle = makeStyles((theme) => ({
   editBtn: {
@@ -14,8 +15,12 @@ const useStyle = makeStyles((theme) => ({
 
 function ProblemEdit(props) {
   const classes = useStyle();
-  const [dialogOpen, setDialogOpen] = useState(props.questionInfo.id[0] === 'N');
+  const [dialogOpen, setDialogOpen] = useState(false);
 
+  useEffect(() => {
+    if (props.questionInfo.id[0] === 'N')
+      setDialogOpen(true)
+  }, [])
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -59,7 +64,8 @@ function ProblemEdit(props) {
       icon: (<FileCopyRounded />),
       onClick: () => {
         // console.log(props);
-        props.add(props.index + 1, props.questionInfo);
+        const newQ = JSON.parse(JSON.stringify(props.questionInfo))
+        props.add(props.index + 1, newQ);
       }
     }
   ].map((btn) =>
