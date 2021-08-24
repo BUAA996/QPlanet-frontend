@@ -54,7 +54,7 @@ function AppHeader() {
         })
       })
     }
-  })
+  }, [isLogin])
 
   const showHeader = true
 

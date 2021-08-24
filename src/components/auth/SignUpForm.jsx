@@ -80,13 +80,12 @@ function SignUpForm() {
       enqueueSnackbar('两次输入的密码不一致', { variant: 'warning' })
       return
     }
-    let { captcha } = data
     let newData = {
-      username,
-      password1,
-      password2,
-      email,
-      code: captcha,
+      username: data.username,
+      password1: data.password1,
+      password2: data.password2,
+      email: data.email,
+      code: data.captcha,
     }
     signUp(newData).then((res) => {
       if (res.data.result) {
