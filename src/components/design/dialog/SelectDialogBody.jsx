@@ -45,7 +45,8 @@ function SelectRow(props) {
       </Grid>
 
       <Grid item>
-        <IconButton onClick={props.delChoice}>
+        <IconButton
+          onClick={props.delChoice}>
           <Delete />
         </IconButton>
       </Grid>
@@ -94,6 +95,7 @@ function SelectDialogBody(props) {
       < Button
         className={classes.rowButton}
         onClick={addChoice}
+        variant="outlined"
         startIcon={(<CreateRounded />)}
       >
         插入新选项
