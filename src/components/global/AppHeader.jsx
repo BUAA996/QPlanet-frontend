@@ -8,6 +8,7 @@ import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import ChangePassword from 'components/utils/ChangePassword'
 import { useEffect } from 'react'
+import SvgLogo from 'assets/logo.svg'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,11 +17,12 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.primary.main,
   },
   title: {
+    marginLeft: 5,
     height: '10vh',
     textDecoration: 'none',
     color: 'white',
     fontWeight: 'bold',
-    fontSize: '3vh',
+    fontSize: '4vh',
   },
   link: {
     height: '10vh',
@@ -28,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     fontSize: '1.8vh',
   },
+  logo: { position: 'relative', top: -5 },
 }))
 
 function AppHeader() {
@@ -73,6 +76,7 @@ function AppHeader() {
   return showHeader ? (
     <AppBar position='sticky' className={classes.root}>
       <Toolbar>
+        <img src={SvgLogo} alt='logo' height='100%' className={classes.logo} />
         <Link to='/' className={classes.title}>
           问卷星球
         </Link>
