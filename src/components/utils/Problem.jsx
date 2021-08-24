@@ -135,7 +135,7 @@ function FillBlanks(props) {
       className={classes.blankContent}
       id="outlined-multiline-static"
       multiline
-      rows={4}
+      rows={props.problem.kind === 2 ? 1 : 4}
       variant="outlined"
       value={value}
       onChange={handleChange}
@@ -155,6 +155,7 @@ function Problem(props) {
         {props.problem.kind === 0 ? <SingleChoice {...props}/> : null}
         {props.problem.kind === 1 ? <MultiChoice {...props}/> : null}
         {props.problem.kind === 2 ? <FillBlanks {...props}/> : null}
+        {props.problem.kind === 3 ? <FillBlanks {...props}/> : null}
         {props.children}
       </CardContent>
     </Card>
