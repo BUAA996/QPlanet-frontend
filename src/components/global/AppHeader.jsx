@@ -3,10 +3,11 @@ import { useDispatchStore } from 'store'
 import { useStateStore } from 'store'
 import { Link, useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import { logout } from 'api/auth'
+import { logout, getUserInfo } from 'api/auth'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import ChangePassword from 'components/utils/ChangePassword'
+import { useEffect } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +38,21 @@ function AppHeader() {
   const { enqueueSnackbar } = useSnackbar()
   const [anchorEl, setAnchorEl] = useState(null)
   const [open, setOpen] = useState(false)
+  const [userInfo, setUserInfo] = useState({
+    username: '用户',
+    email: '无',
+    count: 0,
+  })
+
+  useEffect(() => {
+    getUserInfo().then((res) => {
+      setUserInfo({
+        username: res.data.username,
+        email: res.data.email,
+        count: res.data.count,
+      })
+    })
+  }, [])
 
   const showHeader = true
 
@@ -70,7 +86,7 @@ function AppHeader() {
                 setAnchorEl(event.currentTarget)
               }}
             >
-              登出
+              {userInfo.username}
             </Button>
             <Menu
               id='simple-menu'
@@ -84,11 +100,18 @@ function AppHeader() {
               <MenuItem
                 onClick={() => {
                   setOpen(true)
+                  setAnchorEl(null)
                 }}
               >
                 修改密码
               </MenuItem>
-              <MenuItem onClick={onLogout}>登出账号</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  onLogout()
+                }}
+              >
+                登出账号
+              </MenuItem>
             </Menu>
             <ChangePassword open={open} setOpen={setOpen} />
           </>

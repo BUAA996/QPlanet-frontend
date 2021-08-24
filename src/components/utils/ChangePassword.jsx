@@ -7,8 +7,10 @@ import {
   IconButton,
   DialogContent,
   TextField,
+  Button,
 } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
+import { changePassword } from 'api/auth'
 
 const useStyles = makeStyles((theme) => ({}))
 
@@ -35,8 +37,18 @@ function ChangePassword({ open, setOpen }) {
         </DialogActions>
       </Box>
       <DialogContent>
-        <TextField></TextField>
-        <TextField></TextField>
+        <form>
+          <TextField />
+          <TextField />
+          <Button type='submit'>确认</Button>
+          <Button
+            onClick={() => {
+              setOpen(false)
+            }}
+          >
+            取消
+          </Button>
+        </form>
       </DialogContent>
     </Dialog>
   )

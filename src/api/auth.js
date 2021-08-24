@@ -32,12 +32,12 @@ function isLogin() {
 
 // info
 function getUserInfo() {
-  axios.post('user/info/')
+  return axios.post('user/info/')
 }
 
 // change
 function changePassword(data) {
-  axios.post('user/change/', data)
+  return axios.post('user/change/', data)
 }
 
 export {
@@ -48,4 +48,5 @@ export {
   logout,
   isLogin,
   getUserInfo,
+  changePassword,
 }
