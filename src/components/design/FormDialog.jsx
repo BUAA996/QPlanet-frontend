@@ -9,11 +9,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { CreateRounded } from '@material-ui/icons';
 import { Grid } from '@material-ui/core';
 import { useEffect } from 'react';
+import { useSnackbar } from 'notistack';
 
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState(props.title);
   const [description, setDescription] = React.useState(props.description);
+  const { enqueueSnackbar } = useSnackbar()
 
 
   useEffect(() => {
@@ -32,9 +34,19 @@ export default function FormDialog(props) {
     setOpen(false);
   };
   const handleModify = () => {
+
+    if (title.trim() === "") {
+      enqueueSnackbar("问卷标题不能为空", { variant: 'error' })
+      return;
+    }
+    if (description.trim() === "") {
+      enqueueSnackbar("问卷简介不能为空", { variant: 'error' })
+      return;
+    }
+
+    props.setTitle(title.trim());
+    props.setDescription(description.trim());
     setOpen(false);
-    props.setTitle(title);
-    props.setDescription(description);
   }
 
   const handleTitleChange = (event) => {
@@ -59,8 +71,6 @@ export default function FormDialog(props) {
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">修改标题</DialogTitle>
         <DialogContent>
-          {props.title}
-          {props.description}
           <DialogContentText>
             为了更好的呈现效果，请把标题控制在 20 个字以内
           </DialogContentText>
@@ -71,8 +81,10 @@ export default function FormDialog(props) {
             label="标题"
             type="text"
             value={title}
+            error={title.trim() === ""}
             onChange={handleTitleChange}
             defaultValue={props.title}
+            helperText="问卷标题不得为空"
             fullWidth
           />
           <TextField
@@ -84,6 +96,7 @@ export default function FormDialog(props) {
             value={description}
             defaultValue={props.description}
             onChange={handleDescriptionChange}
+            helperText="简介不得为空"
             fullWidth
           />
         </DialogContent>
