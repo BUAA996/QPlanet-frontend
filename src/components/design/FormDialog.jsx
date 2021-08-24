@@ -32,9 +32,10 @@ export default function FormDialog(props) {
 
   const handleClose = () => {
     setOpen(false);
+    setTitle(props.title);
+    setDescription(props.description);
   };
   const handleModify = () => {
-
     if (title.trim() === "") {
       enqueueSnackbar("问卷标题不能为空", { variant: 'error' })
       return;
