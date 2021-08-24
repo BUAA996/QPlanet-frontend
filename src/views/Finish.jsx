@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function Finish() {
-  useTitle('找不到网页')
+  useTitle('填写已完成')
   const Questionare = [
     {
       id: 1,
