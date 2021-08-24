@@ -139,13 +139,9 @@ function Design(props) {
   function editQuestion(index, item) {
     const newQ = questionare.slice()
     newQ.splice(index, 1, item)
-<<<<<<< HEAD
-    setQuestionare(newQ)
-=======
     // console.log("newQ:", newQ)
     handleSetQuestionare(newQ)
     // console.log("questionare", questionare)
->>>>>>> withinlover
   }
   function move(oriIndex, newIndex) {
     const item = questionare.slice()[oriIndex]
@@ -219,19 +215,6 @@ function Design(props) {
             <Grid item className={classes.problems}>
               {/* {questionare.map((problem) => <Problem problem={problem} key={problem.key} updateAns={(ans) => blankFunction(problem.key, ans)} />)} */}
               {questionare.map((x, index) => (
-<<<<<<< HEAD
-                <Problem problem={x} key={x.id} updateAns={() => blankFunction()}>
-                  <MovableProblemEdit
-                    key={x.id}
-                    questionInfo={x}
-                    index={index}
-                    move={(newIndex) => move(index, newIndex)}
-                    del={() => delQuestion(index)}
-                    add={addQuestion}
-                    edit={(item) => { editQuestion(index, item) }}
-                  />
-                </Problem>))}
-=======
               <Problem problem={x} key={x.index} updateAns={() => blankFunction()}>
                 <MovableProblemEdit
                   key={x.id}
@@ -243,7 +226,6 @@ function Design(props) {
                   edit={(item) => { editQuestion(index, item) }}
                 />
               </Problem>))}
->>>>>>> withinlover
             </Grid>
 
             <Grid item className={classes.buttons}>
