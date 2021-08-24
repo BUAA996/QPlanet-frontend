@@ -82,7 +82,7 @@ export default function FormDialog(props) {
             label="标题"
             type="text"
             value={title}
-            error={title.trim() === ""}
+            error={title === ""}
             onChange={handleTitleChange}
             defaultValue={props.title}
             helperText="问卷标题不得为空"
