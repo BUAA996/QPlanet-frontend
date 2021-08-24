@@ -7,7 +7,7 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core'
-import { view, submit } from 'api/questionaire'
+import { fill as view, submit } from 'api/questionaire'
 import { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Problem from 'components/utils/Problem'
