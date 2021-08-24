@@ -11,8 +11,8 @@ import { Grid } from '@material-ui/core';
 
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
-	const [title, setTitle] = React.useState('');
-	const [description, setDescription]  = React.useState('');
+  const [title, setTitle] = React.useState(props.title);
+  const [description, setDescription] = React.useState(props.description);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,34 +21,39 @@ export default function FormDialog(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  console.log("ori", " ", props.title, " ", props.description)
+  const handleModify = () => {
+    setOpen(false);
+    props.setTitle(title);
+    props.setDescription(description);
+  }
 
-	const handleModify = () => {
-		setOpen(false);
-		props.setTitle(title);
-		props.setDescription(description);
-	}
+  const handleTitleChange = (event) => {
+    console.log("title: ", event.target.value)
+    setTitle(event.target.value);
+  }
 
-	const handleTitleChange = (event) => {
-		setTitle(event.target.value);
-	}
-	
-	const handleDescriptionChange = (event) => {
-		setDescription(event.target.value);
-	}
+  const handleDescriptionChange = (event) => {
+    console.log("detail: ", event.target.value)
+    setDescription(event.target.value);
+  }
 
   return (
     <Grid item>
-      <Button 
-        variant="outlined" 
-				color="primary" 
-				startIcon={<CreateRounded />}
-				onClick={handleClickOpen}
-			>
-        编辑
+      <Button
+        variant="outlined"
+        color="primary"
+        startIcon={<CreateRounded />}
+        onClick={handleClickOpen}
+      >
+        问卷编辑
       </Button>
+
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">修改标题</DialogTitle>
         <DialogContent>
+          {props.title}
+          {props.description}
           <DialogContentText>
             为了更好的呈现效果，请把标题控制在 20 个字以内
           </DialogContentText>
@@ -58,18 +63,20 @@ export default function FormDialog(props) {
             id="name"
             label="标题"
             type="text"
-						value={title}
-						onChange={handleTitleChange}
+            value={title}
+            onChange={handleTitleChange}
+            defaultValue={props.title}
             fullWidth
           />
-					<TextField
+          <TextField
             autoFocus
             margin="dense"
             id="name"
             label="简介"
             type="text"
-						value={description}
-						onChange={handleDescriptionChange}
+            value={description}
+            defaultValue={props.description}
+            onChange={handleDescriptionChange}
             fullWidth
           />
         </DialogContent>

@@ -1,5 +1,4 @@
 import { makeStyles } from "@material-ui/core/styles";
-import QHead from "components/design/QHead";
 import Problem from "components/utils/Problem";
 import { Container, Button, Card, Grid, Divider } from "@material-ui/core"
 import TitleEdit from "components/design/TitleEdit";
@@ -131,9 +130,7 @@ function Design(props) {
   function editQuestion(index, item) {
     const newQ = questionare.slice()
     newQ.splice(index, 1, item)
-    // console.log("newQ:", newQ)
     setQuestionare(newQ)
-    // console.log("questionare", questionare)
   }
   function move(oriIndex, newIndex) {
     const item = questionare.slice()[oriIndex]
@@ -195,11 +192,11 @@ function Design(props) {
             alignItems='center'
             spacing={3}
           >
-            <Title title={title} description={detail}/>
+            <Title title={title} description={detail} />
 
-            <FormDialog setTitle={setTitle} setDescription={setDetail}/>
+            <FormDialog title={title} description={detail} setTitle={setTitle} setDescription={setDetail} />
 
-            <Divider 
+            <Divider
               flexItem={true}
               variant={'middle'}
               className={classes.divider}
@@ -207,17 +204,17 @@ function Design(props) {
             <Grid item className={classes.problems}>
               {/* {questionare.map((problem) => <Problem problem={problem} key={problem.key} updateAns={(ans) => blankFunction(problem.key, ans)} />)} */}
               {questionare.map((x, index) => (
-              <Problem problem={x} key={x.id} updateAns={() => blankFunction()}>
-                <MovableProblemEdit
-                  key={x.id}
-                  questionInfo={x}
-                  index={index}
-                  move={(newIndex) => move(index, newIndex)}
-                  del={() => delQuestion(index)}
-                  add={addQuestion}
-                  edit={(item) => { editQuestion(index, item) }}
-                />
-              </Problem>))}
+                <Problem problem={x} key={x.id} updateAns={() => blankFunction()}>
+                  <MovableProblemEdit
+                    key={x.id}
+                    questionInfo={x}
+                    index={index}
+                    move={(newIndex) => move(index, newIndex)}
+                    del={() => delQuestion(index)}
+                    add={addQuestion}
+                    edit={(item) => { editQuestion(index, item) }}
+                  />
+                </Problem>))}
             </Grid>
 
             <Grid item className={classes.buttons}>
@@ -226,7 +223,7 @@ function Design(props) {
               <Button variant='contained' color='secondary' onClick={() => history.go(-1)} className={classes.buttons}> 取消编辑 </Button>
               {/* <Button variant='contained' color='secondary' onClick={() => print()} className={classes.buttons}> 打印 </Button> */}
             </Grid>
-            
+
           </Grid>
         </Card>
       </Container>
