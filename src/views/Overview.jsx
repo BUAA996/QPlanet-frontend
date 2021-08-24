@@ -7,7 +7,11 @@ import {
   Button,
   Box,
 } from '@material-ui/core'
-import { getQuestionnaires, createQuestionnaire, search } from 'api/questionaire'
+import {
+  getQuestionnaires,
+  createQuestionnaire,
+  search,
+} from 'api/questionaire'
 import { makeStyles } from '@material-ui/core/styles'
 import { useEffect, useState } from 'react'
 import SearchInputButton from 'components/utils/SearchInputButton'
@@ -57,19 +61,40 @@ const useStyles = makeStyles((theme) => ({
 // };
 
 const TEMPLEATE = {
-  "title": "123",
-  "description": "感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！",
-  "validity": 998244353,
-  "limit_time": 998244353,
-  "type": 0,
-  "questions":[
-    {"type":0, "content": "What would you like to drink?", "is_required":true, "option":["Cola","Sprite","Lemonade"], "description":"" },
-    {"type":1, "content": "What would you like to drink?", "is_required":true, "option":["Cola","Sprite","Lemonade"], "description": "hi" },
-    {"type":2, "content": "How are you today?", "is_required":false, "description": "bye"},
-    {"type":3, "content": "How are you today?", "is_required":false, "description": "bye"},
-  ]
-};
-
+  title: '123',
+  description: '感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！',
+  validity: 998244353,
+  limit_time: 998244353,
+  type: 0,
+  questions: [
+    {
+      type: 0,
+      content: 'What would you like to drink?',
+      is_required: true,
+      option: ['Cola', 'Sprite', 'Lemonade'],
+      description: '',
+    },
+    {
+      type: 1,
+      content: 'What would you like to drink?',
+      is_required: true,
+      option: ['Cola', 'Sprite', 'Lemonade'],
+      description: 'hi',
+    },
+    {
+      type: 2,
+      content: 'How are you today?',
+      is_required: false,
+      description: 'bye',
+    },
+    {
+      type: 3,
+      content: 'How are you today?',
+      is_required: false,
+      description: 'bye',
+    },
+  ],
+}
 
 function SideBar() {
   const classes = useStyles()
@@ -107,7 +132,7 @@ function HeadBar(props) {
       </Grid>
       <Grid item xs={8}>
         {' '}
-        <SearchInputButton {...props}/>{' '}
+        <SearchInputButton {...props} />{' '}
       </Grid>
     </Grid>
   )
@@ -141,8 +166,8 @@ function Overview() {
         setData(tmp)
       })
     } else {
-      search({query: searchString}).then((res) => {
-        console.log(res.data.message);
+      search({ query: searchString }).then((res) => {
+        console.log(res.data.message)
         var tmp = []
         for (let i = 0; i < res.data.message.length; ++i) {
           tmp.push({
@@ -200,7 +225,7 @@ function Overview() {
           <SideBar />
         </Grid>
         <Grid item xs={10}>
-          <HeadBar search={handleSearch}/>
+          <HeadBar search={handleSearch} />
         </Grid>
         <Grid item xs={12}>
           <QuestionnaireList Questionares={data} />

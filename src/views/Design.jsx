@@ -1,18 +1,17 @@
-import { makeStyles } from "@material-ui/core/styles";
-import Problem from "components/utils/Problem";
-import { Container, Button, Card, Grid, Divider } from "@material-ui/core"
-import TitleEdit from "components/design/TitleEdit";
-import MovableProblemEdit from "components/design/MovableProblemEdit";
-import { useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { getQuestionnaire, saveQuestionaire } from "api/design";
-import { useEffect } from "react";
-import useTitle from "hooks/useTitle";
-import { isSingleChoice } from "components/utils/Problem";
-import { isMultiChoice } from "components/utils/Problem";
+import { makeStyles } from '@material-ui/core/styles'
+import Problem from 'components/utils/Problem'
+import { Container, Button, Card, Grid, Divider } from '@material-ui/core'
+import TitleEdit from 'components/design/TitleEdit'
+import MovableProblemEdit from 'components/design/MovableProblemEdit'
+import { useState } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
+import { getQuestionnaire, saveQuestionaire } from 'api/design'
+import { useEffect } from 'react'
+import useTitle from 'hooks/useTitle'
+import { isSingleChoice } from 'components/utils/Problem'
+import { isMultiChoice } from 'components/utils/Problem'
 import { Title, PreviewPage } from 'views/Preview'
-import FormDialog from "components/design/FormDialog";
-
+import FormDialog from 'components/design/FormDialog'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,50 +55,51 @@ const Questionare = [
   },
 ]
 
-
 function Design(props) {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { id } = useParams();
-  const [getQ, setQ] = useState(0);
-  const [title, setTitle] = useState();
-  const [detail, setDetail] = useState();
-  const [questionare, setQuestionare] = useState([]);
-  const [qid, setQid] = useState();
-  const history = useHistory();
+  const { id } = useParams()
+  const [getQ, setQ] = useState(0)
+  const [title, setTitle] = useState()
+  const [detail, setDetail] = useState()
+  const [questionare, setQuestionare] = useState([])
+  const [qid, setQid] = useState()
+  const history = useHistory()
 
   function handleSetQuestionare(ori) {
-    let tmp = ori.slice();
-    let tmp2 = new Array(tmp.length);
+    let tmp = ori.slice()
+    let tmp2 = new Array(tmp.length)
     tmp.map((problem, index) => {
-      tmp2[index] = {...problem, key: index}
+      tmp2[index] = { ...problem, key: index }
     })
-    setQuestionare(tmp2);
+    setQuestionare(tmp2)
   }
-  
+
   useEffect(() => {
-    let didCancel = false;
+    let didCancel = false
 
     async function fetchMyAPI() {
-      const res = await getQuestionnaire(id);
+      const res = await getQuestionnaire(id)
       // console.log(res)
       // if (res.result !== 1) {
       //   history.push("/notFound")
       // }
 
       const data = res.data
-      setQ(data.data);
+      setQ(data.data)
       setTitle(data.title)
       setDetail(data.description)
       setQid(data.qid)
-      handleSetQuestionare(data.questions.map((x) => ({
-        id: x.id,
-        kind: x.type,
-        must: x.is_required ? 1 : 0,
-        title: x.content,
-        description: x.description,
-        choices: x.option,
-      })))
+      handleSetQuestionare(
+        data.questions.map((x) => ({
+          id: x.id,
+          kind: x.type,
+          must: x.is_required ? 1 : 0,
+          title: x.content,
+          description: x.description,
+          choices: x.option,
+        }))
+      )
 
       // console.log(questionare)
       // if (!didCancel) { // Ignore if we started fetching something else
@@ -109,17 +109,16 @@ function Design(props) {
       // }
     }
 
-    fetchMyAPI();
-    return () => { didCancel = true; }; // Remember if we start fetching something else
-  }, []);
-
-
+    fetchMyAPI()
+    return () => {
+      didCancel = true
+    } // Remember if we start fetching something else
+  }, [])
 
   const qHeadSetFunc = {
     setTitle: setTitle,
     setDetail: setDetail,
   }
-
 
   useTitle('问卷编辑 - 问卷星球')
 
@@ -156,25 +155,21 @@ function Design(props) {
       must: 1,
       title: '题目',
       description: '',
-      choices: [
-        '选项1',
-        '选项2',
-        '选项3'
-      ]
+      choices: ['选项1', '选项2', '选项3'],
     }
     addQuestion(index, item)
   }
 
   const content = <Title title={title} description={detail} />
 
-  function blankFunction() { }
+  function blankFunction() {}
   function save() {
     saveQuestionaire({
-      modify_type: "delete_all_results",
+      modify_type: 'delete_all_results',
       qid: qid,
       title: title,
       description: detail,
-      validity: "2021-8-23 18:20",
+      validity: '2021-8-23 18:20',
       limit_time: 998244353,
       questions: questionare.map((x) => {
         const item = {
@@ -184,12 +179,11 @@ function Design(props) {
           is_required: x.must === 1 ? true : false,
           description: x.description,
         }
-        if (isSingleChoice(x) || isMultiChoice(x))
-          item.option = x.choices;
-        return item;
-      })
-    });
-    history.push("/overview")
+        if (isSingleChoice(x) || isMultiChoice(x)) item.option = x.choices
+        return item
+      }),
+    })
+    history.push('/overview')
   }
 
   return (
@@ -205,7 +199,12 @@ function Design(props) {
           >
             <Title title={title} description={detail} />
 
-            <FormDialog title={title} description={detail} setTitle={setTitle} setDescription={setDetail} />
+            <FormDialog
+              title={title}
+              description={detail}
+              setTitle={setTitle}
+              setDescription={setDetail}
+            />
 
             <Divider
               flexItem={true}
@@ -229,17 +228,40 @@ function Design(props) {
             </Grid>
 
             <Grid item className={classes.buttons}>
-              <Button variant='contained' color='secondary' onClick={() => addDefault(-1)} className={classes.buttons}> 添加题目 </Button>
-              <Button variant='contained' color='secondary' onClick={() => save()} className={classes.buttons}> 保存并返回 </Button>
-              <Button variant='contained' color='secondary' onClick={() => history.go(-1)} className={classes.buttons}> 取消编辑 </Button>
+              <Button
+                variant='contained'
+                color='secondary'
+                onClick={() => addDefault(-1)}
+                className={classes.buttons}
+              >
+                {' '}
+                添加题目{' '}
+              </Button>
+              <Button
+                variant='contained'
+                color='secondary'
+                onClick={() => save()}
+                className={classes.buttons}
+              >
+                {' '}
+                保存并返回{' '}
+              </Button>
+              <Button
+                variant='contained'
+                color='secondary'
+                onClick={() => history.go(-1)}
+                className={classes.buttons}
+              >
+                {' '}
+                取消编辑{' '}
+              </Button>
               {/* <Button variant='contained' color='secondary' onClick={() => print()} className={classes.buttons}> 打印 </Button> */}
             </Grid>
-
           </Grid>
         </Card>
       </Container>
     </>
-  );
+  )
 }
 
 export default Design

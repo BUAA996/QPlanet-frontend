@@ -145,7 +145,7 @@ function Feedback() {
           <Typography variant='h4' className={classes.title}>
             统计&amp;分析
           </Typography>
-          <FormControl className={classes.formControl}>
+          {/* <FormControl className={classes.formControl}>
             <Select
               value={model}
               onChange={(e) => {
@@ -157,7 +157,7 @@ function Feedback() {
               <MenuItem value={1}>默认报告</MenuItem>
               <MenuItem value={2}>交叉分析</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
         </Grid>
         <Grid item xs={6} container>
           <Grid item xs={12}>

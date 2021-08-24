@@ -80,7 +80,7 @@ function NotFound() {
   function blankFunction() {}
 
   const classes = useStyles();
-  const title = <Title title="404 NotFound" description="啊呀，问卷走丢了"/>  
+  const title = <Title title="404 NotFound" description="啊呀，问卷走丢了QAQ。请检查问卷链接，或者与问卷发布者联系。"/>  
   const Questions = Questionare.map((problem) => (<Problem problem={problem} updateAns={(ans) => blankFunction()} />));
 
   return (
