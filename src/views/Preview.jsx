@@ -214,7 +214,7 @@ function Preview() {
       answer: singleAns,
     }
     setAns(tmp);
-    console.log(tmp);
+    // console.log(tmp);
   }
 
   function handleClick() {

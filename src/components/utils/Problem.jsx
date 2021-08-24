@@ -126,16 +126,31 @@ function FillBlanks(props) {
   const [value, setValue] = useState('')
 
   const handleChange = (event) => {
-    setValue(event.target.value);
-    props.updateAns([event.target.value]);
+    let len = props.problem.kind === 2 ? 50 : 500;
+    if (event.target.value.length <= len + 1) {
+      setValue(event.target.value);
+      props.updateAns([event.target.value]);
+    }
+  }
+
+  function checkError() {
+    let len = props.problem.kind === 2 ? 50 : 500;
+    return value.length > len;
+  }
+
+  function getErrorMSG() {
+    let len = props.problem.kind === 2 ? 50 : 500;
+    return "当前字数：" + value.length + " / " + len;
   }
 
   return (
     <TextField
       className={classes.blankContent}
       id="outlined-multiline-static"
-      multiline
-      rows={4}
+      error={checkError()}
+      helperText={getErrorMSG()}
+      multiline={props.problem.kind === 3}
+      rows={props.problem.kind === 2 ? 1 : 4}
       variant="outlined"
       value={value}
       onChange={handleChange}
@@ -155,6 +170,7 @@ function Problem(props) {
         {props.problem.kind === 0 ? <SingleChoice {...props}/> : null}
         {props.problem.kind === 1 ? <MultiChoice {...props}/> : null}
         {props.problem.kind === 2 ? <FillBlanks {...props}/> : null}
+        {props.problem.kind === 3 ? <FillBlanks {...props}/> : null}
         {props.children}
       </CardContent>
     </Card>

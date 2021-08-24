@@ -18,7 +18,7 @@ function App() {
       })
       .catch(() => {
         dispatch({ type: 'finishLoading', state: true })
-        enqueueSnackbar('请注意，后端正在重启', { variant: 'warning' })
+        enqueueSnackbar('服务器正在重启，请稍后再试', { variant: 'warning' })
       })
   }, [dispatch, enqueueSnackbar])
 

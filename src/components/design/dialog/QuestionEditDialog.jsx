@@ -109,6 +109,7 @@ function QuestionEditDialog(props) {
         <MenuItem value={0}>单选</MenuItem>
         <MenuItem value={1}>多选</MenuItem>
         <MenuItem value={2}>填空</MenuItem>
+        <MenuItem value={3}>简答</MenuItem>
       </Select>
       {kind == '0' || kind == '1' ?
         <SelectDialogBody
