@@ -14,7 +14,6 @@ const useStyle = makeStyles((theme) => ({
 
 function ProblemEdit(props) {
   const classes = useStyle();
-  console.log(props.questionInfo.id)
   const [dialogOpen, setDialogOpen] = useState(props.questionInfo.id[0] === 'N');
 
 
