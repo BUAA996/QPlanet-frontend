@@ -43,6 +43,8 @@ function ChangePassword({ open, setOpen }) {
 
   const password1 = register('password1', {
     required: { value: true, message: '新密码不能为空' },
+    minLength: { value: 6, message: '密码最少需要6个字符' },
+    maxLength: { value: 16, message: '密码最多只能有16个字符' },
   })
   const password2 = register('password2', {
     required: { value: true, message: '确认密码不能为空' },
