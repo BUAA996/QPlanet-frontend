@@ -57,7 +57,7 @@ function QuestionEditDialog(props) {
       description: "",
       kind: parseInt(kind),
       must: must === "1" ? 1 : 0,
-      title: data.title, 
+      title: data.title,
       choices: choices
     }
     props.edit(newQ)

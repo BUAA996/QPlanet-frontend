@@ -37,8 +37,8 @@ function MovableProblemEdit(props) {
         xs={4}>
         <Grid item >
           <Button
-            startIcon={(<ArrowDropUpRounded
-              fontSize="large" />)}
+            variant="outlined"
+            startIcon={(<ArrowDropUpRounded />)}
             onClick={moveUp}>
             题目上移
           </Button>
@@ -51,8 +51,8 @@ function MovableProblemEdit(props) {
         <Grid item>
           <Button
             onClick={moveDown}
-            startIcon={<ArrowDropDownRounded
-              fontSize="large" />}>
+            variant="outlined"
+            startIcon={<ArrowDropDownRounded />}>
             题目下移
           </Button>
         </Grid>

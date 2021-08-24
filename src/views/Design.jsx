@@ -184,7 +184,6 @@ function Design(props) {
     history.push("/overview")
   }
 
-  // console.log("qid", qid)
   return (
     <>
       <Container maxWidth='md' className={classes.root}>
@@ -197,7 +196,9 @@ function Design(props) {
             spacing={3}
           >
             <Title title={title} description={detail}/>
+
             <FormDialog setTitle={setTitle} setDescription={setDetail}/>
+
             <Divider 
               flexItem={true}
               variant={'middle'}
@@ -218,12 +219,14 @@ function Design(props) {
                 />
               </Problem>))}
             </Grid>
+
             <Grid item className={classes.buttons}>
               <Button variant='contained' color='secondary' onClick={() => addDefault(-1)} className={classes.buttons}> 添加题目 </Button>
               <Button variant='contained' color='secondary' onClick={() => save()} className={classes.buttons}> 保存并返回 </Button>
               <Button variant='contained' color='secondary' onClick={() => history.go(-1)} className={classes.buttons}> 取消编辑 </Button>
               {/* <Button variant='contained' color='secondary' onClick={() => print()} className={classes.buttons}> 打印 </Button> */}
             </Grid>
+            
           </Grid>
         </Card>
       </Container>

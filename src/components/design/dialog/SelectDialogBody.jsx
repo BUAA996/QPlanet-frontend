@@ -13,6 +13,7 @@ const useStyle = makeStyles(theme => ({
   }
 }))
 
+// conponent: row of single choice
 function SelectRow(props) {
   const classes = useStyle();
   const {
