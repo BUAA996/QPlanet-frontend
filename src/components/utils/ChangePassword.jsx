@@ -8,12 +8,12 @@ import {
   DialogContent,
   TextField,
   Button,
+  Grid,
 } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import { changePassword } from 'api/auth'
 import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
-import clsx from 'clsx'
 
 const useStyles = makeStyles((theme) => ({
   closeBtn: {
@@ -26,13 +26,9 @@ const useStyles = makeStyles((theme) => ({
   formBox: {
     display: 'flex',
     justifyContent: 'center',
+    marginBottom: theme.spacing(1.5),
   },
-  submit: {
-    marginRight: '10%',
-  },
-  btn: {
-    width: '40%',
-  },
+  btn: {},
 }))
 
 function ChangePassword({ open, setOpen }) {
@@ -46,10 +42,10 @@ function ChangePassword({ open, setOpen }) {
   const { enqueueSnackbar } = useSnackbar()
 
   const password1 = register('password1', {
-    required: { value: true, message: '用户名不能为空' },
+    required: { value: true, message: '新密码不能为空' },
   })
   const password2 = register('password2', {
-    required: { value: true, message: '密码不能为空' },
+    required: { value: true, message: '确认密码不能为空' },
   })
 
   const onSubmit = (data) => {
@@ -109,24 +105,39 @@ function ChangePassword({ open, setOpen }) {
             variant='outlined'
             type='password'
           />
-          <Box display='flex' justifyContent='center' width='100%'>
-            <Button
-              type='submit'
-              variant='contained'
-              className={clsx(classes.submit, classes.btn)}
-            >
-              确认
-            </Button>
-            <Button
-              onClick={() => {
-                setOpen(false)
-                reset({ password1: '', password2: '' })
-              }}
-              variant='contained'
-              className={classes.btn}
-            >
-              取消
-            </Button>
+          <Box
+            display='flex'
+            justifyContent='center'
+            width='100%'
+            marginTop={1}
+          >
+            <Grid container xs={12} spacing={1} justifyContent='space-between'>
+              <Grid item xs={6}>
+                <Button
+                  type='submit'
+                  variant='contained'
+                  fullWidth
+                  color='primary'
+                  size='large'
+                >
+                  确认
+                </Button>
+              </Grid>
+              <Grid item xs={6}>
+                <Button
+                  size='large'
+                  fullWidth
+                  onClick={() => {
+                    setOpen(false)
+                    reset({ password1: '', password2: '' })
+                  }}
+                  variant='contained'
+                  color='primary'
+                >
+                  取消
+                </Button>
+              </Grid>
+            </Grid>
           </Box>
         </form>
       </DialogContent>
