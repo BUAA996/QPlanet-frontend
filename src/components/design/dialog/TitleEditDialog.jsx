@@ -1,4 +1,4 @@
-import { Box, Button, DialogContent, DialogTitle, TextField, Grid } from "@material-ui/core";
+import { DialogTitle, TextField, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import EditDialog from "./EditDialog";
@@ -50,7 +50,7 @@ function TitleEditDialog(props) {
             required
             label="标题"
             id="filled-required"
-            // defaultValue={props.title}
+            defaultValue={props.title}
             onChange={title.onChange}
             name={title.name}
             inputRef={title.ref}
