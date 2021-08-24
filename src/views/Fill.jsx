@@ -14,6 +14,8 @@ import Problem from 'components/utils/Problem'
 import useTitle from 'hooks/useTitle'
 import { useParams } from 'react-router'
 import { useHistory } from 'react-router-dom'
+import { func } from 'prop-types'
+import { useSnackbar } from 'notistack'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,6 +116,7 @@ function Fill() {
   const [ansList, setAns] = useState([]);
   const { id } = useParams();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setTitle(TITLE);
@@ -170,12 +173,59 @@ function Fill() {
     // console.log(tmp);
   }
 
+  function checkMust() {
+    let res = true, tmp = ansList.slice();
+    Questionare.map((problem, index) => {
+      if (problem.must) {
+        switch (problem.kind) {
+          case 0:
+          case 1:
+          case 2:
+          case 3:
+            if (tmp[index].answer.length === 0 || tmp[index].answer[0] == '')
+              res = false;
+            break;
+          default:
+            break;
+        }
+      }
+    })
+    return res;
+  }
+
+  function getTodoID() {
+    let res = '', tmp = ansList.slice();
+    Questionare.map((problem, index) => {
+      if (problem.must) {
+        switch (problem.kind) {
+          case 0:
+          case 1:
+          case 2:
+          case 3:
+            if (tmp[index].answer.length === 0 || tmp[index].answer[0] == '')
+              if (res === '')
+                res = res + (index + 1);
+              else 
+                res = res + ', ' + (index + 1);
+            break;
+          default:
+            break;
+        }
+      }
+    })
+    return res;
+  }
+
   function handleClick() {
     // console.log({id: questionID, results: ansList})
-    submit({qid: questionID, results: ansList}).then((res) => {
-      // console.log(res);
-      history.push('/');
-    })
+    if (checkMust()) {
+      submit({qid: questionID, results: ansList}).then((res) => {
+        // console.log(res);
+        history.push('/');
+      })
+    } else {
+      enqueueSnackbar('有必做题尚未完成：' + getTodoID(), {variant: 'warning'})
+    }
   }
 
   return (
