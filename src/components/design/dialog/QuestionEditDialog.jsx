@@ -1,8 +1,6 @@
-import { Box, DialogTitle, TextField, FormLabel, Select, RadioGroup, Radio, FormControlLabel, MenuItem, InputLabel, FormControl, DialogContent, Divider } from "@material-ui/core";
+import { DialogTitle, TextField, FormLabel, Select, RadioGroup, Radio, FormControlLabel, MenuItem, InputLabel, FormControl, DialogContent, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Details, ErrorOutlineSharp } from "@material-ui/icons";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import EditDialog from "./EditDialog";
 import SelectDialogBody from "./SelectDialogBody";
 import { useSnackbar } from 'notistack'
@@ -27,10 +25,18 @@ function QuestionEditDialog(props) {
   const classes = useStyle();
   const { enqueueSnackbar } = useSnackbar()
 
-  const [choices, setChoices] = useState(props.questionInfo.choices);
-  const [must, setMust] = useState("" + props.questionInfo.must);
-  const [kind, setKind] = useState("" + props.questionInfo.kind);
-  const [title, setTitle] = useState("" + props.questionInfo.title);
+  const [choices, setChoices] = useState([]);
+  const [must, setMust] = useState("1");
+  const [kind, setKind] = useState("0");
+  const [title, setTitle] = useState("");
+
+
+  useEffect(() => {
+    setTitle(props.questionInfo.title)
+    setChoices(props.questionInfo.choices)
+    setMust("" + props.questionInfo.must);
+    setKind("" + props.questionInfo.kind);
+  }, [props.must, props.kind])
 
   const handleChangeMust = (event) => {
     setMust(event.target.value);
@@ -53,13 +59,14 @@ function QuestionEditDialog(props) {
   const handleClose = () => {
     props.close()
     setChoices(props.questionInfo.choices)
-    setMust(props.questionInfo.must)
+    setMust("" + props.questionInfo.must)
     setTitle(props.questionInfo.title)
     console.log(props.questionInfo)
   }
 
 
   const saveFunc = () => {
+    console.log(choices)
     if (title.trim() === "") {
       enqueueSnackbar("题目不能为空", { variant: 'error' });
       return;
@@ -68,17 +75,24 @@ function QuestionEditDialog(props) {
       enqueueSnackbar("选择题选项不能少于两个", { variant: 'error' });
       return;
     }
-    // if ((kind == '0' || kind == '1') && )
+
+    if ((kind == '0' || kind == '1') &&
+      !choices
+        .map((x) => x.trim() !== "")
+        .reduce((x, y) => x && y)) {
+      enqueueSnackbar("选项不能为空", { variant: 'error' });
+      return;
+    }
 
 
-      const newQ = {
-        id: props.questionInfo.id,
-        description: "",
-        kind: parseInt(kind),
-        must: must === "1" ? 1 : 0,
-        title: title.trim(),
-        choices: choices
-      }
+    const newQ = {
+      id: props.questionInfo.id,
+      description: "",
+      kind: parseInt(kind),
+      must: must === "1" ? 1 : 0,
+      title: title.trim(),
+      choices: choices
+    }
     props.edit(newQ)
     props.close()
   }
@@ -98,7 +112,7 @@ function QuestionEditDialog(props) {
         value={title}
         onChange={handleChangeTitle}
         error={title.trim() === ""}
-        helperText="题目不得为空"
+        helperText={title.trim() === "" && "题目不得为空"}
         multiline
         fullWidth
       />
