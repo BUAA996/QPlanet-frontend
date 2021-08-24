@@ -21,7 +21,16 @@ function Home() {
 
   return (
     <Grid xs={12} container className={classes.root} justifyContent='center'>
-      <Grid item xs={6} container direction='column' alignItems='center'>
+      <Grid
+        item
+        lg={6}
+        md={4}
+        sm={4}
+        xs={4}
+        container
+        direction='column'
+        alignItems='center'
+      >
         <Typography className={classes.title} color='primary' variant='h3'>
           问卷调查，从"星"开始
         </Typography>

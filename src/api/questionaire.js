@@ -60,6 +60,11 @@ function downloadQuestionnaire(data) {
   return axios.post('questionnaire/download/', data)
 }
 
+// fill
+function fill(data) {
+  return axios.post('questionnaire/fill/', data)
+}
+
 export {
   createQuestionnaire,
   deleteQuestionnaire,
@@ -73,4 +78,5 @@ export {
   close,
   copy,
   downloadQuestionnaire,
+  fill,
 }

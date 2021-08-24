@@ -105,11 +105,12 @@ function AppContent() {
           {isLogin ? (
             <Overview />
           ) : (
-            <RedirectWithMsg
-              to='/signin'
-              message='未登录时该功能不能使用'
-              type='warning'
-            />
+            // <RedirectWithMsg
+            //   to='/signin'
+            //   message='未登录时该功能不能使用'
+            //   type='warning'
+            // />
+            <Redirect to='/signin' />
           )}
         </Route>
         <Route exact path='*'>

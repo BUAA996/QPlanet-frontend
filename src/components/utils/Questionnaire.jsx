@@ -75,7 +75,7 @@ function Questionare(props) {
     history.go(0)
   }
 
-  return props.showType === -1 ||
+  return (props.showType === -1  && props.status !== 3) ||
     props.showType === 5 ||
     props.showType === props.status ? (
     <>
