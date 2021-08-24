@@ -28,9 +28,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   submit: {
-    marginRight: '30%',
+    marginRight: '10%',
   },
-  btn: {},
+  btn: {
+    width: '40%',
+  },
 }))
 
 function ChangePassword({ open, setOpen }) {
