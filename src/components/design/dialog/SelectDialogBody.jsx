@@ -2,7 +2,7 @@ import { Delete, Title, CreateRounded } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
 import { Typography, TextField, IconButton, Button, Grid, Dialog, DialogContent } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const useStyle = makeStyles(theme => ({
   row: {
@@ -16,40 +16,32 @@ const useStyle = makeStyles(theme => ({
 // conponent: row of single choice
 function SelectRow(props) {
   const classes = useStyle();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm();
+  const [choice, setChoice] = useState("")
 
-  const onSubmit = (data) => {
-    props.editChoice(data.choice)
+  useEffect(() => {
+    setChoice(props.choiceContent);
+  }, [props.choiceContent])
+
+  const handleChange = (e) => {
+    setChoice(e.target.value)
   }
-
-  const choiceContent = register("choice", {
-    required: { value: true, message: "选项内容不能为空" }
-  });
 
   return (
     <Grid container
       className={classes.row}>
 
       <Grid item>
-        {/* <form > */}
         <TextField
           required
           label={"选项" + props.index}
-          defaultValue={props.choiceContent}
-          onChange={choiceContent.onChange}
-          name={choiceContent.name}
-          inputRef={choiceContent.ref}
-          error={!!errors.choiceContent}
-          helperText={errors.choiceContent && errors.choiceContent.message}
+          onChange={handleChange}
+          value={choice}
+          error={choice.trim() === ""}
+          helperText={choice.trim() === "" && "选项不能为空"}
           variant="outlined"
           // fullWidth={true}
-          onBlur={handleSubmit(onSubmit)}
+          onBlur={() => props.editChoice(choice)}
         />
-        {/* </form> */}
       </Grid>
 
       <Grid item>
@@ -91,7 +83,7 @@ function SelectDialogBody(props) {
 
       {props.choices.map((item, idx) =>
       (<SelectRow
-        key={item + idx} //!!!!!!!!!!!! bug: when same key
+        key={idx} //!!!!!!!!!!!! bug: when same key
         choiceContent={item}
         index={idx}
         editChoice={(content) => { editChoice(idx, content) }}

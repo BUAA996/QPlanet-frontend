@@ -85,7 +85,6 @@ export default function FormDialog(props) {
             error={title === ""}
             onChange={handleTitleChange}
             defaultValue={props.title}
-            helperText="问卷标题不得为空"
             fullWidth
           />
           <TextField
@@ -97,7 +96,6 @@ export default function FormDialog(props) {
             value={description}
             defaultValue={props.description}
             onChange={handleDescriptionChange}
-            helperText="简介不得为空"
             fullWidth
           />
         </DialogContent>
