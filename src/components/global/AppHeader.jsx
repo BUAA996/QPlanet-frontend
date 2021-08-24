@@ -108,6 +108,7 @@ function AppHeader() {
               <MenuItem
                 onClick={() => {
                   onLogout()
+                  setAnchorEl(null)
                 }}
               >
                 登出账号
