@@ -1,6 +1,6 @@
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { CreateRounded, Delete, AddCircleOutlineRounded } from '@material-ui/icons';
+import { CreateRounded, Delete, AddCircleOutlineRounded,FileCopyRounded } from '@material-ui/icons';
 import QuestionEditDialog from "./dialog/QuestionEditDialog";
 import EditLayer from "./EditLayer";
 import { useState } from "react";
@@ -53,6 +53,14 @@ function ProblemEdit(props) {
           ]
         })
       },
+    }, {
+      id: 4,
+      content: "复制",
+      icon: (<FileCopyRounded />),
+      onClick: () => {
+        // console.log(props);
+        props.add(props.index + 1, props.questionInfo);
+      }
     }
   ].map((btn) =>
   (<Button
@@ -64,7 +72,6 @@ function ProblemEdit(props) {
   >{btn.content}</Button>)
   )
 
-  function blankFunction() { }
 
   return (
     <>

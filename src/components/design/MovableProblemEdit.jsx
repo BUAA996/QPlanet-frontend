@@ -2,12 +2,15 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 const { makeStyles, IconButton, Grid, Box, TextField, Button } = require("@material-ui/core");
-const { ArrowDropUpRounded, ArrowDropDownRounded, DehazeRounded } = require("@material-ui/icons");
+const { ExpandLessRounded, ExpandMoreRounded, DehazeRounded } = require("@material-ui/icons");
 const { default: ProblemEdit } = require("./ProblemEdit");
 
 const useStyle = makeStyles(theme => ({
   inputNum: {
     width: theme.spacing(5)
+  },
+  moveButton: {
+    margin: theme.spacing(1)
   }
 }))
 
@@ -33,14 +36,15 @@ function MovableProblemEdit(props) {
       <Grid container item
         direction="row"
         alignItems="center"
-        justifyContent="space-around"
+        justifyContent="flex-start"
         xs={5}>
         <Grid item >
           <Button
+            className={classes.moveButton}
             variant="outlined"
-            startIcon={(<ArrowDropUpRounded />)}
+            startIcon={(<ExpandLessRounded />)}
             onClick={moveUp}>
-            题目上移
+            上移
           </Button>
         </Grid>
         {/*         
@@ -50,10 +54,11 @@ function MovableProblemEdit(props) {
 
         <Grid item>
           <Button
+            className={classes.moveButton}
             onClick={moveDown}
             variant="outlined"
-            startIcon={<ArrowDropDownRounded />}>
-            题目下移
+            startIcon={<ExpandMoreRounded />}>
+            下移
           </Button>
         </Grid>
 
