@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     fontSize: '1.8vh',
   },
-  logo: { position: 'relative', top: -5 },
+  logo: { position: 'relative', top: -5, cursor: 'pointer' },
 }))
 
 function AppHeader() {
@@ -76,7 +76,15 @@ function AppHeader() {
   return showHeader ? (
     <AppBar position='sticky' className={classes.root}>
       <Toolbar>
-        <img src={SvgLogo} alt='logo' height='100%' className={classes.logo} />
+        <img
+          src={SvgLogo}
+          alt='logo'
+          height='100%'
+          className={classes.logo}
+          onClick={() => {
+            history.push('/')
+          }}
+        />
         <Link to='/' className={classes.title}>
           问卷星球
         </Link>
