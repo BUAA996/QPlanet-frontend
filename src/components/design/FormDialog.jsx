@@ -21,7 +21,7 @@ export default function FormDialog(props) {
   const handleClose = () => {
     setOpen(false);
   };
-
+  console.log("ori", " ", props.title, " ", props.description)
   const handleModify = () => {
     setOpen(false);
     props.setTitle(title);
@@ -29,10 +29,12 @@ export default function FormDialog(props) {
   }
 
   const handleTitleChange = (event) => {
+    console.log("title: ", event.target.value)
     setTitle(event.target.value);
   }
 
   const handleDescriptionChange = (event) => {
+    console.log("detail: ", event.target.value)
     setDescription(event.target.value);
   }
 
@@ -44,11 +46,14 @@ export default function FormDialog(props) {
         startIcon={<CreateRounded />}
         onClick={handleClickOpen}
       >
-        编辑
+        问卷编辑
       </Button>
+
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">修改标题</DialogTitle>
         <DialogContent>
+          {props.title}
+          {props.description}
           <DialogContentText>
             为了更好的呈现效果，请把标题控制在 20 个字以内
           </DialogContentText>
