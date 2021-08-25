@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 // 进入该路由的时候是否要跳转到另一个路由
 // assert满足就跳转, to为空则返回主页, msg为跳转的提示信息
 function useRouteDefender({
-  assert,
+  assert = true,
   method = 'push',
   to = '/',
   msg = '未赋值的信息',

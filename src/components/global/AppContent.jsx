@@ -11,6 +11,7 @@ import SignInForm from 'components/auth/SignInForm'
 import SignUpForm from 'components/auth/SignUpForm'
 import Preview from 'views/Preview'
 import Finish from 'views/Finish'
+import PickType from 'views/PickType'
 
 function AppContent() {
   return (
@@ -18,6 +19,9 @@ function AppContent() {
       <Switch>
         <Route exact path='/'>
           <Home />
+        </Route>
+        <Route exact path='/picktype'>
+          <PickType />
         </Route>
         <Route exact path='/fill/:id'>
           <Fill />
