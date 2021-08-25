@@ -1,4 +1,4 @@
-import { Container } from '@material-ui/core'
+import { Container, Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import banner from 'assets/banner.png'
 
@@ -8,7 +8,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: theme.palette.background.paper,
-    marginTop: '10vh',
     width: '28vw',
   },
   banner: {
@@ -27,7 +26,9 @@ function Auth({ form }) {
   return (
     <>
       <img src={banner} className={classes.banner} alt='banner' />
-      <Container className={classes.root}>{form}</Container>
+      <Container className={classes.root}>
+        <Box marginTop='7vh'>{form}</Box>
+      </Container>
     </>
   )
 }
