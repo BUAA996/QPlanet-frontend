@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     height: 60,
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#FFFFFF'
+    color: '#FFFFFF',
   },
   headBar: {
     marginTop: theme.spacing(1),
@@ -106,7 +106,7 @@ function SideBar() {
   function handleCreate() {
     createQuestionnaire(TEMPLEATE).then((res) => {
       if (res.data.result == 1) {
-        history.push('/picktype/')
+        history.push('/picktype/', { hash: res.data.hash })
       }
     })
   }
