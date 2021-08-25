@@ -1,4 +1,13 @@
-import { Button, AppBar, Toolbar, Box, Menu, MenuItem, Container, Grid } from '@material-ui/core'
+import {
+  Button,
+  AppBar,
+  Toolbar,
+  Box,
+  Menu,
+  MenuItem,
+  Container,
+  Grid,
+} from '@material-ui/core'
 import { useDispatchStore } from 'store'
 import { useStateStore } from 'store'
 import { Link, useHistory } from 'react-router-dom'
@@ -11,7 +20,7 @@ import { useEffect } from 'react'
 import SvgLogo from 'assets/logo.svg'
 
 const useStyles = makeStyles((theme) => ({
-  root: { },
+  root: {},
   title: {
     fontSize: 24,
     marginLeft: 5,
@@ -73,35 +82,50 @@ function AppHeader() {
         <Container fixed>
           <Grid
             container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center">
-            <Grid item xs={4} container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="center">
+            direction='row'
+            justifyContent='flex-start'
+            alignItems='center'
+          >
+            <Grid
+              item
+              xs={4}
+              container
+              direction='row'
+              justifyContent='flex-start'
+              alignItems='center'
+            >
               <Grid item>
                 <img
                   src={SvgLogo}
                   alt='logo'
                   onClick={() => {
                     history.push('/')
-                  }}/>
+                  }}
+                  style={{ cursor: 'pointer' }}
+                />
               </Grid>
-              <Grid item> 
+              <Grid item>
                 <Link to='/' className={classes.title}>
                   问卷星球
                 </Link>
               </Grid>
             </Grid>
-            <Grid item xs={8} container
-              direction="row"
-              justifyContent="flex-end"
-              alignItems="center">
+            <Grid
+              item
+              xs={8}
+              container
+              direction='row'
+              justifyContent='flex-end'
+              alignItems='center'
+            >
               <Box flexGrow={1} />
               {isLogin ? (
                 <>
-                  <Button component={Link} to='/overview' className={classes.link}>
+                  <Button
+                    component={Link}
+                    to='/overview'
+                    className={classes.link}
+                  >
                     进入控制台
                   </Button>
                   <Button
@@ -142,23 +166,29 @@ function AppHeader() {
                 </>
               ) : (
                 <>
-                  <Button component={Link} to='/signin' className={classes.link}>
+                  <Button
+                    component={Link}
+                    to='/signin'
+                    className={classes.link}
+                  >
                     登录
                   </Button>
-                  <Button component={Link} to='/signup' className={classes.link}>
+                  <Button
+                    component={Link}
+                    to='/signup'
+                    className={classes.link}
+                  >
                     注册
                   </Button>
                 </>
               )}
             </Grid>
-          </Grid>   
+          </Grid>
         </Container>
       </Toolbar>
     </AppBar>
-  ) : (
-    // <Box height='10vh' width='100vw'></Box>
-    null
-  )
+  ) : // <Box height='10vh' width='100vw'></Box>
+  null
 }
 
 export default AppHeader
