@@ -2,11 +2,11 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Container, Typography } from '@material-ui/core';
+import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Container, Typography, Slider, Box, Grid } from '@material-ui/core';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
     marginTop: 30,
@@ -28,7 +28,22 @@ const useStyles = makeStyles({
   blankContent: {
     marginTop: 10
   },
-});
+  description: {
+    color: theme.palette.text.secondary,
+    textAlign: 'left',
+    marginLeft: theme.spacing(5),
+    marginTop: theme.spacing(1),
+  },
+  plainText: {
+    color: theme.palette.text.primary,
+    textAlign: 'left',
+    marginLeft: theme.spacing(5),
+    marginTop: theme.spacing(1),
+  },
+  scoringSlider: {
+    marginLeft: theme.spacing(8)
+  }
+}));
 
 function ShowClasses(props) {
   const classes = useStyles();
@@ -160,6 +175,81 @@ function FillBlanks(props) {
   );
 }
 
+function ShortAnswer(props) {
+  const classes = useStyles();
+  const [value, setValue] = useState('')
+  const len = 500;
+
+  const handleChange = (event) => {
+    if (event.target.value.length <= len + 1) {
+      setValue(event.target.value);
+      props.updateAns([event.target.value]);
+    }
+  }
+
+  function checkError() {
+    return value.length > len;
+  }
+
+  function getErrorMSG() {
+    return "当前字数：" + value.length + " / " + len;
+  }
+
+  return (
+    <TextField
+      className={classes.blankContent}
+      id="outlined-multiline-static"
+      error={checkError()}
+      helperText={getErrorMSG()}
+      multiline
+      rows={4}
+      variant="outlined"
+      value={value}
+      onChange={handleChange}
+      placeholder='请在此处输入答案'
+      fullWidth
+    />
+  );
+}
+
+function Scoring(props) {
+  const classes = useStyles();
+
+  const marks = [
+    {value: 0, label: '0'},
+    {value: 50, label: '50'},
+    {value: 100, label: '100'}
+  ];
+
+  function valuetext(value) {
+    return '当前选择：' + value;
+  }
+
+  return (
+    <Grid
+      container
+      direction="row"
+      justifyContent="flex-start"
+      alignItems="center"
+    >
+      <Grid item xs={12}><Typography className={classes.plainText}>拖动滑块做出选择：</Typography></Grid>
+      <Grid item xs={6} className={classes.scoringSlider}>
+        <Slider
+          defaultValue={10}
+          getAriaValueText={valuetext}
+          aria-labelledby="discrete-slider-small-steps"
+          step={1}
+          marks={marks}
+          min={0}
+          max={100}
+          valueLabelDisplay="auto"
+        /> 
+      </Grid>
+    </Grid>
+    
+  );
+}
+
 function Problem(props) {
   const classes = useStyles();
   return (
@@ -167,10 +257,12 @@ function Problem(props) {
       <CardContent>
         <ShowClasses title={"第 " + (props.problem.key + 1) + " 题 " + props.problem.title} must={props.problem.must} />
         <Divider />
-        {props.problem.kind === 0 ? <SingleChoice {...props} /> : null}
-        {props.problem.kind === 1 ? <MultiChoice {...props} /> : null}
-        {props.problem.kind === 2 ? <FillBlanks {...props} /> : null}
-        {props.problem.kind === 3 ? <FillBlanks {...props} /> : null}
+        <Typography className={classes.description}> 在这里加注释合适嘛 ? 合适的不得了 {props.description}</Typography>
+        {isSingleChoice(props.problem) && <SingleChoice {...props}/>}
+        {isMultiChoice(props.problem) && <MultiChoice {...props}/>}
+        {isFillBlank(props.problem) && <FillBlanks {...props}/>}
+        {isShortAnswer(props.problem) && <ShortAnswer {...props}/>}
+        {isScoring(props.problem) && <Scoring {...props}/>}
         {props.children}
       </CardContent>
     </Card>
@@ -180,8 +272,10 @@ function Problem(props) {
 function isSingleChoice(problem) { return problem.kind === 0; }
 function isMultiChoice(problem) { return problem.kind === 1; }
 function isFillBlank(problem) { return problem.kind === 2; }
+function isShortAnswer(problem) { return problem.kind === 3;}
+function isScoring(problem) { return problem.kind === 4;}
 
 function isChoice(problem) { return isSingleChoice(problem) || isMultiChoice(problem) }
 
 export default Problem;
-export { isSingleChoice, isMultiChoice, isFillBlank }
+export { isSingleChoice, isMultiChoice, isFillBlank, isShortAnswer, isScoring}
