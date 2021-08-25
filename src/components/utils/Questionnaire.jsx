@@ -33,10 +33,11 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginLeft: 20,
+    fontWeight: 'bold',
   },
   info: {
     fontSize: 12,
-    paddingRight: theme.spacing(1)
+    // paddingRight: theme.spacing(1)
   },
   sub: {
     marginLeft: 20,
@@ -45,10 +46,13 @@ const useStyles = makeStyles((theme) => ({
   description: {
     fontSize: 14,
     paddingLeft: theme.spacing(3),
-    color: theme.palette.primary.light,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    // color: theme.palette.primary.light,
   },
   buttons: {
-    fontsize: 12,
+    // fontsize: 12
+    marginRight: theme.spacing(1)
   }
 }))
 
@@ -58,9 +62,28 @@ function Info(props) {
   const classes = useStyles()
 
   return (
-    <Typography variant="h6" component="span" className={classes.info} {...props}>
-      {props.children}
-    </Typography>
+    <Grid item {...props}>
+      <Typography variant="h6" component="span" className={classes.info} {...props}>
+        {props.children}
+      </Typography>
+    </Grid>
+  );
+}
+
+function TimeInfo(props) {
+  return (
+    <Grid
+      item
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      component="span"
+      {...props}
+    >
+      <Info >创建时间: {props.createTime}</Info>
+      {props.status === 1 ? <Info>发布时间: {props.uploadTime}</Info> : null}
+    </Grid>
   );
 }
 
@@ -107,24 +130,19 @@ function Questionare(props) {
       <Card className={classes.root}>
         <Grid container>
           <Grid item xs={7}>
-            <Link
-              component={RouterLink}
-              to={'/preview/' + props.hash}
-              className={classes.title}
-            >
+            <Grid className={classes.title}>
               {props.title}
-            </Link>
+            </Grid>
           </Grid>
-          <Grid item xs={5} className={classes.info}>
-            <Info style={{color: 'red'}}>{Questionaire_STATUS[props.status]}</Info>
-            <Info>
-              {props.status === 1 ? (
-                <>发布时间: {props.uploadTime}</>
-              ) : (
-                <>创建时间: {props.createTime}</>
-              )}
-            </Info>
-            <Info>
+          <Grid item xs={5} container className={classes.info}
+            container
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="center"
+          >
+            <Info style={{color: 'red'}} xs={2}>{Questionaire_STATUS[props.status]}</Info>
+            <TimeInfo {...props} xs={6}/>
+            <Info xs={3}>
               填写人数：{props.count}
             </Info>
           </Grid>
@@ -134,13 +152,15 @@ function Questionare(props) {
           <Grid item xs={12} className={classes.description}>
             {props.description}
           </Grid>
-          <Grid item xs={7} className={classes.buttons}>
+          <Grid item xs={7} >
             <Button
               component={RouterLink}
               to={'/design/' + props.hash}
               color='primary'
               startIcon={<EditIcon />}
               size="small"
+              variant="outlined"
+              className={classes.buttons}
             >
               编辑
             </Button>
@@ -157,6 +177,8 @@ function Questionare(props) {
               }}
               startIcon={<ShareIcon />}
               size="small"
+              variant="outlined"
+              className={classes.buttons}
             >
               分享
             </Button>
@@ -166,6 +188,8 @@ function Questionare(props) {
               color='primary'
               startIcon={<BarChartIcon />}
               size="small"
+              variant="outlined"
+              className={classes.buttons}
             >
               统计
             </Button>
@@ -175,27 +199,29 @@ function Questionare(props) {
               color='primary'
               startIcon={<VisibilityIcon />}
               size="small"
+              variant="outlined"
+              className={classes.buttons}
             >
               预览
             </Button>
           </Grid>
           <Grid item xs={5}>
             {props.status == 0 ? (
-              <Button color='primary' onClick={() => handleRelease()} startIcon={<PlayArrowIcon />} size="small">
+              <Button color='primary' onClick={() => handleRelease()} startIcon={<PlayArrowIcon />} size="small" variant="outlined" className={classes.buttons}>
                 发布
               </Button>
             ) : null}
             {props.status == 1 ? (
-              <Button color='primary' onClick={() => handleClose()} startIcon={<StopIcon />} size="small">
+              <Button color='primary' onClick={() => handleClose()} startIcon={<StopIcon />} size="small" variant="outlined" className={classes.buttons}>
                 停止
               </Button>
             ) : null}
             {props.status == 1 ? (
-              <Button color='primary' onClick={() => handleReset()} startIcon={<RotateLeftIcon />} size="small">
+              <Button color='primary' onClick={() => handleReset()} startIcon={<RotateLeftIcon />} size="small" variant="outlined" className={classes.buttons}>
                 重置
               </Button>
             ) : null}
-            <Button color='primary' onClick={() => handleCopy()} startIcon={<DescriptionIcon />} size="small">
+            <Button color='primary' onClick={() => handleCopy()} startIcon={<DescriptionIcon />} size="small" variant="outlined" className={classes.buttons}>
               复制
             </Button>
             <Button
@@ -203,11 +229,13 @@ function Questionare(props) {
               onClick={() => handleDelete({ id: props.id })}
               startIcon={props.stauts === 3 ? <DeleteForeverIcon /> : <DeleteIcon />} 
               size="small"
+              variant="outlined"
+              className={classes.buttons}
             >
               {props.status === 3 ? '彻底删除' : '删除'}{' '}
             </Button>
             {props.status == 3 ? (
-              <Button color='primary' onClick={() => handleRecover()} startIcon={<RestoreFromTrashIcon />} size="small">
+              <Button color='primary' onClick={() => handleRecover()} startIcon={<RestoreFromTrashIcon />} size="small" variant="outlined" className={classes.buttons}>
                 恢复
               </Button>
             ) : null}

@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     height: 60,
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#FFFFFF'
   },
   headBar: {
     marginTop: theme.spacing(1),
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   headBarTitle: {
     textAlign: 'center',
-    color: theme.palette.primary.dark,
+    color: theme.palette.primary.main,
     fontWeight: 'bold',
   },
   test: {
