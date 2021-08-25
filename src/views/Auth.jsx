@@ -26,7 +26,7 @@ function Auth({ form }) {
 
   return (
     <>
-      <img src={banner} className={classes.banner} alt='banner' />;
+      <img src={banner} className={classes.banner} alt='banner' />
       <Container className={classes.root}>{form}</Container>
     </>
   )
