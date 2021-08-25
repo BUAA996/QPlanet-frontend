@@ -82,7 +82,7 @@ function SignInForm() {
   })
 
   const onSubmit = (data) => {
-    if (data.captcha.toLowerCase() !== webCaptcha) {
+    if (data.captcha.toLowerCase() !== webCaptcha.toLowerCase()) {
       enqueueSnackbar('验证码错误', { variant: 'warning' })
       return
     }
