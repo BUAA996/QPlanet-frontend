@@ -8,6 +8,7 @@ import survey from 'assets/questionnaire_type/survey.png'
 import vote from 'assets/questionnaire_type/vote.png'
 import { useState } from 'react'
 import clsx from 'clsx'
+import { useLocation, useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   cardBoxLeft: {
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function TypeCard({ url, title, word }) {
+function TypeCard({ url, title, word, ...other }) {
   const classes = useStyles()
   const [hover, setHover] = useState(false)
 
@@ -72,6 +73,7 @@ function TypeCard({ url, title, word }) {
       onMouseLeave={() => {
         setHover(false)
       }}
+      {...other}
     >
       <Box
         display='flex'
@@ -106,6 +108,8 @@ function TypeCard({ url, title, word }) {
 function PickType() {
   const classes = useStyles()
   const isLogin = useStateStore().isLogin
+  const location = useLocation()
+  const history = useHistory()
 
   useRouteDefender({
     assert: !isLogin,
@@ -125,7 +129,16 @@ function PickType() {
           direction='column'
           className={classes.cardBoxLeft}
         >
-          <TypeCard title='调查' word='丰富题型，强大逻辑' url={survey} />
+          <TypeCard
+            title='调查'
+            word='丰富题型，强大逻辑'
+            url={survey}
+            onClick={() => {
+              if (location.state !== undefined) {
+                history.push('/design/' + location.state.hash)
+              }
+            }}
+          />
           <TypeCard title='投票' word='实时计算，微信投票' url={vote} />
         </Grid>
         <Grid
