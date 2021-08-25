@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Grid, Link } from '@material-ui/core'
+import { Button, Card, Divider, Grid, Link, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link as RouterLink, useHistory } from 'react-router-dom'
 import {
@@ -12,6 +12,17 @@ import {
 import QRDialog from './QRDialog'
 import { useState } from 'react'
 import { useSnackbar } from 'notistack'
+import EditIcon from '@material-ui/icons/Edit';
+import ShareIcon from '@material-ui/icons/Share';
+import BarChartIcon from '@material-ui/icons/BarChart';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import StopIcon from '@material-ui/icons/Stop';
+import DescriptionIcon from '@material-ui/icons/Description';
+import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import RotateLeftIcon from '@material-ui/icons/RotateLeft';
+import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   info: {
     fontSize: 12,
+    paddingRight: theme.spacing(1)
   },
   sub: {
     marginLeft: 20,
@@ -35,9 +47,22 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(3),
     color: theme.palette.primary.light,
   },
+  buttons: {
+    fontsize: 12,
+  }
 }))
 
 const Questionaire_STATUS = ['未发布', '已发布', '已完成', '已删除']
+
+function Info(props) {
+  const classes = useStyles()
+
+  return (
+    <Typography variant="h6" component="span" className={classes.info} {...props}>
+      {props.children}
+    </Typography>
+  );
+}
 
 function Questionare(props) {
   const classes = useStyles()
@@ -91,15 +116,17 @@ function Questionare(props) {
             </Link>
           </Grid>
           <Grid item xs={5} className={classes.info}>
-            <span style={{ color: 'red' }}>
-              {Questionaire_STATUS[props.status]} &nbsp;
-            </span>
-            {props.status === 1 ? (
-              <>发布时间: {props.uploadTime}&nbsp;</>
-            ) : (
-              <>创建时间: {props.createTime}&nbsp; </>
-            )}
-            填写人数:&nbsp;{props.count}&nbsp;
+            <Info style={{color: 'red'}}>{Questionaire_STATUS[props.status]}</Info>
+            <Info>
+              {props.status === 1 ? (
+                <>发布时间: {props.uploadTime}</>
+              ) : (
+                <>创建时间: {props.createTime}</>
+              )}
+            </Info>
+            <Info>
+              填写人数：{props.count}
+            </Info>
           </Grid>
         </Grid>
         <Divider variant='middle' />
@@ -107,73 +134,81 @@ function Questionare(props) {
           <Grid item xs={12} className={classes.description}>
             {props.description}
           </Grid>
-          <Grid item xs={7}>
+          <Grid item xs={7} className={classes.buttons}>
             <Button
               component={RouterLink}
               to={'/design/' + props.hash}
               color='primary'
+              startIcon={<EditIcon />}
+              size="small"
             >
-              {' '}
-              设计问卷{' '}
+              编辑
             </Button>
             <Button
               color='primary'
               onClick={() => {
-                if (props.status == 0) {
-                  enqueueSnackbar('该问卷还未发布，不能分享', {
+                if (props.status !== 1) {
+                  enqueueSnackbar(('当前问卷状态为' + Questionaire_STATUS[props.status] + '，不能分享'), {
                     variant: 'warning',
                   })
                 } else {
                   setOpenDialog(true)
                 }
               }}
+              startIcon={<ShareIcon />}
+              size="small"
             >
-              {' '}
-              分享问卷{' '}
+              分享
             </Button>
             <Button
               component={RouterLink}
               to={'/feedback/' + props.hash}
               color='primary'
+              startIcon={<BarChartIcon />}
+              size="small"
             >
-              {' '}
-              分析/下载{' '}
+              统计
+            </Button>
+            <Button
+              component={RouterLink}
+              to={'/preview/' + props.hash}
+              color='primary'
+              startIcon={<VisibilityIcon />}
+              size="small"
+            >
+              预览
             </Button>
           </Grid>
           <Grid item xs={5}>
             {props.status == 0 ? (
-              <Button color='primary' onClick={() => handleRelease()}>
-                {' '}
-                发布{' '}
+              <Button color='primary' onClick={() => handleRelease()} startIcon={<PlayArrowIcon />} size="small">
+                发布
               </Button>
             ) : null}
             {props.status == 1 ? (
-              <Button color='primary' onClick={() => handleClose()}>
-                {' '}
-                停止{' '}
+              <Button color='primary' onClick={() => handleClose()} startIcon={<StopIcon />} size="small">
+                停止
               </Button>
             ) : null}
             {props.status == 1 ? (
-              <Button color='primary' onClick={() => handleReset()}>
-                {' '}
-                重置{' '}
+              <Button color='primary' onClick={() => handleReset()} startIcon={<RotateLeftIcon />} size="small">
+                重置
               </Button>
             ) : null}
-            <Button color='primary' onClick={() => handleCopy()}>
-              {' '}
-              复制{' '}
+            <Button color='primary' onClick={() => handleCopy()} startIcon={<DescriptionIcon />} size="small">
+              复制
             </Button>
             <Button
               color='primary'
               onClick={() => handleDelete({ id: props.id })}
+              startIcon={props.stauts === 3 ? <DeleteForeverIcon /> : <DeleteIcon />} 
+              size="small"
             >
-              {' '}
               {props.status === 3 ? '彻底删除' : '删除'}{' '}
             </Button>
             {props.status == 3 ? (
-              <Button color='primary' onClick={() => handleRecover()}>
-                {' '}
-                恢复{' '}
+              <Button color='primary' onClick={() => handleRecover()} startIcon={<RestoreFromTrashIcon />} size="small">
+                恢复
               </Button>
             ) : null}
           </Grid>

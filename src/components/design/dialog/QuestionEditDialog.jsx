@@ -108,7 +108,6 @@ function QuestionEditDialog(props) {
         required
         id="filled-required"
         label="题目"
-        defaultValue={props.questionInfo.title}
         value={title}
         onChange={handleChangeTitle}
         error={title.trim() === ""}

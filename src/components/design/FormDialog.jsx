@@ -78,23 +78,21 @@ export default function FormDialog(props) {
           <TextField
             autoFocus
             margin="dense"
-            id="name"
+            id="title"
             label="标题"
             type="text"
             value={title}
             error={title === ""}
             onChange={handleTitleChange}
-            defaultValue={props.title}
             fullWidth
           />
           <TextField
             autoFocus
             margin="dense"
-            id="name"
+            id="description"
             label="简介"
             type="text"
             value={description}
-            defaultValue={props.description}
             onChange={handleDescriptionChange}
             fullWidth
           />
