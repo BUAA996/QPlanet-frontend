@@ -6,6 +6,8 @@ import { login } from 'api/auth'
 import { useSnackbar } from 'notistack'
 import { Link as RouterLink, useHistory } from 'react-router-dom'
 import useTitle from 'hooks/useTitle'
+import { useStateStore } from 'store'
+import useRouteDefender from 'hooks/useRouteDefender'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -41,6 +43,9 @@ function SignInForm() {
   } = useForm()
   const classes = useStyles()
   const history = useHistory()
+  const isLogin = useStateStore().isLogin
+
+  useRouteDefender({ assert: isLogin, msg: '您已登录，无需重复登录' })
 
   useTitle('登录 - 问卷星球')
 

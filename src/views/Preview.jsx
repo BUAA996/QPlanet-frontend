@@ -17,6 +17,8 @@ import { useHistory } from 'react-router-dom'
 import SpeedDialMenu from 'components/utils/SpeedDialMenu'
 import { downloadQuestionnaire } from 'api/questionaire'
 import { download } from 'utils'
+import useRouteDefender from 'hooks/useRouteDefender'
+import { useStateStore } from 'store'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -142,6 +144,7 @@ function PreviewPage(props) {
         container
         direction='column'
         justifyContent='center'
+        S
         alignItems='center'
         spacing={3}
       >
@@ -160,8 +163,6 @@ function PreviewPage(props) {
 }
 
 function Preview() {
-  useTitle('预览问卷 - 问卷星球')
-
   const classes = useStyles()
   const [questionID, setID] = useState(-1)
   const [title, setTitle] = useState('')
@@ -170,47 +171,59 @@ function Preview() {
   const [ansList, setAns] = useState([])
   const { id } = useParams()
   const history = useHistory()
+  const isLogin = useStateStore().isLogin
+
+  useRouteDefender({
+    assert: !isLogin,
+    method: 'push',
+    to: '/signin',
+    msg: '您还未登录，请先登录',
+  })
+
+  useTitle('预览问卷 - 问卷星球')
 
   useEffect(() => {
-    setTitle(TITLE)
-    setDescription(DESCRIPTION)
-    setQuestionare([].concat(QUESTIONAIRE))
+    if (isLogin) {
+      setTitle(TITLE)
+      setDescription(DESCRIPTION)
+      setQuestionare([].concat(QUESTIONAIRE))
 
-    view({ hash: id }).then((res) => {
-      // console.log(res);
-      if (res.data.result === 1) {
-        const ori = res.data.questions
-        const settings = res.data
-        let tmp = []
-        for (let i = 0; i < ori.length; ++i) {
-          tmp.push({
-            id: ori[i].id,
-            key: i,
-            description: ori[i].description,
-            kind: ori[i].type,
-            must: ori[i].is_required,
-            title: ori[i].content,
-            choices: ori[i].option,
-          })
-        }
-        setQuestionare([].concat(tmp))
-        setTitle(settings.title)
-        setDescription(settings.description)
-        setID(settings.qid)
-
-        tmp = new Array(ori.length)
-        for (let i = 0; i < ori.length; ++i) {
-          tmp[i] = {
-            problem_id: ori[i].id,
-            type: ori[i].type,
-            answer: [''],
+      view({ hash: id }).then((res) => {
+        // console.log(res);
+        if (res.data.result === 1) {
+          const ori = res.data.questions
+          const settings = res.data
+          let tmp = []
+          for (let i = 0; i < ori.length; ++i) {
+            tmp.push({
+              id: ori[i].id,
+              key: i,
+              description: ori[i].description,
+              kind: ori[i].type,
+              must: ori[i].is_required,
+              title: ori[i].content,
+              choices: ori[i].option,
+            })
           }
+          setQuestionare([].concat(tmp))
+          setTitle(settings.title)
+          setDescription(settings.description)
+          setID(settings.qid)
+
+          tmp = new Array(ori.length)
+          for (let i = 0; i < ori.length; ++i) {
+            tmp[i] = {
+              problem_id: ori[i].id,
+              type: ori[i].type,
+              answer: [''],
+            }
+          }
+          setAns(tmp)
+        } else {
+          history.push('/404')
         }
-        setAns(tmp)
-      } else {
-        history.push('/404')
-      }
-    })
+      })
+    }
   }, [])
 
   function handleAns(id, singleAns) {
