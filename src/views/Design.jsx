@@ -96,7 +96,7 @@ function Design(props) {
           setTitle(data.title)
           setDetail(data.description)
           setQid(data.qid)
-          handleSetQuestionare(
+          handleSetQuestionnaire(
             data.questions.map((x) => ({
               id: x.id,
               kind: x.type,
@@ -190,7 +190,7 @@ function Design(props) {
           id: x.id,
           type: x.kind,
           content: x.title,
-          is_required: x.must === 1 ? true : false,
+          is_required: x.must === 1,
           description: x.description,
         }
         if (isSingleChoice(x) || isMultiChoice(x)) item.option = x.choices
