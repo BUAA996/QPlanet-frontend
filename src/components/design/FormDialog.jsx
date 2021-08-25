@@ -32,9 +32,10 @@ export default function FormDialog(props) {
 
   const handleClose = () => {
     setOpen(false);
+    setTitle(props.title);
+    setDescription(props.description);
   };
   const handleModify = () => {
-
     if (title.trim() === "") {
       enqueueSnackbar("问卷标题不能为空", { variant: 'error' })
       return;
@@ -81,10 +82,9 @@ export default function FormDialog(props) {
             label="标题"
             type="text"
             value={title}
-            error={title.trim() === ""}
+            error={title === ""}
             onChange={handleTitleChange}
             defaultValue={props.title}
-            helperText="问卷标题不得为空"
             fullWidth
           />
           <TextField
@@ -96,7 +96,6 @@ export default function FormDialog(props) {
             value={description}
             defaultValue={props.description}
             onChange={handleDescriptionChange}
-            helperText="简介不得为空"
             fullWidth
           />
         </DialogContent>

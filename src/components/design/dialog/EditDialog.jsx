@@ -12,10 +12,7 @@ const useStyle = makeStyles((theme) => ({
 function EditDialog(props) {
   const classes = useStyle();
 
-  const saveAndQuit = (title, detail) => {
-    props.save();
-    props.close();
-  }
+
 
 
   return (
@@ -35,7 +32,7 @@ function EditDialog(props) {
       </Container>
 
       <DialogActions>
-        <Button type="submit" onClick={saveAndQuit} color="primary">
+        <Button type="submit" onClick={props.save} color="primary">
           保存
         </Button>
         <Button onClick={props.close} color="primary">

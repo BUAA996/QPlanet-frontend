@@ -93,7 +93,7 @@ function Feedback() {
   useEffect(() => {
     getStatistics({ hash: hashcode })
       .then((res) => {
-        let map = ['单选题', '多选题', '填空题', '评分题']
+        let map = ['单选题', '多选题', '填空题', '简答题']
         let data = res.data.questions.map((item, index) => ({
           type: map[item.type],
           total: res.data.total,
@@ -162,7 +162,7 @@ function Feedback() {
         <Grid item xs={6} container>
           <Grid item xs={12}>
             {data.map((item) => {
-              if (item.type === '填空题')
+              if (item.type === '填空题' || item.type === '简答题')
                 return <Completion data={item} key={item.key} />
               else return <Choice data={item} key={item.key} />
             })}

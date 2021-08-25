@@ -80,11 +80,6 @@ function Design(props) {
 
     async function fetchMyAPI() {
       const res = await getQuestionnaire(id)
-      // console.log(res)
-      // if (res.result !== 1) {
-      //   history.push("/notFound")
-      // }
-
       const data = res.data
       setQ(data.data)
       setTitle(data.title)
@@ -97,7 +92,7 @@ function Design(props) {
           must: x.is_required ? 1 : 0,
           title: x.content,
           description: x.description,
-          choices: x.option,
+          choices: x.option == null ? [] : x.option,
         }))
       )
 
@@ -162,7 +157,7 @@ function Design(props) {
 
   const content = <Title title={title} description={detail} />
 
-  function blankFunction() {}
+  function blankFunction() { }
   function save() {
     saveQuestionaire({
       modify_type: 'delete_all_results',
@@ -214,17 +209,24 @@ function Design(props) {
             <Grid item className={classes.problems}>
               {/* {questionare.map((problem) => <Problem problem={problem} key={problem.key} updateAns={(ans) => blankFunction(problem.key, ans)} />)} */}
               {questionare.map((x, index) => (
-              <Problem problem={x} key={x.index} updateAns={() => blankFunction()}>
-                <MovableProblemEdit
+                <Problem
+                  problem={x}
                   key={x.id}
-                  questionInfo={x}
-                  index={index}
-                  move={(newIndex) => move(index, newIndex)}
-                  del={() => delQuestion(index)}
-                  add={addQuestion}
-                  edit={(item) => { editQuestion(index, item) }}
-                />
-              </Problem>))}
+                  updateAns={() => blankFunction()}
+                >
+                  <MovableProblemEdit
+                    key={x.id}
+                    questionInfo={x}
+                    index={index}
+                    move={(newIndex) => move(index, newIndex)}
+                    del={() => delQuestion(index)}
+                    add={addQuestion}
+                    edit={(item) => {
+                      editQuestion(index, item)
+                    }}
+                  />
+                </Problem>
+              ))}
             </Grid>
 
             <Grid item className={classes.buttons}>

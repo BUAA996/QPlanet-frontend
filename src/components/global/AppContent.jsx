@@ -14,6 +14,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { useSnackbar } from 'notistack'
 import Preview from 'views/Preview'
+import Finish from 'views/Finish'
 
 function RedirectWithMsg({ prevent, to, message, type, component }) {
   const [loading, setLoading] = useState(true)
@@ -47,73 +48,27 @@ function AppContent() {
           <Preview />
         </Route>
         <Route exact path='/signin'>
-          {isLogin ? (
-            <RedirectWithMsg
-              to='/'
-              message='您已登录，无需重复登录'
-              type='warning'
-            />
-          ) : (
-            <Auth form={<SignInForm />} />
-          )}
+          {isLogin ? <Redirect to='/' /> : <Auth form={<SignInForm />} />}
         </Route>
         <Route exact path='/signup'>
-          {isLogin ? (
-            <RedirectWithMsg
-              to='/'
-              message='您已登录，请先退出账号再注册新账号'
-              type='warning'
-            />
-          ) : (
-            <Auth form={<SignUpForm />} />
-          )}
+          {isLogin ? <Redirect to='/' /> : <Auth form={<SignUpForm />} />}
         </Route>
         <Route exact path='/design/:id'>
-          {isLogin ? (
-            <Design />
-          ) : (
-            <RedirectWithMsg
-              to='/signin'
-              message='未登录时该功能不能使用'
-              type='warning'
-            />
-          )}
+          {isLogin ? <Design /> : <Redirect to='/signin' />}
         </Route>
         <Route exact path='/preview/:id'>
-          {isLogin ? (
-            <Preview />
-          ) : (
-            <RedirectWithMsg
-              to='/signin'
-              message='未登录时该功能不能使用'
-              type='warning'
-            />
-          )}
+          {isLogin ? <Preview /> : <Redirect to='/signin' />}
         </Route>
         <Route exact path='/feedback/:id'>
-          {isLogin ? (
-            <Feedback />
-          ) : (
-            <RedirectWithMsg
-              to='/signin'
-              message='未登录时该功能不能使用'
-              type='warning'
-            />
-          )}
+          {isLogin ? <Feedback /> : <Redirect to='/signin' />}
         </Route>
         <Route exact path='/overview'>
-          {isLogin ? (
-            <Overview />
-          ) : (
-            <RedirectWithMsg
-              to='/signin'
-              message='未登录时该功能不能使用'
-              type='warning'
-            />
-          )}
+          {isLogin ? <Overview /> : <Redirect to='/signin' />}
+        </Route>
+        <Route exact path='/finish'>
+          <Finish />
         </Route>
         <Route exact path='*'>
-          {/* <Auth form={<NotFound />} /> */}
           <NotFound />
         </Route>
       </Switch>

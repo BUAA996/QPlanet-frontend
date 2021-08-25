@@ -13,7 +13,7 @@ import { Close } from '@material-ui/icons'
 import QRCode from 'qrcode.react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useSnackbar } from 'notistack'
-import icon from 'assets/favicon.ico'
+import icon from 'assets/logo.svg'
 import { download } from 'utils'
 
 const useStyles = makeStyles((theme) => ({
@@ -58,7 +58,12 @@ function QRDialog({ open, setOpen, url, title, openTitle, downloadTitle }) {
           <QRCode
             value={url}
             size={128}
-            imageSettings={{ src: `${icon}`, height: 40, width: 40 }}
+            imageSettings={{
+              src: `${icon}`,
+              height: 40,
+              width: 40,
+              // excavate: true,
+            }}
             id='qrcode-canvas'
           />
           <Box

@@ -75,7 +75,7 @@ function Questionare(props) {
     history.go(0)
   }
 
-  return props.showType === -1 ||
+  return (props.showType === -1  && props.status !== 3) ||
     props.showType === 5 ||
     props.showType === props.status ? (
     <>
@@ -91,14 +91,13 @@ function Questionare(props) {
             </Link>
           </Grid>
           <Grid item xs={5} className={classes.info}>
-            ID:&nbsp;{props.id}&nbsp;
             <span style={{ color: 'red' }}>
               {Questionaire_STATUS[props.status]} &nbsp;
             </span>
             {props.status === 1 ? (
-              <>发布时间: {props.uploadTime}</>
+              <>发布时间: {props.uploadTime}&nbsp;</>
             ) : (
-              <>创建时间: {props.createTime} </>
+              <>创建时间: {props.createTime}&nbsp; </>
             )}
             填写人数:&nbsp;{props.count}&nbsp;
           </Grid>

@@ -48,7 +48,7 @@ function SingleChoice(props) {
   useEffect(() => {
     // console.log(props)
     let tmp = [];
-    for (let i = 0;i < props.problem.choices.length; ++i) {
+    for (let i = 0; i < props.problem.choices.length; ++i) {
       tmp.push({
         key: "" + i,
         content: props.problem.choices[i],
@@ -60,15 +60,15 @@ function SingleChoice(props) {
   const handleChange = (event) => {
     setValue(event.target.value)
     // console.log(event.target.value)
-    for (let i = 0;i < choice.length; ++i) 
+    for (let i = 0; i < choice.length; ++i)
       if (event.target.value === choice[i].key)
         props.updateAns(['' + i]);
   }
 
   return (
     <RadioGroup className={classes.content} value={value} onChange={handleChange}>
-      {choice.map((choice) => 
-        <FormControlLabel value={choice.key} control={<Radio key={choice.key}/>} label={choice.content} key={choice.key}/>
+      {choice.map((choice) =>
+        <FormControlLabel value={choice.key} control={<Radio key={choice.key} />} label={choice.content} key={choice.key} />
       )}
     </RadioGroup>
   );
@@ -81,7 +81,7 @@ function MultiChoice(props) {
   useEffect(() => {
     // console.log(props)
     let tmp = [];
-    for (let i = 0;i < props.problem.choices.length; ++i) {
+    for (let i = 0; i < props.problem.choices.length; ++i) {
       tmp.push({
         key: '' + i,
         content: props.problem.choices[i],
@@ -91,14 +91,14 @@ function MultiChoice(props) {
   }, [props])
 
   var option = {};
-  props.problem.choices.map((choice) => option[choice.key]=false);
+  props.problem.choices.map((choice) => option[choice.key] = false);
 
   const [state, setState] = useState(option);
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
     let singleAns = [];
-    for (let i = 0;i < choice.length; ++i) {
+    for (let i = 0; i < choice.length; ++i) {
       if (choice[i].key === event.target.name) {
         if (event.target.checked) singleAns.push('' + i);
       } else {
@@ -110,10 +110,10 @@ function MultiChoice(props) {
 
   return (
     <RadioGroup className={classes.content}>
-      {choice.map((choice) => 
-        <FormControlLabel 
-          control={<Checkbox checked={choice[choice.key]} onChange={handleChange} name={choice.key} />} 
-          label={choice.content} 
+      {choice.map((choice) =>
+        <FormControlLabel
+          control={<Checkbox checked={choice[choice.key]} onChange={handleChange} name={choice.key} />}
+          label={choice.content}
           key={choice.key}
         />
       )}
@@ -167,19 +167,21 @@ function Problem(props) {
       <CardContent>
         <ShowClasses title={"第 " + (props.problem.key + 1) + " 题 " + props.problem.title} must={props.problem.must} />
         <Divider />
-        {props.problem.kind === 0 ? <SingleChoice {...props}/> : null}
-        {props.problem.kind === 1 ? <MultiChoice {...props}/> : null}
-        {props.problem.kind === 2 ? <FillBlanks {...props}/> : null}
-        {props.problem.kind === 3 ? <FillBlanks {...props}/> : null}
+        {props.problem.kind === 0 ? <SingleChoice {...props} /> : null}
+        {props.problem.kind === 1 ? <MultiChoice {...props} /> : null}
+        {props.problem.kind === 2 ? <FillBlanks {...props} /> : null}
+        {props.problem.kind === 3 ? <FillBlanks {...props} /> : null}
         {props.children}
       </CardContent>
     </Card>
   );
 }
 
-function isSingleChoice(problem) {return problem.kind === 0;}
-function isMultiChoice(problem) {return problem.kind === 1;}
-function isFillBlank(problem) {return problem.kind === 2;}
+function isSingleChoice(problem) { return problem.kind === 0; }
+function isMultiChoice(problem) { return problem.kind === 1; }
+function isFillBlank(problem) { return problem.kind === 2; }
+
+function isChoice(problem) { return isSingleChoice(problem) || isMultiChoice(problem) }
 
 export default Problem;
-export { isSingleChoice, isMultiChoice, isFillBlank}
+export { isSingleChoice, isMultiChoice, isFillBlank }
