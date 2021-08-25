@@ -91,7 +91,6 @@ function Questionare(props) {
             </Link>
           </Grid>
           <Grid item xs={5} className={classes.info}>
-            ID:&nbsp;{props.id}&nbsp;
             <span style={{ color: 'red' }}>
               {Questionaire_STATUS[props.status]} &nbsp;
             </span>
