@@ -61,12 +61,12 @@ function QuestionEditDialog(props) {
     setChoices(props.questionInfo.choices)
     setMust("" + props.questionInfo.must)
     setTitle(props.questionInfo.title)
-    console.log(props.questionInfo)
+    // console.log(props.questionInfo)
   }
 
 
   const saveFunc = () => {
-    console.log(choices)
+    // console.log(choices)
     if (title.trim() === "") {
       enqueueSnackbar("题目不能为空", { variant: 'error' });
       return;
