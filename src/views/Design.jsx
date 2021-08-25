@@ -11,6 +11,8 @@ import {isSingleChoice} from 'components/utils/Problem'
 import {isMultiChoice} from 'components/utils/Problem'
 import {Title} from 'views/Preview'
 import FormDialog from 'components/design/FormDialog'
+import { useStateStore } from 'store'
+import useRouteDefender from 'hooks/useRouteDefender'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,6 +66,7 @@ function Design(props) {
   const [questionnaire, setQuestionnaire] = useState([])
   const [qid, setQid] = useState()
   const history = useHistory()
+  const isLogin = useStateStore().isLogin
 
   function handleSetQuestionnaire(ori) {
     let tmp = ori.slice()
@@ -74,39 +77,50 @@ function Design(props) {
     setQuestionnaire(tmp2)
   }
 
+  useRouteDefender({
+    assert: !isLogin,
+    method: 'push',
+    to: '/signin',
+    msg: '您还未登录，请先登录',
+  })
+
   useEffect(() => {
-    let didCancel = false
+    if (isLogin) {
+      let didCancel = false
 
-    async function fetchMyAPI() {
-      const res = await getQuestionnaire(id)
-      const data = res.data
-      setQ(data.data)
-      setTitle(data.title)
-      setDetail(data.description)
-      setQid(data.qid)
-      handleSetQuestionnaire(
-        data.questions.map((x) => ({
-          id: x.id,
-          kind: x.type,
-          must: x.is_required ? 1 : 0,
-          title: x.content,
-          description: x.description,
-          choices: x.option == null ? [] : x.option,
-        }))
-      )
+      async function fetchMyAPI() {
+        const res = await getQuestionnaire(id)
+        if (res.data.result === 1) {
+          const data = res.data
+          setQ(data.data)
+          setTitle(data.title)
+          setDetail(data.description)
+          setQid(data.qid)
+          handleSetQuestionare(
+            data.questions.map((x) => ({
+              id: x.id,
+              kind: x.type,
+              must: x.is_required ? 1 : 0,
+              title: x.content,
+              description: x.description,
+              choices: x.option == null ? [] : x.option,
+            }))
+          )
 
-      // console.log(questionnaire)
-      // if (!didCancel) { // Ignore if we started fetching something else
-      //   // console.log(getQ);
-      //   // console.log(data.questions)
-      //   console.log("load again")
-      // }
+          // console.log(questionare)
+          // if (!didCancel) { // Ignore if we started fetching something else
+          //   // console.log(getQ);
+          //   // console.log(data.questions)
+          //   console.log("load again")
+          // }
+        }
+      }
+
+      fetchMyAPI()
+      return () => {
+        didCancel = true
+      } // Remember if we start fetching something else
     }
-
-    fetchMyAPI()
-    return () => {
-      didCancel = true
-    } // Remember if we start fetching something else
   }, [])
 
   const qHeadSetFunc = {

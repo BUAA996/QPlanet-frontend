@@ -18,6 +18,8 @@ import SearchInputButton from 'components/utils/SearchInputButton'
 import QuestionnaireList from 'components/utils/QuestionnaireList'
 import { useHistory } from 'react-router-dom'
 import useTitle from 'hooks/useTitle'
+import { useStateStore } from 'store'
+import useRouteDefender from 'hooks/useRouteDefender'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -142,6 +144,7 @@ function Overview() {
   const classes = useStyles()
   const [change, setChange] = useState(0)
   const [data, setData] = useState([])
+  const isLogin = useStateStore().isLogin
 
   function handleSearch(searchString) {
     if (searchString === '') {
@@ -190,28 +193,40 @@ function Overview() {
     }
   }
 
+  useRouteDefender({
+    assert: !isLogin,
+    method: 'push',
+    to: '/signin',
+    msg: '您还未登录，请先登录',
+  })
+
   useTitle('问卷总览 - 问卷星球')
+
   useEffect(() => {
-    getQuestionnaires().then((res) => {
-      var tmp = []
-      for (let i = 0; i < res.data.questionnaires.length; ++i) {
-        tmp.push({
-          id: res.data.questionnaires[i].id,
-          title: res.data.questionnaires[i].title,
-          description: res.data.questionnaires[i].description,
-          type: res.data.questionnaires[i].type,
-          count: res.data.questionnaires[i].count,
-          hash: res.data.questionnaires[i].hash,
-          status: res.data.questionnaires[i].status,
-          createTime: res.data.questionnaires[i].create_time,
-          uploadTime: res.data.questionnaires[i].upload_time,
-          createNum: res.data.questionnaires[i].create_time_int,
-          uploadNum: res.data.questionnaires[i].upload_time_int,
-          key: res.data.questionnaires[i].id,
-        })
-      }
-      setData(tmp)
-    })
+    if (isLogin) {
+      getQuestionnaires().then((res) => {
+        if (res.data.result === 1) {
+          var tmp = []
+          for (let i = 0; i < res.data.questionnaires.length; ++i) {
+            tmp.push({
+              id: res.data.questionnaires[i].id,
+              title: res.data.questionnaires[i].title,
+              description: res.data.questionnaires[i].description,
+              type: res.data.questionnaires[i].type,
+              count: res.data.questionnaires[i].count,
+              hash: res.data.questionnaires[i].hash,
+              status: res.data.questionnaires[i].status,
+              createTime: res.data.questionnaires[i].create_time,
+              uploadTime: res.data.questionnaires[i].upload_time,
+              createNum: res.data.questionnaires[i].create_time_int,
+              uploadNum: res.data.questionnaires[i].upload_time_int,
+              key: res.data.questionnaires[i].id,
+            })
+          }
+        }
+        setData(tmp)
+      })
+    }
   }, [change])
   return (
     <Container fixed className={classes.root}>

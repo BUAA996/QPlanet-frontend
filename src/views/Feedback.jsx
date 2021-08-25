@@ -27,6 +27,8 @@ import { useHistory, useParams } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { download } from 'utils'
 import QRDialog from 'components/utils/QRDialog'
+import { useStateStore } from 'store'
+import useRouteDefender from 'hooks/useRouteDefender'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -87,29 +89,41 @@ function Feedback() {
   const { enqueueSnackbar } = useSnackbar()
   const history = useHistory()
   const [shareOpen, setShareOpen] = useState(false)
+  const isLogin = useStateStore().isLogin
+
+  useRouteDefender({
+    assert: !isLogin,
+    method: 'push',
+    to: '/signin',
+    msg: '您还未登录，请先登录',
+  })
 
   useTitle('分析&下载 - 问卷星球')
 
   useEffect(() => {
-    getStatistics({ hash: hashcode })
-      .then((res) => {
-        let map = ['单选题', '多选题', '填空题', '简答题']
-        let data = res.data.questions.map((item, index) => ({
-          type: map[item.type],
-          total: res.data.total,
-          title: item.content,
-          choice: item.option.map((innerItem, innerIndex) => ({
-            option: innerItem,
-            count: item.count[innerIndex],
-            key: innerIndex,
-          })),
-          key: index,
-        }))
-        setData(data)
-      })
-      .catch(() => {
-        enqueueSnackbar('该问卷不存在', { variant: 'warning' })
-      })
+    if (isLogin) {
+      getStatistics({ hash: hashcode })
+        .then((res) => {
+          if (res.data.result === 1) {
+            let map = ['单选题', '多选题', '填空题', '简答题']
+            let data = res.data.questions.map((item, index) => ({
+              type: map[item.type],
+              total: res.data.total,
+              title: item.content,
+              choice: item.option.map((innerItem, innerIndex) => ({
+                option: innerItem,
+                count: item.count[innerIndex],
+                key: innerIndex,
+              })),
+              key: index,
+            }))
+            setData(data)
+          }
+        })
+        .catch(() => {
+          enqueueSnackbar('该问卷不存在', { variant: 'warning' })
+        })
+    }
   }, [hashcode, enqueueSnackbar])
 
   const handleOpen = (event, reason) => {
