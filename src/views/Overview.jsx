@@ -106,7 +106,7 @@ function SideBar() {
   function handleCreate() {
     createQuestionnaire(TEMPLEATE).then((res) => {
       if (res.data.result == 1) {
-        history.push('/design/' + res.data.hash)
+        history.push('/picktype/')
       }
     })
   }
