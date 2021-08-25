@@ -1,7 +1,12 @@
-import { DialogTitle, TextField, Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { useForm } from "react-hook-form";
+import {DialogTitle, TextField, Grid} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+import {useForm} from "react-hook-form";
 import EditDialog from "./EditDialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
+import React from "react";
 
 const useStyle = makeStyles((theme) => ({
   grid: {
@@ -11,25 +16,6 @@ const useStyle = makeStyles((theme) => ({
 
 function TitleEditDialog(props) {
   const classes = useStyle();
-  const { register,
-    handleSubmit,
-    formState: { errors } } = useForm({
-      defaultValues: {
-        title: props.title,
-        "detail": props.detail
-      }
-    });
-
-  const onSubmit = (data) => {
-    props.save(data.title, data.detail)
-  };
-
-  const title = register("title", {
-    required: { value: true, message: "问卷标题不能为空" },
-  });
-  const detail = register("detail", {
-    required: { value: true, message: "问卷描述不能为空" }
-  })
 
   const dialogTitle = (
     <DialogTitle>
@@ -37,52 +23,34 @@ function TitleEditDialog(props) {
     </DialogTitle>
   );
 
-  const saveFunc = handleSubmit(onSubmit);
-
-
   const dialogContent = (
-    <>
-      <Grid container
-        direction="column">
-        <Grid item
-          className={classes.grid}>
-          <TextField
-            required
-            label="标题"
-            id="filled-required"
-            defaultValue={props.title}
-            onChange={title.onChange}
-            name={title.name}
-            inputRef={title.ref}
-            error={!!errors.title}
-            helperText={errors.title && errors.title.message}
-            variant="outlined"
-          />
-        </Grid>
-
-
-        <Grid item
-          className={classes.grid}>
-
-          <TextField
-            required
-            id="filled-required"
-            label="简介"
-            // defaultValue={props.detail}
-            onChange={detail.onChange}
-            name={detail.name}
-            inputRef={detail.ref}
-            error={!!errors.detail}
-            helperText={errors.detail && errors.detail.message}
-            variant="outlined"
-            multiline
-            maxRows={4}
-          />
-        </Grid>
-      </Grid>
-    </>
-
-  );
+    <DialogContent>
+      <DialogContentText>
+        为了更好的呈现效果，请把标题控制在 20 个字以内
+      </DialogContentText>
+      <TextField
+        autoFocus
+        margin="dense"
+        id="title"
+        label="标题"
+        type="text"
+        value={props.title|| ''}
+        error={props.title === ""}
+        onChange={props.handleTitleChange}
+        fullWidth
+      />
+      <TextField
+        autoFocus
+        margin="dense"
+        id="description"
+        label="简介"
+        type="text"
+        multiline
+        value={props.description|| ''}
+        onChange={props.handleDescriptionChange}
+        fullWidth
+      />
+    </DialogContent>);
 
 
   return (
@@ -91,7 +59,7 @@ function TitleEditDialog(props) {
       dialogContent={dialogContent}
       open={props.open}
       close={props.close}
-      save={saveFunc}
+      save={props.handleModify}
     />
   );
 }

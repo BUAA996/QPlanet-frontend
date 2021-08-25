@@ -6,6 +6,8 @@ import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useHistory, Link as RouterLink } from 'react-router-dom'
+import { useStateStore } from 'store'
+import useRouteDefender from 'hooks/useRouteDefender'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -52,6 +54,9 @@ function SignUpForm() {
   const [btnOpen, setBtnOpen] = useState(true)
   const { enqueueSnackbar } = useSnackbar()
   const history = useHistory()
+  const isLogin = useStateStore().isLogin
+
+  useRouteDefender({ assert: isLogin, msg: '请先退出账号再注册' })
 
   useTitle('注册 - 问卷星球')
 

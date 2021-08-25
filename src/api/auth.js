@@ -21,8 +21,8 @@ function logout() {
 }
 
 // getcaptcha
-function getCaptcha(data) {
-  return axios.post('user/captcha/', data)
+function getCaptcha() {
+  return axios.post('user/captcha/')
 }
 
 // islogin

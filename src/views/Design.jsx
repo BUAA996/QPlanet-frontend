@@ -1,17 +1,18 @@
-import { makeStyles } from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import Problem from 'components/utils/Problem'
-import { Container, Button, Card, Grid, Divider } from '@material-ui/core'
-import TitleEdit from 'components/design/TitleEdit'
+import {Container, Button, Card, Grid, Divider} from '@material-ui/core'
 import MovableProblemEdit from 'components/design/MovableProblemEdit'
-import { useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
-import { getQuestionnaire, saveQuestionaire } from 'api/design'
-import { useEffect } from 'react'
+import {useState} from 'react'
+import {useHistory, useParams} from 'react-router-dom'
+import {getQuestionnaire, saveQuestionaire} from 'api/design'
+import {useEffect} from 'react'
 import useTitle from 'hooks/useTitle'
-import { isSingleChoice } from 'components/utils/Problem'
-import { isMultiChoice } from 'components/utils/Problem'
-import { Title, PreviewPage } from 'views/Preview'
+import {isSingleChoice} from 'components/utils/Problem'
+import {isMultiChoice} from 'components/utils/Problem'
+import {Title} from 'views/Preview'
 import FormDialog from 'components/design/FormDialog'
+import { useStateStore } from 'store'
+import useRouteDefender from 'hooks/useRouteDefender'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Questionare = [
+const Questionnaire = [
   {
     id: 1,
     kind: 0,
@@ -58,56 +59,68 @@ const Questionare = [
 function Design(props) {
   const classes = useStyles()
 
-  const { id } = useParams()
+  const {id} = useParams()
   const [getQ, setQ] = useState(0)
   const [title, setTitle] = useState()
   const [detail, setDetail] = useState()
-  const [questionare, setQuestionare] = useState([])
+  const [questionnaire, setQuestionnaire] = useState([])
   const [qid, setQid] = useState()
   const history = useHistory()
+  const isLogin = useStateStore().isLogin
 
-  function handleSetQuestionare(ori) {
+  function handleSetQuestionnaire(ori) {
     let tmp = ori.slice()
     let tmp2 = new Array(tmp.length)
     tmp.map((problem, index) => {
-      tmp2[index] = { ...problem, key: index }
+      tmp2[index] = {...problem, key: index}
     })
-    setQuestionare(tmp2)
+    setQuestionnaire(tmp2)
   }
 
+  useRouteDefender({
+    assert: !isLogin,
+    method: 'push',
+    to: '/signin',
+    msg: '您还未登录，请先登录',
+  })
+
   useEffect(() => {
-    let didCancel = false
+    if (isLogin) {
+      let didCancel = false
 
-    async function fetchMyAPI() {
-      const res = await getQuestionnaire(id)
-      const data = res.data
-      setQ(data.data)
-      setTitle(data.title)
-      setDetail(data.description)
-      setQid(data.qid)
-      handleSetQuestionare(
-        data.questions.map((x) => ({
-          id: x.id,
-          kind: x.type,
-          must: x.is_required ? 1 : 0,
-          title: x.content,
-          description: x.description,
-          choices: x.option == null ? [] : x.option,
-        }))
-      )
+      async function fetchMyAPI() {
+        const res = await getQuestionnaire(id)
+        if (res.data.result === 1) {
+          const data = res.data
+          setQ(data.data)
+          setTitle(data.title)
+          setDetail(data.description)
+          setQid(data.qid)
+          handleSetQuestionnaire(
+            data.questions.map((x) => ({
+              id: x.id,
+              kind: x.type,
+              must: x.is_required ? 1 : 0,
+              title: x.content,
+              description: x.description,
+              choices: x.option == null ? [] : x.option,
+            }))
+          )
 
-      // console.log(questionare)
-      // if (!didCancel) { // Ignore if we started fetching something else
-      //   // console.log(getQ);
-      //   // console.log(data.questions)
-      //   console.log("load again")
-      // }
+          // console.log(questionare)
+          // if (!didCancel) { // Ignore if we started fetching something else
+          //   // console.log(getQ);
+          //   // console.log(data.questions)
+          //   console.log("load again")
+          // }
+        }
+      }
+
+      fetchMyAPI()
+      return () => {
+        didCancel = true
+      } // Remember if we start fetching something else
     }
-
-    fetchMyAPI()
-    return () => {
-      didCancel = true
-    } // Remember if we start fetching something else
   }, [])
 
   const qHeadSetFunc = {
@@ -118,32 +131,36 @@ function Design(props) {
   useTitle('问卷编辑 - 问卷星球')
 
   function addQuestion(index, item) {
-    const newQ = questionare.slice()
+    const newQ = questionnaire.slice()
     const newItem = JSON.parse(JSON.stringify(item))
     newItem.id = 'N' + Math.random().toString(36).slice(-6)
     if (index === -1) newQ.push(newItem)
     else newQ.splice(index, 0, newItem)
-    handleSetQuestionare(newQ)
+    handleSetQuestionnaire(newQ)
   }
+
   function delQuestion(index) {
-    const newQ = questionare.slice()
+    const newQ = questionnaire.slice()
     newQ.splice(index, 1)
-    handleSetQuestionare(newQ)
+    handleSetQuestionnaire(newQ)
   }
+
   function editQuestion(index, item) {
-    const newQ = questionare.slice()
+    const newQ = questionnaire.slice()
     newQ.splice(index, 1, item)
     // console.log("newQ:", newQ)
-    handleSetQuestionare(newQ)
-    // console.log("questionare", questionare)
+    handleSetQuestionnaire(newQ)
+    // console.log("questionnaire", questionnaire)
   }
+
   function move(oriIndex, newIndex) {
-    const item = questionare.slice()[oriIndex]
-    const newQ = questionare.slice()
+    const item = questionnaire.slice()[oriIndex]
+    const newQ = questionnaire.slice()
     newQ.splice(oriIndex, 1)
     newQ.splice(newIndex, 0, item)
-    handleSetQuestionare(newQ)
+    handleSetQuestionnaire(newQ)
   }
+
   function addDefault(index) {
     const item = {
       kind: 0,
@@ -155,9 +172,11 @@ function Design(props) {
     addQuestion(index, item)
   }
 
-  const content = <Title title={title} description={detail} />
+  const content = <Title title={title} description={detail}/>
 
-  function blankFunction() { }
+  function blankFunction() {
+  }
+
   function save() {
     saveQuestionaire({
       modify_type: 'delete_all_results',
@@ -166,12 +185,12 @@ function Design(props) {
       description: detail,
       validity: '2021-8-23 18:20',
       limit_time: 998244353,
-      questions: questionare.map((x) => {
+      questions: questionnaire.map((x) => {
         const item = {
           id: x.id,
           type: x.kind,
           content: x.title,
-          is_required: x.must === 1 ? true : false,
+          is_required: x.must === 1,
           description: x.description,
         }
         if (isSingleChoice(x) || isMultiChoice(x)) item.option = x.choices
@@ -192,7 +211,7 @@ function Design(props) {
             alignItems='center'
             spacing={3}
           >
-            <Title title={title} description={detail} />
+            <Title title={title} description={detail}/>
 
             <FormDialog
               title={title}
@@ -207,8 +226,8 @@ function Design(props) {
               className={classes.divider}
             />
             <Grid item className={classes.problems}>
-              {/* {questionare.map((problem) => <Problem problem={problem} key={problem.key} updateAns={(ans) => blankFunction(problem.key, ans)} />)} */}
-              {questionare.map((x, index) => (
+              {/* {questionnaire.map((problem) => <Problem problem={problem} key={problem.key} updateAns={(ans) => blankFunction(problem.key, ans)} />)} */}
+              {questionnaire.map((x, index) => (
                 <Problem
                   problem={x}
                   key={x.id}

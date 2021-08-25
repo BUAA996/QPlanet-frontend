@@ -2,7 +2,6 @@ import { createContext, useContext, useReducer } from 'react'
 
 const initialState = {
   isLogin: false,
-  isLoading: true,
 }
 
 function reducer(state, action) {
@@ -11,8 +10,6 @@ function reducer(state, action) {
       return { isLogin: true }
     case 'logout':
       return { isLogin: false }
-    case 'finishLoading':
-      return { isLoading: false, isLogin: action.state }
     default:
       return new Error()
   }
