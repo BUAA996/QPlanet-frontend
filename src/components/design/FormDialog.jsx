@@ -6,16 +6,17 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { CreateRounded } from '@material-ui/icons';
-import { Grid } from '@material-ui/core';
-import { useEffect } from 'react';
-import { useSnackbar } from 'notistack';
+import {CreateRounded} from '@material-ui/icons';
+import {Grid} from '@material-ui/core';
+import {useEffect} from 'react';
+import {useSnackbar} from 'notistack';
+import TitleEditDialog from "./dialog/TitleEditDialog";
 
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState(props.title);
   const [description, setDescription] = React.useState(props.description);
-  const { enqueueSnackbar } = useSnackbar()
+  const {enqueueSnackbar} = useSnackbar()
 
 
   useEffect(() => {
@@ -35,13 +36,14 @@ export default function FormDialog(props) {
     setTitle(props.title);
     setDescription(props.description);
   };
+
   const handleModify = () => {
     if (title.trim() === "") {
-      enqueueSnackbar("问卷标题不能为空", { variant: 'error' })
+      enqueueSnackbar("问卷标题不能为空", {variant: 'error'})
       return;
     }
     if (description.trim() === "") {
-      enqueueSnackbar("问卷简介不能为空", { variant: 'error' })
+      enqueueSnackbar("问卷简介不能为空", {variant: 'error'})
       return;
     }
 
@@ -63,49 +65,22 @@ export default function FormDialog(props) {
       <Button
         variant="outlined"
         color="primary"
-        startIcon={<CreateRounded />}
+        startIcon={<CreateRounded/>}
         onClick={handleClickOpen}
       >
         问卷编辑
       </Button>
 
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">修改标题</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            为了更好的呈现效果，请把标题控制在 20 个字以内
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="title"
-            label="标题"
-            type="text"
-            value={title}
-            error={title === ""}
-            onChange={handleTitleChange}
-            fullWidth
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="description"
-            label="简介"
-            type="text"
-            value={description}
-            onChange={handleDescriptionChange}
-            fullWidth
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            取消
-          </Button>
-          <Button onClick={handleModify} color="primary">
-            完成
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <TitleEditDialog
+        open={open}
+        close={handleClose}
+        save={handleModify}
+        title={title}
+        handleTitleChange={handleTitleChange}
+        description={description}
+        handleDescriptionChange={handleDescriptionChange}
+        handleModify={handleModify}
+      />
     </Grid>
   );
 }
