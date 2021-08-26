@@ -229,8 +229,8 @@ function Fill() {
     if (checkMust()) {
       submit({ qid: questionID, results: ansList }).then((res) => {
         // console.log(res);
-        enqueueSnackbar('提交成功，感谢您的回答', {variant: 'success'});
-        history.push('/finish')
+        enqueueSnackbar('提交成功，感谢您的回答', { variant: 'success' })
+        history.replace('/finish')
       })
     } else {
       enqueueSnackbar('有必做题尚未完成：' + getTodoID(), {

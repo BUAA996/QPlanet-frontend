@@ -1,65 +1,80 @@
-import { Card, Grid, Container, Typography } from '@material-ui/core'
+import { Card, Box, Typography, Button } from '@material-ui/core'
 import useTitle from 'hooks/useTitle'
 import { makeStyles } from '@material-ui/core/styles'
+import success from 'assets/success.png'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(5),
-    textAlign: 'center',
-    paddingBottom: theme.spacing(5),
+    width: '99vw',
+    height: '89vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   card: {
-    padding: theme.spacing(3),
+    width: '36vw',
+    height: '60vh',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'column',
+    marginTop: '8vh',
   },
   title: {
-    color: theme.palette.primary.main,
+    marginTop: '5%',
   },
-  description: {
-    color: theme.palette.primary.dark,
-    textAlign: 'left',
-    width: '80%',
+  word: {
+    marginTop: '2%',
   },
-  problems: {
-    minWidth: '90%',
+  img: {
+    marginTop: '15%',
+    height: '35%',
   },
-  divider: {
-    height: theme.spacing(1),
-  },
-  buttons: {
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
-  },
-  test: {
-    backgroundColor: theme.palette.secondary.main,
+  btn: {
+    color: theme.palette.background.paper,
+    marginTop: '6%',
   },
 }))
 
 function Finish() {
-  useTitle('填写已完成')
-
   const classes = useStyles()
+  const history = useHistory()
+
+  useTitle('填写已完成')
 
   return (
     <>
-      <Container maxWidth='md' className={classes.root}>
+      <Box className={classes.root}>
         <Card className={classes.card}>
-          <Grid
-            container
-            direction='column'
-            justifyContent='center'
-            S
-            alignItems='center'
-            spacing={3}
+          <img src={success} alt='填写完成' className={classes.img} />
+          <Typography
+            variant='h5'
+            color='textPrimary'
+            className={classes.title}
           >
-            <Grid item className={classes.title}>
-              <Typography variant='h4'>填写完成</Typography>
-            </Grid>
-            <Grid item className={classes.description}>
-              <Typography varient='h6'></Typography>
-            </Grid>
-          </Grid>
+            提交成功
+          </Typography>
+          <Typography
+            variant='body1'
+            color='textSecondary'
+            className={classes.word}
+          >
+            问卷到此结束，感谢您的参与
+          </Typography>
+          <Button
+            variant='contained'
+            color='primary'
+            size='large'
+            onClick={() => {
+              history.goBack()
+            }}
+            className={classes.btn}
+          >
+            返回上一页
+          </Button>
         </Card>
-      </Container>
+      </Box>
     </>
   )
 }
