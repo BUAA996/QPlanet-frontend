@@ -249,7 +249,7 @@ function Design(props) {
             <Grid item className={classes.buttons}>
               <Button
                 variant='contained'
-                color='secondary'
+                color='primary'
                 onClick={() => addDefault(-1)}
                 className={classes.buttons}
               >
@@ -258,7 +258,7 @@ function Design(props) {
               </Button>
               <Button
                 variant='contained'
-                color='secondary'
+                color='primary'
                 onClick={() => save()}
                 className={classes.buttons}
               >
@@ -267,7 +267,7 @@ function Design(props) {
               </Button>
               <Button
                 variant='contained'
-                color='secondary'
+                color='primary'
                 onClick={() => history.go(-1)}
                 className={classes.buttons}
               >

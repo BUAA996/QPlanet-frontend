@@ -63,20 +63,7 @@ function MovableProblemEdit(props) {
           </Button>
         </Grid>
 
-        {/* <Grid item>
-          <Box className={classes.inputNum}>
-            <TextField
-              id="题号"
-              label="移动至"
-              type="number"
-              size="small"
-              value={to + 1}
-            />
-          </Box>
-        </Grid> */}
-
       </Grid>
-
 
       <Grid item xs={7}>
         <ProblemEdit

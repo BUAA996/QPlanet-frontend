@@ -49,7 +49,8 @@ function QuestionEditDialog(props) {
     setMust("" + props.questionInfo.must);
     setKind("" + props.questionInfo.kind);
     setDescription("" + props.questionInfo.description);
-  }, [props.must, props.kind])
+    console.log(props.questionInfo)
+  }, [props.questionInfo.must, props.questionInfo.kind, props.questionInfo.description])
 
   const handleChangeMust = (event) => {
     setMust(event.target.value);
@@ -77,6 +78,7 @@ function QuestionEditDialog(props) {
     setChoices(props.questionInfo.choices)
     setMust("" + props.questionInfo.must)
     setTitle(props.questionInfo.title)
+    setDescription(props.questionInfo.description)
     // console.log(props.questionInfo)
   }
 
@@ -100,10 +102,9 @@ function QuestionEditDialog(props) {
       return;
     }
 
-
     const newQ = {
       id: props.questionInfo.id,
-      description: "",
+      description: description,
       kind: parseInt(kind),
       must: must === "1" ? 1 : 0,
       title: title.trim(),
@@ -115,7 +116,7 @@ function QuestionEditDialog(props) {
 
   const dialogTitle = (
     <DialogTitle>
-      修改题目
+      编辑题目
     </DialogTitle>
   );
   const dialogContent = (
@@ -132,8 +133,6 @@ function QuestionEditDialog(props) {
         fullWidth
       />
       <TextField
-        required
-        id="filled-required"
         label="描述"
         value={description}
         onChange={handleChangeDescription}

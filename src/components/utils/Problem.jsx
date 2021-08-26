@@ -257,7 +257,7 @@ function Problem(props) {
       <CardContent>
         <ShowClasses title={"第 " + (props.problem.key + 1) + " 题 " + props.problem.title} must={props.problem.must} />
         <Divider />
-        <Typography className={classes.description}> 在这里加注释合适嘛 ? 合适的不得了 {props.description}</Typography>
+        <Typography className={classes.description}> {props.problem.description}</Typography>
         {isSingleChoice(props.problem) && <SingleChoice {...props}/>}
         {isMultiChoice(props.problem) && <MultiChoice {...props}/>}
         {isFillBlank(props.problem) && <FillBlanks {...props}/>}
