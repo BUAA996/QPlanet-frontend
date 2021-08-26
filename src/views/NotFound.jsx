@@ -100,7 +100,6 @@ function NotFound() {
 
   return (
     <>
-
       <Container maxWidth="md" className={classes.root}>
         <PreviewPage title={title} Questionare={Questions}/>
       </Container>
