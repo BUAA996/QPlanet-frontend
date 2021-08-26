@@ -6,7 +6,7 @@ import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Cont
 import Rating from '@material-ui/lab/Rating';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { getLocation } from 'utils';
+import { getIP, getLocation } from 'api/location'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -258,8 +258,12 @@ function Location(props) {
   }
 
   const handleGetLocation = () => {
-    // TODO: Get user IP and replace it below
-    getLocation('106.39.42.200', handleSetAddress);
+    getIP().then((res) => {
+      console.log(res.data.ip)
+      getLocation(res.data.ip, handleSetAddress);
+    }).catch(() => {
+      getLocation('106.39.42.200', handleSetAddress);
+    })
   }
 
   return (
@@ -282,7 +286,7 @@ function Location(props) {
       }
       {
         address !== '' && 
-        <Typography className>您的位置：{address}</Typography>
+        <Typography>您的位置：{address}</Typography>
       }
     </Grid>
   );
@@ -294,7 +298,7 @@ function Problem(props) {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <ShowClasses title={ (props.showIndex ? ("第 " + (props.problem.key + 1) + " 题 ") : '') + props.problem.title} must={props.problem.must} />
+        <ShowClasses title={ (props.showIndex === true ? ("第 " + (props.problem.key + 1) + " 题 ") : '') + props.problem.title} must={props.problem.must} />
         <Divider />
         <Typography className={classes.description}> {props.problem.description}</Typography>
         {isSingleChoice(props.problem) && <SingleChoice {...props}/>}
