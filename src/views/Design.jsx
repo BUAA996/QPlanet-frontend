@@ -148,9 +148,7 @@ function Design(props) {
   function editQuestion(index, item) {
     const newQ = questionnaire.slice()
     newQ.splice(index, 1, item)
-    // console.log("newQ:", newQ)
     handleSetQuestionnaire(newQ)
-    // console.log("questionnaire", questionnaire)
   }
 
   function move(oriIndex, newIndex) {

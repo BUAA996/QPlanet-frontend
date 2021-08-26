@@ -1,9 +1,21 @@
-import { DialogTitle, TextField, FormLabel, Select, RadioGroup, Radio, FormControlLabel, MenuItem, InputLabel, FormControl, DialogContent, Divider } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { useEffect, useState } from "react";
+import {
+  DialogTitle,
+  TextField,
+  FormLabel,
+  Select,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  DialogContent
+} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+import {useEffect, useState} from "react";
 import EditDialog from "./EditDialog";
 import SelectDialogBody from "./SelectDialogBody";
-import { useSnackbar } from 'notistack'
+import {useSnackbar} from 'notistack'
 
 const useStyle = makeStyles((theme) => ({
   content: {
@@ -23,19 +35,20 @@ const useStyle = makeStyles((theme) => ({
 // }
 function QuestionEditDialog(props) {
   const classes = useStyle();
-  const { enqueueSnackbar } = useSnackbar()
+  const {enqueueSnackbar} = useSnackbar()
 
   const [choices, setChoices] = useState([]);
   const [must, setMust] = useState("1");
   const [kind, setKind] = useState("0");
   const [title, setTitle] = useState("");
-
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     setTitle(props.questionInfo.title)
     setChoices(props.questionInfo.choices)
     setMust("" + props.questionInfo.must);
     setKind("" + props.questionInfo.kind);
+    setDescription("" + props.questionInfo.description);
   }, [props.must, props.kind])
 
   const handleChangeMust = (event) => {
@@ -46,6 +59,9 @@ function QuestionEditDialog(props) {
   }
   const handleChangeTitle = (event) => {
     setTitle(event.target.value)
+  }
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value)
   }
 
 
@@ -68,11 +84,11 @@ function QuestionEditDialog(props) {
   const saveFunc = () => {
     // console.log(choices)
     if (title.trim() === "") {
-      enqueueSnackbar("题目不能为空", { variant: 'error' });
+      enqueueSnackbar("题目不能为空", {variant: 'error'});
       return;
     }
     if ((kind == '0' || kind == '1') && choices.length < 2) {
-      enqueueSnackbar("选择题选项不能少于两个", { variant: 'error' });
+      enqueueSnackbar("选择题选项不能少于两个", {variant: 'error'});
       return;
     }
 
@@ -80,7 +96,7 @@ function QuestionEditDialog(props) {
       !choices
         .map((x) => x.trim() !== "")
         .reduce((x, y) => x && y)) {
-      enqueueSnackbar("选项不能为空", { variant: 'error' });
+      enqueueSnackbar("选项不能为空", {variant: 'error'});
       return;
     }
 
@@ -115,20 +131,29 @@ function QuestionEditDialog(props) {
         multiline
         fullWidth
       />
+      <TextField
+        required
+        id="filled-required"
+        label="描述"
+        value={description}
+        onChange={handleChangeDescription}
+        multiline
+        fullWidth
+      />
       <FormControl component="fieldset" className={classes.content}>
         <FormLabel component="legend"> 是否必填：</FormLabel>
         <RadioGroup aria-label="must?"
-          onChange={handleChangeMust}
-          value={must}
-          row
+                    onChange={handleChangeMust}
+                    value={must}
+                    row
         >
-          <FormControlLabel value={"1"} control={<Radio />} label="是" />
-          <FormControlLabel value={"0"} control={<Radio />} label="否" />
+          <FormControlLabel value={"1"} control={<Radio/>} label="是"/>
+          <FormControlLabel value={"0"} control={<Radio/>} label="否"/>
         </RadioGroup>
       </FormControl>
 
 
-      <InputLabel id="demo-simple-select-label" >题目类型</InputLabel>
+      <InputLabel id="demo-simple-select-label">题目类型</InputLabel>
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
@@ -140,6 +165,8 @@ function QuestionEditDialog(props) {
         <MenuItem value={1}>多选</MenuItem>
         <MenuItem value={2}>填空</MenuItem>
         <MenuItem value={3}>简答</MenuItem>
+        <MenuItem value={4}>评分</MenuItem>
+        <MenuItem value={5}>定位</MenuItem>
       </Select>
       {kind == '0' || kind == '1' ?
         <SelectDialogBody

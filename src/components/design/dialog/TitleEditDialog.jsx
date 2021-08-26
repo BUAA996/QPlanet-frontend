@@ -25,9 +25,6 @@ function TitleEditDialog(props) {
 
   const dialogContent = (
     <DialogContent>
-      <DialogContentText>
-        为了更好的呈现效果，请把标题控制在 20 个字以内
-      </DialogContentText>
       <TextField
         autoFocus
         margin="dense"
@@ -37,6 +34,7 @@ function TitleEditDialog(props) {
         value={props.title|| ''}
         error={props.title === ""}
         onChange={props.handleTitleChange}
+        helperText={"为了更好的呈现效果，请把标题控制在 20 个字以内"}
         fullWidth
       />
       <TextField

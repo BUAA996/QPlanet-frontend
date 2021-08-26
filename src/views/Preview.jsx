@@ -7,18 +7,19 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core'
-import { view, submit } from 'api/questionaire'
-import { useEffect, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import {view, submit} from 'api/questionaire'
+import {useEffect, useState} from 'react'
+import {makeStyles} from '@material-ui/core/styles'
 import Problem from 'components/utils/Problem'
 import useTitle from 'hooks/useTitle'
-import { useParams } from 'react-router'
-import { useHistory } from 'react-router-dom'
+import {useParams} from 'react-router'
+import {useHistory} from 'react-router-dom'
 import SpeedDialMenu from 'components/utils/SpeedDialMenu'
-import { downloadQuestionnaire } from 'api/questionaire'
-import { download } from 'utils'
+import {downloadQuestionnaire} from 'api/questionaire'
+import {download} from 'utils'
 import useRouteDefender from 'hooks/useRouteDefender'
-import { useStateStore } from 'store'
+import {useStateStore} from 'store'
+import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     color: theme.palette.primary.main,
+    width: '90%',
   },
   description: {
     color: theme.palette.primary.dark,
@@ -125,11 +127,16 @@ function Title(props) {
 
   return (
     <>
-      <Grid item className={classes.title}>
-        <Typography variant='h4'>{props.title}</Typography>
+      <Grid item className={classes.title} >
+        <Typography variant='h4'>{
+          props.title ? props.title : <Skeleton />
+        }</Typography>
       </Grid>
+
       <Grid item className={classes.description}>
-        <Typography varient='h6'>{props.description}</Typography>
+        <Typography varient='h6'>
+          {props.description? props.description: <Skeleton />}
+        </Typography>
       </Grid>
     </>
   )
@@ -169,7 +176,7 @@ function Preview() {
   const [Questionare, setQuestionare] = useState([])
   const [description, setDescription] = useState('')
   const [ansList, setAns] = useState([])
-  const { id } = useParams()
+  const {id} = useParams()
   const history = useHistory()
   const isLogin = useStateStore().isLogin
 
@@ -188,7 +195,7 @@ function Preview() {
       setDescription(DESCRIPTION)
       setQuestionare([].concat(QUESTIONAIRE))
 
-      view({ hash: id }).then((res) => {
+      view({hash: id}).then((res) => {
         // console.log(res);
         if (res.data.result === 1) {
           const ori = res.data.questions
@@ -264,7 +271,7 @@ function Preview() {
             spacing={3}
           >
             <Grid item>提示：在预览状态下不可提交问卷</Grid>
-            <Title title={title} description={description} />
+            <Title title={title} description={description}/>
             <Divider
               flexItem={true}
               variant={'middle'}
@@ -306,7 +313,7 @@ function Preview() {
       <SpeedDialMenu
         handleClick={(name) => {
           if (name === '下载问卷') {
-            downloadQuestionnaire({ hash: id }).then((res) => {
+            downloadQuestionnaire({hash: id}).then((res) => {
               download(
                 'https://api.matrix53.top/img/' + res.data.doc_name,
                 res.data.doc_name
@@ -320,4 +327,4 @@ function Preview() {
 }
 
 export default Preview
-export { Title, PreviewPage }
+export {Title, PreviewPage}
