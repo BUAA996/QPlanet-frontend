@@ -18,12 +18,15 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import React from "react";
 import ExamSettings from "./QuestionnaireSettings/ExamSettings";
+import VoteSettings from "./QuestionnaireSettings/VoteSettings";
+import SignUpSettings from "./QuestionnaireSettings/SignUpSettings";
 
 const useStyle = makeStyles((theme) => ({
   grid: {
     margin: theme.spacing(1)
   }
 }))
+
 
 function TitleEditDialog(props) {
   const classes = useStyle();
@@ -78,7 +81,7 @@ function TitleEditDialog(props) {
           />
         </RadioGroup>
       </FormControl>
-      <ExamSettings/>
+      <SignUpSettings/>
     </DialogContent>
   );
 
