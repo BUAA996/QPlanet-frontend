@@ -6,6 +6,7 @@ import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Cont
 import Rating from '@material-ui/lab/Rating';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { getLocation } from 'utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   scoring: {
+    marginLeft: theme.spacing(5)
+  },
+  Location: {
     marginLeft: theme.spacing(5)
   }
 }));
@@ -248,42 +252,49 @@ function Location(props) {
   const classes = useStyles();
   const [address, setAddress] = useState('');
 
-  const handleGetLocation = () => {
+  function handleSetAddress(address) {
+    setAddress(address);
+    props.updateAns([address]);
+  }
 
-    let geo = navigator.geolocation;
-    console.log(geo);
-    geo.getCurrentPosition((position) => {
-      console.log(position);
-      let {latitude} = position.coords;
-      let {longitude} = position.coords;
-      console.log(latitude);
-      console.log(longitude);
-      fetch('https://restapi.amap.com/v3/geocode/regeo?output=json&location='
-        + longitude + ',' + latitude 
-        + '&key=0ced8e61a15e78d5ec9fb5142d6823ab&radius=1000&extensions=all').then((res) => {
-        res.json().then((data) => {
-          console.log(data);
-          let address = data.regeocode.addressComponent
-          setAddress(address.province + address.district);
-        })
-      })
-    })
+  const handleGetLocation = () => {
+    // TODO: Get user IP and replace it below
+    getLocation('106.39.42.200', handleSetAddress);
   }
 
   return (
-    <Container>
-      <Typography>这是一个定位题：{address}</Typography>
-      <Button primary onClick={handleGetLocation}> 定位 </Button>
-    </Container>
+    <Grid
+      container
+      direction="row"
+      justifyContent="flex-start"
+      alignItems="center"
+      className={classes.Location}
+    >
+      {
+        address === '' && 
+        <Button 
+          color="primary" 
+          onClick={handleGetLocation}
+          variant="outlined"
+        > 
+          点击获取位置信息 
+        </Button>
+      }
+      {
+        address !== '' && 
+        <Typography className>您的位置：{address}</Typography>
+      }
+    </Grid>
   );
 }
 
 function Problem(props) {
   const classes = useStyles();
+  console.log(props.showIndex)
   return (
     <Card className={classes.root}>
       <CardContent>
-        <ShowClasses title={"第 " + (props.problem.key + 1) + " 题 " + props.problem.title} must={props.problem.must} />
+        <ShowClasses title={ (props.showIndex ? ("第 " + (props.problem.key + 1) + " 题 ") : '') + props.problem.title} must={props.problem.must} />
         <Divider />
         <Typography className={classes.description}> {props.problem.description}</Typography>
         {isSingleChoice(props.problem) && <SingleChoice {...props}/>}
