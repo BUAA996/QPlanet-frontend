@@ -2,7 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Container, Typography, Slider, Box, Grid } from '@material-ui/core';
+import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Container, Typography, Button, Grid } from '@material-ui/core';
+import Rating from '@material-ui/lab/Rating';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
@@ -40,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(5),
     marginTop: theme.spacing(1),
   },
-  scoringSlider: {
-    marginLeft: theme.spacing(8)
+  scoring: {
+    marginLeft: theme.spacing(5)
   }
 }));
 
@@ -215,14 +216,11 @@ function ShortAnswer(props) {
 function Scoring(props) {
   const classes = useStyles();
 
-  const marks = [
-    {value: 0, label: '0'},
-    {value: 50, label: '50'},
-    {value: 100, label: '100'}
-  ];
+  const [value, setValue] = useState(1)
 
-  function valuetext(value) {
-    return '当前选择：' + value;
+  function handleChange(newValue) {
+    setValue(newValue);
+    props.updateAns([newValue]);
   }
 
   return (
@@ -232,21 +230,39 @@ function Scoring(props) {
       justifyContent="flex-start"
       alignItems="center"
     >
-      <Grid item xs={12}><Typography className={classes.plainText}>拖动滑块做出选择：</Typography></Grid>
-      <Grid item xs={6} className={classes.scoringSlider}>
-        <Slider
-          defaultValue={10}
-          getAriaValueText={valuetext}
-          aria-labelledby="discrete-slider-small-steps"
-          step={1}
-          marks={marks}
-          min={0}
-          max={100}
-          valueLabelDisplay="auto"
-        /> 
+      {/* <Grid item xs={6}><Typography className={classes.plainText}>拖动滑块做出选择：</Typography></Grid> */}
+      <Grid item className={classes.scoring}>
+        <Rating  
+          value={value}
+          onChange={(event, newValue) => {handleChange(newValue);}}
+          max={props.maxScore}
+        />
+        {value != null && <Typography> 当前评分为：{value} 分</Typography>}
       </Grid>
     </Grid>
     
+  );
+}
+
+function Location(props) {
+  const classes = useStyles();
+
+  const handleGetLocation = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const initialPosition = position
+      console.log(initialPosition);
+      const {longitude} = initialPosition.coords;
+      const {latitude} = initialPosition.coords;
+      console.log(longitude);
+      console.log(latitude);
+    })
+  }
+
+  return (
+    <Container>
+      <Typography>这是一个定位题</Typography>
+      <Button primary onClick={handleGetLocation}> 定位 </Button>
+    </Container>
   );
 }
 
@@ -263,6 +279,7 @@ function Problem(props) {
         {isFillBlank(props.problem) && <FillBlanks {...props}/>}
         {isShortAnswer(props.problem) && <ShortAnswer {...props}/>}
         {isScoring(props.problem) && <Scoring {...props}/>}
+        {isLocation(props.problem) && <Location {...props}/>} 
         {props.children}
       </CardContent>
     </Card>
@@ -274,6 +291,7 @@ function isMultiChoice(problem) { return problem.kind === 1; }
 function isFillBlank(problem) { return problem.kind === 2; }
 function isShortAnswer(problem) { return problem.kind === 3;}
 function isScoring(problem) { return problem.kind === 4;}
+function isLocation(problem) { return problem.kind === 5;}
 
 function isChoice(problem) { return isSingleChoice(problem) || isMultiChoice(problem) }
 
