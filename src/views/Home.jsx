@@ -1,12 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles'
 import banner from 'assets/banner.png'
 import useTitle from 'hooks/useTitle'
-import { Typography, Grid, Box } from '@material-ui/core'
+import { Typography, Grid, Box, Collapse } from '@material-ui/core'
 import form from 'assets/home_img/form.png'
 import survey from 'assets/home_img/survey.png'
 import test from 'assets/home_img/test.png'
 import vote from 'assets/home_img/vote.png'
 import { Waypoint } from 'react-waypoint'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   home: {
@@ -41,59 +43,85 @@ const useStyles = makeStyles((theme) => ({
 
 function IntroCard({ imgUrl, title, subTitle, position }) {
   const classes = useStyles()
+  const [needLoad, setNeedLoad] = useState(false)
 
   return (
-    <Grid
-      xs={12}
-      container
-      justifyContent='center'
-      className={position === 'left' ? classes.pageLeft : classes.pageRight}
-    >
+    <>
       <Grid
-        xs={position === 'left' ? 4 : 6}
-        item
+        xs={12}
         container
-        justifyContent={position === 'left' ? 'flex-end' : 'center'}
-        alignItems='center'
+        justifyContent='center'
+        className={position === 'left' ? classes.pageLeft : classes.pageRight}
       >
-        {position === 'left' ? (
-          <img src={imgUrl} alt={title} />
-        ) : (
-          <Box width='60%' height='100%'>
-            <Typography variant='h4' className={classes.cardTitle}>
-              {title}
-            </Typography>
-            <Typography className={classes.cardSubTitle} color='textSecondary'>
-              {subTitle}
-            </Typography>
-          </Box>
-        )}
+        <Grid
+          xs={position === 'left' ? 4 : 6}
+          item
+          container
+          justifyContent={position === 'left' ? 'flex-end' : 'center'}
+          alignItems='center'
+        >
+          {position === 'left' ? (
+            <Collapse in={needLoad} timeout={400}>
+              <img src={imgUrl} alt={title} />
+            </Collapse>
+          ) : (
+            <Box width='60%' height='100%'>
+              <Collapse in={needLoad} timeout={700}>
+                <Typography variant='h4' className={classes.cardTitle}>
+                  {title}
+                </Typography>
+                <Typography
+                  variant='body1'
+                  color='textSecondary'
+                  className={classes.cardSubTitle}
+                >
+                  {subTitle}
+                </Typography>
+              </Collapse>
+            </Box>
+          )}
+        </Grid>
+        <Grid
+          xs={position !== 'left' ? 4 : 6}
+          item
+          container
+          justifyContent={position !== 'left' ? 'flex-start' : 'center'}
+          alignItems='center'
+        >
+          {position !== 'left' ? (
+            <Collapse in={needLoad} timeout={400}>
+              <img src={imgUrl} alt={title} />
+            </Collapse>
+          ) : (
+            <Box width='60%' height='100%'>
+              <Collapse in={needLoad} timeout={700}>
+                <Typography variant='h4' className={classes.cardTitle}>
+                  {title}
+                </Typography>
+                <Typography
+                  variant='body1'
+                  color='textSecondary'
+                  className={classes.cardSubTitle}
+                >
+                  {subTitle}
+                </Typography>
+              </Collapse>
+            </Box>
+          )}
+        </Grid>
       </Grid>
-      <Grid
-        xs={position !== 'left' ? 4 : 6}
-        item
-        container
-        justifyContent={position !== 'left' ? 'flex-start' : 'center'}
-        alignItems='center'
-      >
-        {position !== 'left' ? (
-          <img src={imgUrl} alt={title} />
-        ) : (
-          <Box width='60%' height='100%'>
-            <Typography variant='h4' className={classes.cardTitle}>
-              {title}
-            </Typography>
-            <Typography
-              variant='body1'
-              color='textSecondary'
-              className={classes.cardSubTitle}
-            >
-              {subTitle}
-            </Typography>
-          </Box>
-        )}
-      </Grid>
-    </Grid>
+      <Waypoint
+        bottomOffset='-100px'
+        onEnter={({ currentPosition, previousPosition }) => {
+          if (
+            previousPosition === Waypoint.below &&
+            currentPosition === Waypoint.inside
+          ) {
+            setNeedLoad(true)
+          }
+        }}
+      />
+    </>
   )
 }
 
@@ -101,6 +129,11 @@ function Home() {
   const classes = useStyles()
 
   useTitle('首页 - 问卷星球')
+
+  useEffect(() => {
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+  }, [])
 
   return (
     <>
