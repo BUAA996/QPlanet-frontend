@@ -13,7 +13,7 @@ import { Close } from '@material-ui/icons'
 import QRCode from 'qrcode.react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useSnackbar } from 'notistack'
-import icon from 'assets/logo.svg'
+import icon from 'assets/logoPrevious.svg'
 import { download } from 'utils'
 
 const useStyles = makeStyles((theme) => ({
