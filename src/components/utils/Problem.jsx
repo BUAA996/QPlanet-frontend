@@ -249,23 +249,25 @@ function Location(props) {
   const [address, setAddress] = useState('');
 
   const handleGetLocation = () => {
-    console.log('123')
-    let BMap = window.BMap
-    let geolocation = new BMap.Geolocation()
-    let myGeo = new BMap.Geocoder()
-    geolocation.getCurrentPosition(function (r) {
-      console.log(r);
-      if(this.getStatus() == 0){
-        console.log(r.point)
-        myGeo.getLocation(r.point, function(result){      
-          if (result){      
-            alert(result.address);    
-            setAddress(result.address);  
-          }      
-        });
-      }
-    })
 
+    let geo = navigator.geolocation;
+    console.log(geo);
+    geo.getCurrentPosition((position) => {
+      console.log(position);
+      let {latitude} = position.coords;
+      let {longitude} = position.coords;
+      console.log(latitude);
+      console.log(longitude);
+      fetch('https://restapi.amap.com/v3/geocode/regeo?output=json&location='
+        + longitude + ',' + latitude 
+        + '&key=0ced8e61a15e78d5ec9fb5142d6823ab&radius=1000&extensions=all').then((res) => {
+        res.json().then((data) => {
+          console.log(data);
+          let address = data.regeocode.addressComponent
+          setAddress(address.province + address.district);
+        })
+      })
+    })
   }
 
   return (
