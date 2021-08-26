@@ -246,21 +246,31 @@ function Scoring(props) {
 
 function Location(props) {
   const classes = useStyles();
+  const [address, setAddress] = useState('');
 
   const handleGetLocation = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const initialPosition = position
-      console.log(initialPosition);
-      const {longitude} = initialPosition.coords;
-      const {latitude} = initialPosition.coords;
-      console.log(longitude);
-      console.log(latitude);
+    console.log('123')
+    let BMap = window.BMap
+    let geolocation = new BMap.Geolocation()
+    let myGeo = new BMap.Geocoder()
+    geolocation.getCurrentPosition(function (r) {
+      console.log(r);
+      if(this.getStatus() == 0){
+        console.log(r.point)
+        myGeo.getLocation(r.point, function(result){      
+          if (result){      
+            alert(result.address);    
+            setAddress(result.address);  
+          }      
+        });
+      }
     })
+
   }
 
   return (
     <Container>
-      <Typography>这是一个定位题</Typography>
+      <Typography>这是一个定位题：{address}</Typography>
       <Button primary onClick={handleGetLocation}> 定位 </Button>
     </Container>
   );
