@@ -4,14 +4,23 @@ import useTitle from 'hooks/useTitle'
 import { Typography, Grid } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  page1: {
     height: '89vh',
     backgroundImage: `url(${banner})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: '99vw 89vh',
   },
-  title: { marginTop: '10vh' },
-  subTitle: { marginTop: '4vh' },
+  title: {
+    marginTop: '10vh',
+  },
+  subTitle: {
+    marginTop: '4vh',
+  },
+  page2: {
+    backgroundColor: theme.palette.background.default,
+    width: '99vw',
+    height: '50vh',
+  },
 }))
 
 function Home() {
@@ -21,7 +30,7 @@ function Home() {
 
   return (
     <>
-      <Grid xs={12} container className={classes.root} justifyContent='center'>
+      <Grid xs={12} container className={classes.page1} justifyContent='center'>
         <Grid
           item
           lg={6}
@@ -40,24 +49,9 @@ function Home() {
           </Typography>
         </Grid>
       </Grid>
-      <Typography color='primary' variant='h3'>
-        问卷调查，从"星"开始
-      </Typography>
-      <Typography color='primary' variant='h3'>
-        问卷调查，从"星"开始
-      </Typography>
-      <Typography color='primary' variant='h3'>
-        问卷调查，从"星"开始
-      </Typography>
-      <Typography color='primary' variant='h3'>
-        问卷调查，从"星"开始
-      </Typography>
-      <Typography color='primary' variant='h3'>
-        问卷调查，从"星"开始
-      </Typography>
-      <Typography color='primary' variant='h3'>
-        问卷调查，从"星"开始
-      </Typography>
+      <Grid xs={12} container className={classes.page2}></Grid>
+      <Grid xs={12} container className={classes.page3}></Grid>
+      <Grid xs={12} container className={classes.page4}></Grid>
     </>
   )
 }
