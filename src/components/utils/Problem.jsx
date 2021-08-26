@@ -6,6 +6,7 @@ import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Cont
 import Rating from '@material-ui/lab/Rating';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { getIP, getLocation } from 'api/location'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   scoring: {
+    marginLeft: theme.spacing(5)
+  },
+  Location: {
     marginLeft: theme.spacing(5)
   }
 }));
@@ -248,40 +252,53 @@ function Location(props) {
   const classes = useStyles();
   const [address, setAddress] = useState('');
 
-  const handleGetLocation = () => {
-    console.log('123')
-    let BMap = window.BMap
-    let geolocation = new BMap.Geolocation()
-    let myGeo = new BMap.Geocoder()
-    geolocation.getCurrentPosition(function (r) {
-      console.log(r);
-      if(this.getStatus() == 0){
-        console.log(r.point)
-        myGeo.getLocation(r.point, function(result){      
-          if (result){      
-            alert(result.address);    
-            setAddress(result.address);  
-          }      
-        });
-      }
-    })
+  function handleSetAddress(address) {
+    setAddress(address);
+    props.updateAns([address]);
+  }
 
+  const handleGetLocation = () => {
+    getIP().then((res) => {
+      console.log(res.data.ip)
+      getLocation(res.data.ip, handleSetAddress);
+    }).catch(() => {
+      getLocation('106.39.42.200', handleSetAddress);
+    })
   }
 
   return (
-    <Container>
-      <Typography>这是一个定位题：{address}</Typography>
-      <Button primary onClick={handleGetLocation}> 定位 </Button>
-    </Container>
+    <Grid
+      container
+      direction="row"
+      justifyContent="flex-start"
+      alignItems="center"
+      className={classes.Location}
+    >
+      {
+        address === '' && 
+        <Button 
+          color="primary" 
+          onClick={handleGetLocation}
+          variant="outlined"
+        > 
+          点击获取位置信息 
+        </Button>
+      }
+      {
+        address !== '' && 
+        <Typography>您的位置：{address}</Typography>
+      }
+    </Grid>
   );
 }
 
 function Problem(props) {
   const classes = useStyles();
+  console.log(props.showIndex)
   return (
     <Card className={classes.root}>
       <CardContent>
-        <ShowClasses title={"第 " + (props.problem.key + 1) + " 题 " + props.problem.title} must={props.problem.must} />
+        <ShowClasses title={ (props.showIndex === true ? ("第 " + (props.problem.key + 1) + " 题 ") : '') + props.problem.title} must={props.problem.must} />
         <Divider />
         <Typography className={classes.description}> {props.problem.description}</Typography>
         {isSingleChoice(props.problem) && <SingleChoice {...props}/>}
