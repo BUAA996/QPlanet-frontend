@@ -77,118 +77,120 @@ function AppHeader() {
   }
 
   return showHeader ? (
-    <AppBar position='sticky' className={classes.root}>
-      <Toolbar>
-        <Container fixed>
-          <Grid
-            container
-            direction='row'
-            justifyContent='flex-start'
-            alignItems='center'
-          >
+    <>
+      <AppBar position='fixed' className={classes.root}>
+        <Toolbar>
+          <Container fixed>
             <Grid
-              item
-              xs={4}
               container
               direction='row'
               justifyContent='flex-start'
               alignItems='center'
             >
-              <Grid item>
-                <img
-                  src={SvgLogo}
-                  alt='logo'
-                  onClick={() => {
-                    history.push('/')
-                  }}
-                  style={{ cursor: 'pointer' }}
-                />
-              </Grid>
-              <Grid item>
-                <Link to='/' className={classes.title}>
-                  问卷星球
-                </Link>
-              </Grid>
-            </Grid>
-            <Grid
-              item
-              xs={8}
-              container
-              direction='row'
-              justifyContent='flex-end'
-              alignItems='center'
-            >
-              <Box flexGrow={1} />
-              {isLogin ? (
-                <>
-                  <Button
-                    component={Link}
-                    to='/overview'
-                    className={classes.link}
-                  >
-                    进入控制台
-                  </Button>
-                  <Button
-                    className={classes.link}
-                    onClick={(event) => {
-                      setAnchorEl(event.currentTarget)
+              <Grid
+                item
+                xs={4}
+                container
+                direction='row'
+                justifyContent='flex-start'
+                alignItems='center'
+              >
+                <Grid item>
+                  <img
+                    src={SvgLogo}
+                    alt='logo'
+                    onClick={() => {
+                      history.push('/')
                     }}
-                  >
-                    {userInfo.username}
-                  </Button>
-                  <Menu
-                    id='simple-menu'
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={() => {
-                      setAnchorEl(null)
-                    }}
-                  >
-                    <MenuItem
-                      onClick={() => {
-                        setOpen(true)
+                    style={{ cursor: 'pointer' }}
+                  />
+                </Grid>
+                <Grid item>
+                  <Link to='/' className={classes.title}>
+                    问卷星球
+                  </Link>
+                </Grid>
+              </Grid>
+              <Grid
+                item
+                xs={8}
+                container
+                direction='row'
+                justifyContent='flex-end'
+                alignItems='center'
+              >
+                <Box flexGrow={1} />
+                {isLogin ? (
+                  <>
+                    <Button
+                      component={Link}
+                      to='/overview'
+                      className={classes.link}
+                    >
+                      进入控制台
+                    </Button>
+                    <Button
+                      className={classes.link}
+                      onClick={(event) => {
+                        setAnchorEl(event.currentTarget)
+                      }}
+                    >
+                      {userInfo.username}
+                    </Button>
+                    <Menu
+                      id='simple-menu'
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={() => {
                         setAnchorEl(null)
                       }}
                     >
-                      修改密码
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        onLogout()
-                        setAnchorEl(null)
-                      }}
+                      <MenuItem
+                        onClick={() => {
+                          setOpen(true)
+                          setAnchorEl(null)
+                        }}
+                      >
+                        修改密码
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          onLogout()
+                          setAnchorEl(null)
+                        }}
+                      >
+                        登出账号
+                      </MenuItem>
+                    </Menu>
+                    <ChangePassword open={open} setOpen={setOpen} />
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      component={Link}
+                      to='/signin'
+                      className={classes.link}
                     >
-                      登出账号
-                    </MenuItem>
-                  </Menu>
-                  <ChangePassword open={open} setOpen={setOpen} />
-                </>
-              ) : (
-                <>
-                  <Button
-                    component={Link}
-                    to='/signin'
-                    className={classes.link}
-                  >
-                    登录
-                  </Button>
-                  <Button
-                    component={Link}
-                    to='/signup'
-                    className={classes.link}
-                  >
-                    注册
-                  </Button>
-                </>
-              )}
+                      登录
+                    </Button>
+                    <Button
+                      component={Link}
+                      to='/signup'
+                      className={classes.link}
+                    >
+                      注册
+                    </Button>
+                  </>
+                )}
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
-      </Toolbar>
-    </AppBar>
-  ) : // <Box height='10vh' width='100vw'></Box>
-  null
+          </Container>
+        </Toolbar>
+      </AppBar>
+      <div style={{ height: '10vh', width: '95vw' }} />
+    </>
+  ) : null
 }
 
 export default AppHeader

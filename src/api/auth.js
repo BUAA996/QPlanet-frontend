@@ -40,6 +40,11 @@ function changePassword(data) {
   return axios.post('user/change/', data)
 }
 
+// getip
+function getIP() {
+  return axios.get('user/ip/')
+}
+
 export {
   register,
   getCaptcha,
@@ -49,4 +54,5 @@ export {
   isLogin,
   getUserInfo,
   changePassword,
+  getIP,
 }
