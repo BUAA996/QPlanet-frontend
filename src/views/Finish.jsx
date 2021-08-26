@@ -67,11 +67,11 @@ function Finish() {
             color='primary'
             size='large'
             onClick={() => {
-              history.goBack()
+              history.push('/')
             }}
             className={classes.btn}
           >
-            返回上一页
+            返回首页
           </Button>
         </Card>
       </Box>
