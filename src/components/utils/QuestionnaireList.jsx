@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { Button, Container, Grid, List, ListItem, ListItemText, Menu, MenuItem } from '@material-ui/core';
 import Questionare from './Questionnaire';
+import { Pagination } from '@material-ui/lab';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -135,6 +136,7 @@ export default function QuestionnaireList(props) {
   const [value, setValue] = React.useState(0); // 控制左侧的 tab 选项
 	const [sortIndex, setSortIndex] = React.useState(0);
 	const [childPropsList, setQuestionaires] = React.useState([]);
+	const [page, setPage] = React.useState(1);
 
 	useEffect(() => {
 		setQuestionaires([].concat(props.Questionares));
@@ -146,6 +148,10 @@ export default function QuestionnaireList(props) {
     setValue(newValue);
 		setSortIndex(0);
   };
+
+	const handlePageChange = (event, newPage) => {
+		setPage(newPage);
+	}
 
 	const handleSortIndexChange = (newValue) => {
 		setSortIndex(newValue);
@@ -191,11 +197,16 @@ export default function QuestionnaireList(props) {
 					<Tab label="全部问卷" {...a11yProps(0)} />
 					<Tab label="未发布问卷" {...a11yProps(1)} />
 					<Tab label="已发布问卷" {...a11yProps(2)} />
-					<Tab label="已完成问卷" {...a11yProps(3)} />
+					<Tab label="已暂停问卷" {...a11yProps(3)} />
 					<Tab label="回收站" {...a11yProps(4)} />
 				</Tabs>
 			</Grid>
-			<Grid item xs={10}>
+			<Grid item xs={10}
+				container
+				direction="column"
+				justifyContent="center"
+				alignItems="center"
+			>
 				<TabPanel value={value} index={0}>
 					<SortButtons 
 						setQuestionaires={setQuestionaires} 
@@ -204,7 +215,7 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} showType={-1}/>)}
+					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={-1}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={1}>
 					<SortButtons 
@@ -214,7 +225,7 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} showType={0}/>)}
+					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={0}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={2}>
 					<SortButtons 
@@ -224,7 +235,7 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} showType={1}/>)}
+					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={1}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={3}>
 					
@@ -235,7 +246,7 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} showType={2}/>)}
+					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={2}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={4}>
 					
@@ -246,7 +257,7 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} showType={3}/>)}
+					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={3}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={5}>
 					<SortButtons 
@@ -256,8 +267,11 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} showType={4}/>)}
+					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={4}/>)}
 				</TabPanel>
+				<Grid item >
+					<Pagination count={10} page={page} onChange={handlePageChange} showFirstButton showLastButton/>
+				</Grid>
 			</Grid>
     </Grid>
   );
