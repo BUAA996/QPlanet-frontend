@@ -1,7 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles'
 import banner from 'assets/banner.png'
 import useTitle from 'hooks/useTitle'
-import { Typography, Grid, Box, Collapse } from '@material-ui/core'
+import { Typography, Grid, Box, Collapse, Fade } from '@material-ui/core'
+import { ExpandMore } from '@material-ui/icons'
 import form from 'assets/home_img/form.png'
 import survey from 'assets/home_img/survey.png'
 import test from 'assets/home_img/test.png'
@@ -40,9 +41,18 @@ const useStyles = makeStyles((theme) => ({
   cardSubTitle: {
     marginTop: '10%',
   },
+  '@keyframes upAndDown': {
+    '0%': { color: theme.palette.grey[300] },
+    '50%': { color: theme.palette.grey[800], marginTop: '10%' },
+    '100%': { color: theme.palette.grey[300] },
+  },
+  expandMore: {
+    animation: `$upAndDown 2500ms 200ms infinite`,
+    marginTop: '8%',
+  },
 }))
 
-function IntroCard({ imgUrl, title, subTitle, position }) {
+function IntroCard({ imgUrl, title, subTitle, position, callback }) {
   const classes = useStyles()
   const [needLoad, setNeedLoad] = useState(false)
 
@@ -119,6 +129,7 @@ function IntroCard({ imgUrl, title, subTitle, position }) {
             currentPosition === Waypoint.inside
           ) {
             setNeedLoad(true)
+            if (callback !== undefined) callback()
           }
         }}
       />
@@ -188,6 +199,7 @@ function DataShow({ ...other }) {
 
 function Home() {
   const classes = useStyles()
+  const [showIcon, setShowIcon] = useState(true)
 
   useTitle('首页 - 问卷星球')
 
@@ -217,6 +229,9 @@ function Home() {
             一分钟快速注册，即刻体验便捷的问卷调查与数据分析平台
           </Typography>
           <DataShow />
+          <Fade in={showIcon} timeout={2000}>
+            <ExpandMore fontSize='large' className={classes.expandMore} />
+          </Fade>
         </Grid>
       </Grid>
       <IntroCard
@@ -224,6 +239,9 @@ function Home() {
         imgUrl={survey}
         title='问卷调查，从"星"开始'
         subTitle='深度集成微信填写、问卷密码等功能，帮您轻松完成意向调查、满意度调查等各类在线问卷调查。'
+        callback={() => {
+          setShowIcon(false)
+        }}
       />
       <IntroCard
         position='right'
