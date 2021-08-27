@@ -19,22 +19,24 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(0),
   },
   stepper: {
-    marginTop: '4%',
+    marginTop: '3.5%',
+    paddingBottom: theme.spacing(2),
+    '& .MuiStepButton-root': {
+      paddingBottom: theme.spacing(2),
+      marginBottom: theme.spacing(-2),
+    },
     '& .MuiStepIcon-text': {
       fill: 'white',
+    },
+    '& .MuiStepLabel-label.MuiStepLabel-active': {
+      color: theme.palette.primary.main,
     },
   },
 }))
 
-function IntroTemplate({ open, setOpen }) {
+function IntroTemplate({ open, setOpen, steps }) {
   const classes = useStyles()
   const [activeStep, setActiveStep] = useState(0)
-
-  const steps = [
-    { label: '步骤一', photo: '' },
-    { label: '步骤二', photo: '' },
-    { label: '步骤三', photo: '' },
-  ]
 
   return (
     <Dialog open={open} maxWidth='lg'>
@@ -77,25 +79,33 @@ function IntroTemplate({ open, setOpen }) {
           display='flex'
           justifyContent='center'
           alignItems='center'
+          marginBottom='4%'
         >
           <IconButton
             onClick={() => {
               setActiveStep((step) => step - 1)
             }}
             disabled={activeStep === 0}
+            style={{ marginRight: '1%' }}
           >
             <ChevronLeft />
           </IconButton>
           <img
             src={steps[activeStep].photo}
             alt={steps[activeStep].label}
-            style={{ height: '50%', width: '80%' }}
+            style={{
+              height: '100%',
+              width: '80%',
+              borderRadius: '10px',
+              userSelect: 'none',
+            }}
           />
           <IconButton
             onClick={() => {
               setActiveStep((step) => step + 1)
             }}
             disabled={activeStep === steps.length - 1}
+            style={{ marginLeft: '1%' }}
           >
             <ChevronRight />
           </IconButton>
