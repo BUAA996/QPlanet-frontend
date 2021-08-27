@@ -210,7 +210,8 @@ function Home() {
           alignItems='center'
         >
           <Typography className={classes.title} color='primary' variant='h3'>
-            问卷调查，从"星"开始
+            问卷调查，从
+            <span style={{ color: 'orange', fontSize: '1em' }}>星</span>开始
           </Typography>
           <Typography className={classes.subTitle} color='primary'>
             一分钟快速注册，即刻体验便捷的问卷调查与数据分析平台
