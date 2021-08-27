@@ -57,6 +57,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Questionaire_STATUS = ['未发布', '已发布', '已关闭', '已删除']
+const STATUS = {
+  'Saved': 0,
+  'Released': 1,
+  'Suspened': 2,
+  'Deleted': 3,
+}
 
 function Info(props) {
   const classes = useStyles()
@@ -151,35 +157,41 @@ function Questionare(props) {
             {props.description}
           </Grid>
           <Grid item xs={7} >
-            <Button
-              component={RouterLink}
-              to={'/design/' + props.hash}
-              color='primary'
-              startIcon={<EditIcon />}
-              size="small"
-              variant="outlined"
-              className={classes.buttons}
-            >
-              编辑
-            </Button>
-            <Button
-              color='primary'
-              onClick={() => {
-                if (props.status !== 1) {
-                  enqueueSnackbar(('当前问卷状态为' + Questionaire_STATUS[props.status] + '，不能分享'), {
-                    variant: 'warning',
-                  })
-                } else {
-                  setOpenDialog(true)
-                }
-              }}
-              startIcon={<ShareIcon />}
-              size="small"
-              variant="outlined"
-              className={classes.buttons}
-            >
-              分享
-            </Button>
+            {
+              props.status !== STATUS.Deleted && 
+              <Button
+                component={RouterLink}
+                to={'/design/' + props.hash}
+                color='primary'
+                startIcon={<EditIcon />}
+                size="small"
+                variant="outlined"
+                className={classes.buttons}
+              >
+                编辑
+              </Button>
+            }
+            {
+              props.status !== STATUS.Deleted && 
+              <Button
+                color='primary'
+                onClick={() => {
+                  if (props.status !== 1) {
+                    enqueueSnackbar(('当前问卷状态为' + Questionaire_STATUS[props.status] + '，不能分享'), {
+                      variant: 'warning',
+                    })
+                  } else {
+                    setOpenDialog(true)
+                  }
+                }}
+                startIcon={<ShareIcon />}
+                size="small"
+                variant="outlined"
+                className={classes.buttons}
+              >
+                分享
+              </Button>
+            }
             <Button
               component={RouterLink}
               to={'/feedback/' + props.hash}
