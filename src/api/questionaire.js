@@ -65,6 +65,11 @@ function fill(data) {
   return axios.post('questionnaire/fill/', data)
 }
 
+//get_total
+function getTotal() {
+  return axios.get('questionnaire/get_total/')
+}
+
 export {
   createQuestionnaire,
   deleteQuestionnaire,
@@ -79,4 +84,5 @@ export {
   copy,
   downloadQuestionnaire,
   fill,
+  getTotal,
 }

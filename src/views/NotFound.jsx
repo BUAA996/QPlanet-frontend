@@ -96,7 +96,7 @@ function NotFound() {
 
   const classes = useStyles();
   const title = <Title title="404 NotFound" description="啊呀，问卷走丢了QAQ。请检查问卷链接，或者与问卷发布者联系。"/>  
-  const Questions = Questionare.map((problem, index) => (<Problem problem={{...problem, key: index}} showIndex={true} updateAns={(ans) => blankFunction()} />));
+  const Questions = Questionare.map((problem, index) => (<Problem problem={{...problem, key: index}} show={true} updateAns={(ans) => blankFunction()} />));
 
   return (
     <>

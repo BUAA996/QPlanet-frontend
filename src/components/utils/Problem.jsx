@@ -294,11 +294,11 @@ function Location(props) {
 
 function Problem(props) {
   const classes = useStyles();
-  console.log(props.showIndex)
+  console.log(props.show)
   return (
     <Card className={classes.root}>
       <CardContent>
-        <ShowClasses title={ (props.showIndex === true ? ("第 " + (props.problem.key + 1) + " 题 ") : '') + props.problem.title} must={props.problem.must} />
+        <ShowClasses title={ (props.show === true ? ("第 " + (props.problem.key + 1) + " 题 ") : '') + props.problem.title} must={props.problem.must} />
         <Divider />
         <Typography className={classes.description}> {props.problem.description}</Typography>
         {isSingleChoice(props.problem) && <SingleChoice {...props}/>}

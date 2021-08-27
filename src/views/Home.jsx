@@ -8,6 +8,7 @@ import test from 'assets/home_img/test.png'
 import vote from 'assets/home_img/vote.png'
 import { Waypoint } from 'react-waypoint'
 import { useState } from 'react'
+import { getTotal } from 'api/questionaire'
 import { useEffect } from 'react'
 
 const useStyles = makeStyles((theme) => ({
@@ -61,12 +62,12 @@ function IntroCard({ imgUrl, title, subTitle, position }) {
           alignItems='center'
         >
           {position === 'left' ? (
-            <Collapse in={needLoad} timeout={400}>
+            <Collapse in={needLoad} timeout={500}>
               <img src={imgUrl} alt={title} />
             </Collapse>
           ) : (
             <Box width='60%' height='100%'>
-              <Collapse in={needLoad} timeout={700}>
+              <Collapse in={needLoad} timeout={800}>
                 <Typography variant='h4' className={classes.cardTitle}>
                   {title}
                 </Typography>
@@ -89,12 +90,12 @@ function IntroCard({ imgUrl, title, subTitle, position }) {
           alignItems='center'
         >
           {position !== 'left' ? (
-            <Collapse in={needLoad} timeout={400}>
+            <Collapse in={needLoad} timeout={500}>
               <img src={imgUrl} alt={title} />
             </Collapse>
           ) : (
             <Box width='60%' height='100%'>
-              <Collapse in={needLoad} timeout={700}>
+              <Collapse in={needLoad} timeout={800}>
                 <Typography variant='h4' className={classes.cardTitle}>
                   {title}
                 </Typography>
@@ -125,6 +126,66 @@ function IntroCard({ imgUrl, title, subTitle, position }) {
   )
 }
 
+function DataShow({ ...other }) {
+  const [total, setTotal] = useState(0)
+  const [release, setRelease] = useState(0)
+
+  useEffect(() => {
+    // getTotal().then((res) => {
+    //res.data.total
+    const max = 300
+    const gap = 30
+    const cost = 2000
+    const offset = 500
+    setRelease(max)
+    let id = setInterval(() => {
+      setTotal((total) => {
+        if (total < max) {
+          return total + Math.ceil((max * gap) / cost)
+        } else {
+          return max
+        }
+      })
+    }, gap)
+    setTimeout(() => {
+      clearInterval(id)
+    }, cost + offset)
+    // })
+  }, [])
+
+  return (
+    <Box
+      display='flex'
+      flexDirection='column'
+      alignItems='center'
+      marginTop='45%'
+    >
+      <Typography variant='h6' color='textSecondary'>
+        累计发布问卷{' '}
+        <span
+          style={{ color: 'orange', fontWeight: 'bold', fontSize: '1.3em' }}
+        >
+          {release}
+        </span>{' '}
+        份
+      </Typography>
+      <Typography
+        variant='h6'
+        color='textSecondary'
+        style={{ marginTop: '5%' }}
+      >
+        累计回收问卷{' '}
+        <span
+          style={{ color: 'orange', fontWeight: 'bold', fontSize: '1.3em' }}
+        >
+          {total}
+        </span>{' '}
+        份
+      </Typography>
+    </Box>
+  )
+}
+
 function Home() {
   const classes = useStyles()
 
@@ -149,11 +210,13 @@ function Home() {
           alignItems='center'
         >
           <Typography className={classes.title} color='primary' variant='h3'>
-            问卷调查，从"星"开始
+            问卷调查，从
+            <span style={{ color: 'orange', fontSize: '1em' }}>星</span>开始
           </Typography>
           <Typography className={classes.subTitle} color='primary'>
             一分钟快速注册，即刻体验便捷的问卷调查与数据分析平台
           </Typography>
+          <DataShow />
         </Grid>
       </Grid>
       <IntroCard

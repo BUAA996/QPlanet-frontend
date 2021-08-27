@@ -24,6 +24,8 @@ import useRouteDefender from 'hooks/useRouteDefender'
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3),
     flexGrow: 1,
   },
   sideBar: {
@@ -66,9 +68,13 @@ const useStyles = makeStyles((theme) => ({
 const TEMPLEATE = {
   title: '123',
   description: '感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！',
-  validity: 998244353,
-  limit_time: 998244353,
-  type: 0,
+  deadline: '2214-01-08 11:59',
+  duration: '120',
+  type: 1,
+  random_order: true,
+  certification: 1,
+  select_less_score: true,
+  show_number: true,
   questions: [
     {
       type: 0,
@@ -92,6 +98,18 @@ const TEMPLEATE = {
     },
     {
       type: 3,
+      content: 'How are you today?',
+      is_required: false,
+      description: 'bye',
+    },
+    {
+      type: 4,
+      content: 'How are you today?',
+      is_required: false,
+      description: 'bye',
+    },
+    {
+      type: 5,
       content: 'How are you today?',
       is_required: false,
       description: 'bye',
@@ -229,6 +247,12 @@ function Overview() {
       })
     }
   }, [change])
+
+  function handleChange() {
+    let tmp = change ^ 1;
+    setChange(tmp);
+  }
+
   return (
     <Container fixed className={classes.root}>
       <Grid
@@ -244,7 +268,7 @@ function Overview() {
           <HeadBar search={handleSearch} />
         </Grid>
         <Grid item xs={12}>
-          <QuestionnaireList Questionares={data} />
+          <QuestionnaireList Questionares={data} onChange={() => handleChange()}/>
         </Grid>
       </Grid>
     </Container>
