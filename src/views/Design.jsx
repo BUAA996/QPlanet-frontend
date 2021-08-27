@@ -1,17 +1,17 @@
 import {makeStyles} from '@material-ui/core/styles'
-import Problem from 'components/utils/Problem'
+import Problem, {ProblemSkeleton} from 'components/utils/Problem'
 import {Container, Button, Card, Grid, Divider} from '@material-ui/core'
 import MovableProblemEdit from 'components/design/MovableProblemEdit'
 import {useState} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {getQuestionnaire, saveQuestionaire} from 'api/design'
+import {getQuestionnaire, saveQuestionaire, transformGet} from 'api/design'
 import {useEffect} from 'react'
 import useTitle from 'hooks/useTitle'
 import {isSingleChoice} from 'components/utils/Problem'
 import {isMultiChoice} from 'components/utils/Problem'
 import {Title} from 'views/Preview'
 import FormDialog from 'components/design/FormDialog'
-import { useStateStore } from 'store'
+import {useStateStore} from 'store'
 import useRouteDefender from 'hooks/useRouteDefender'
 
 const useStyles = makeStyles((theme) => ({
@@ -60,22 +60,13 @@ function Design(props) {
   const classes = useStyles()
 
   const {id} = useParams()
-  const [getQ, setQ] = useState(0)
   const [title, setTitle] = useState()
   const [detail, setDetail] = useState()
-  const [questionnaire, setQuestionnaire] = useState([])
+  const [questionnaire, setQuestionnaire] = useState(null)
   const [qid, setQid] = useState()
   const history = useHistory()
   const isLogin = useStateStore().isLogin
 
-  function handleSetQuestionnaire(ori) {
-    let tmp = ori.slice()
-    let tmp2 = new Array(tmp.length)
-    tmp.map((problem, index) => {
-      tmp2[index] = {...problem, key: index}
-    })
-    setQuestionnaire(tmp2)
-  }
 
   useRouteDefender({
     assert: !isLogin,
@@ -91,30 +82,21 @@ function Design(props) {
       async function fetchMyAPI() {
         const res = await getQuestionnaire(id)
         if (res.data.result === 1) {
-          const data = res.data
-          setQ(data.data)
+          const data = transformGet(res.data);
           setTitle(data.title)
-          setDetail(data.description)
+          setDetail(data.detail)
           setQid(data.qid)
-          handleSetQuestionnaire(
-            data.questions.map((x) => ({
-              id: x.id,
-              kind: x.type,
-              must: x.is_required ? 1 : 0,
-              title: x.content,
-              description: x.description,
-              choices: x.option == null ? [] : x.option,
-            }))
-          )
-
-          // console.log(questionare)
-          // if (!didCancel) { // Ignore if we started fetching something else
-          //   // console.log(getQ);
-          //   // console.log(data.questions)
-          //   console.log("load again")
-          // }
+          setQuestionnaire((await data).questions)
         }
+
+        // console.log(questionare)
+        // if (!didCancel) { // Ignore if we started fetching something else
+        //   // console.log(getQ);
+        //   // console.log(data.questions)
+        //   console.log("load again")
+        // }
       }
+
 
       fetchMyAPI()
       return () => {
@@ -136,19 +118,19 @@ function Design(props) {
     newItem.id = 'N' + Math.random().toString(36).slice(-6)
     if (index === -1) newQ.push(newItem)
     else newQ.splice(index, 0, newItem)
-    handleSetQuestionnaire(newQ)
+    setQuestionnaire(newQ)
   }
 
   function delQuestion(index) {
     const newQ = questionnaire.slice()
     newQ.splice(index, 1)
-    handleSetQuestionnaire(newQ)
+    setQuestionnaire(newQ)
   }
 
   function editQuestion(index, item) {
     const newQ = questionnaire.slice()
     newQ.splice(index, 1, item)
-    handleSetQuestionnaire(newQ)
+    setQuestionnaire(newQ)
   }
 
   function move(oriIndex, newIndex) {
@@ -156,7 +138,7 @@ function Design(props) {
     const newQ = questionnaire.slice()
     newQ.splice(oriIndex, 1)
     newQ.splice(newIndex, 0, item)
-    handleSetQuestionnaire(newQ)
+    setQuestionnaire(newQ)
   }
 
   function addDefault(index) {
@@ -224,26 +206,27 @@ function Design(props) {
               className={classes.divider}
             />
             <Grid item className={classes.problems}>
-              {/* {questionnaire.map((problem) => <Problem problem={problem} key={problem.key} updateAns={(ans) => blankFunction(problem.key, ans)} />)} */}
-              {questionnaire.map((x, index) => (
-                <Problem
-                  problem={x}
-                  key={x.id}
-                  updateAns={() => blankFunction()}
-                >
-                  <MovableProblemEdit
+              {/*if questionnaire is null, display Skeleton*/}
+              {questionnaire ? questionnaire.map((x, index) => (
+                  <Problem
+                    problem={x}
                     key={x.id}
-                    questionInfo={x}
-                    index={index}
-                    move={(newIndex) => move(index, newIndex)}
-                    del={() => delQuestion(index)}
-                    add={addQuestion}
-                    edit={(item) => {
-                      editQuestion(index, item)
-                    }}
-                  />
-                </Problem>
-              ))}
+                    updateAns={() => blankFunction()}
+                  >
+                    <MovableProblemEdit
+                      key={x.id}
+                      questionInfo={x}
+                      index={index}
+                      move={(newIndex) => move(index, newIndex)}
+                      del={() => delQuestion(index)}
+                      add={addQuestion}
+                      edit={(item) => {
+                        editQuestion(index, item)
+                      }}
+                    />
+                  </Problem>
+                )) :
+                <ProblemSkeleton/>}
             </Grid>
 
             <Grid item className={classes.buttons}>

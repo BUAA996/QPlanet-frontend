@@ -1,12 +1,24 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Divider, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Container, Typography, Button, Grid } from '@material-ui/core';
+import {
+  Divider,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  Checkbox,
+  TextField,
+  Container,
+  Typography,
+  Button,
+  Grid
+} from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { getIP, getLocation } from 'api/location'
+import {useEffect} from 'react';
+import {useState} from 'react';
+import {getIP, getLocation} from 'api/location'
+import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,7 +100,8 @@ function SingleChoice(props) {
   return (
     <RadioGroup className={classes.content} value={value} onChange={handleChange}>
       {choice.map((choice) =>
-        <FormControlLabel value={choice.key} control={<Radio key={choice.key} />} label={choice.content} key={choice.key} />
+        <FormControlLabel value={choice.key} control={<Radio key={choice.key}/>} label={choice.content}
+                          key={choice.key}/>
       )}
     </RadioGroup>
   );
@@ -116,7 +129,7 @@ function MultiChoice(props) {
   const [state, setState] = useState(option);
 
   const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+    setState({...state, [event.target.name]: event.target.checked});
     let singleAns = [];
     for (let i = 0; i < choice.length; ++i) {
       if (choice[i].key === event.target.name) {
@@ -132,7 +145,7 @@ function MultiChoice(props) {
     <RadioGroup className={classes.content}>
       {choice.map((choice) =>
         <FormControlLabel
-          control={<Checkbox checked={choice[choice.key]} onChange={handleChange} name={choice.key} />}
+          control={<Checkbox checked={choice[choice.key]} onChange={handleChange} name={choice.key}/>}
           label={choice.content}
           key={choice.key}
         />
@@ -236,15 +249,17 @@ function Scoring(props) {
     >
       {/* <Grid item xs={6}><Typography className={classes.plainText}>拖动滑块做出选择：</Typography></Grid> */}
       <Grid item className={classes.scoring}>
-        <Rating  
+        <Rating
           value={value}
-          onChange={(event, newValue) => {handleChange(newValue);}}
+          onChange={(event, newValue) => {
+            handleChange(newValue);
+          }}
           max={props.maxScore}
         />
         {value != null && <Typography> 当前评分为：{value} 分</Typography>}
       </Grid>
     </Grid>
-    
+
   );
 }
 
@@ -275,17 +290,17 @@ function Location(props) {
       className={classes.Location}
     >
       {
-        address === '' && 
-        <Button 
-          color="primary" 
+        address === '' &&
+        <Button
+          color="primary"
           onClick={handleGetLocation}
           variant="outlined"
-        > 
-          点击获取位置信息 
+        >
+          点击获取位置信息
         </Button>
       }
       {
-        address !== '' && 
+        address !== '' &&
         <Typography>您的位置：{address}</Typography>
       }
     </Grid>
@@ -298,29 +313,70 @@ function Problem(props) {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <ShowClasses title={ (props.show === true ? ("第 " + (props.problem.key + 1) + " 题 ") : '') + props.problem.title} must={props.problem.must} />
-        <Divider />
+        <ShowClasses title={(props.show === true ? ("第 " + (props.problem.key + 1) + " 题 ") : '') + props.problem.title}
+                     must={props.problem.must}/>
+        <Divider/>
         <Typography className={classes.description}> {props.problem.description}</Typography>
         {isSingleChoice(props.problem) && <SingleChoice {...props}/>}
         {isMultiChoice(props.problem) && <MultiChoice {...props}/>}
         {isFillBlank(props.problem) && <FillBlanks {...props}/>}
         {isShortAnswer(props.problem) && <ShortAnswer {...props}/>}
         {isScoring(props.problem) && <Scoring {...props}/>}
-        {isLocation(props.problem) && <Location {...props}/>} 
+        {isLocation(props.problem) && <Location {...props}/>}
         {props.children}
       </CardContent>
     </Card>
   );
 }
 
-function isSingleChoice(problem) { return problem.kind === 0; }
-function isMultiChoice(problem) { return problem.kind === 1; }
-function isFillBlank(problem) { return problem.kind === 2; }
-function isShortAnswer(problem) { return problem.kind === 3;}
-function isScoring(problem) { return problem.kind === 4;}
-function isLocation(problem) { return problem.kind === 5;}
+function ProblemSkeleton(props) {
+  const classes = useStyles();
+  console.log(props.show)
+  return (
+    <Card className={classes.root}>
+      <CardContent>
+        <Skeleton>
+          <ShowClasses title="第 1 题 zhe shi yi ge biao ti "/>
+        </Skeleton>
+        <Divider/>
+        <Skeleton >
+          <Typography className={classes.description}> {"这里放一段很长的描述"}</Typography>
+        </Skeleton>
+        <Skeleton variant="rect" height={100}/>
+      </CardContent>
+    </Card>
+  );
+}
 
-function isChoice(problem) { return isSingleChoice(problem) || isMultiChoice(problem) }
+function isSingleChoice(problem) {
+  return problem.kind === 0;
+}
+
+function isMultiChoice(problem) {
+  return problem.kind === 1;
+}
+
+function isFillBlank(problem) {
+  return problem.kind === 2;
+}
+
+function isShortAnswer(problem) {
+  return problem.kind === 3;
+}
+
+function isScoring(problem) {
+  return problem.kind === 4;
+}
+
+function isLocation(problem) {
+  return problem.kind === 5;
+}
+
+function isChoice(problem) {
+  return isSingleChoice(problem) || isMultiChoice(problem)
+}
 
 export default Problem;
-export { isSingleChoice, isMultiChoice, isFillBlank, isShortAnswer, isScoring}
+
+
+export {isSingleChoice, isMultiChoice, isFillBlank, isShortAnswer, isScoring, ProblemSkeleton}
