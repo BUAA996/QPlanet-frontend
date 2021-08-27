@@ -123,9 +123,7 @@ function Questionare(props) {
     props.onChange();
   }
 
-  return (props.showType === -1  && props.status !== 3) ||
-    props.showType === 5 ||
-    props.showType === props.status ? (
+  return (true ? (
     <>
       <Card className={classes.root}>
         <Grid container>
@@ -248,7 +246,7 @@ function Questionare(props) {
         url={'https://qplanet.matrix53.top/fill/' + props.hash}
       />
     </>
-  ) : null
+  ) : null);
 }
 
 export default Questionare

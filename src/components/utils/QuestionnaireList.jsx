@@ -56,7 +56,8 @@ const useStyles = makeStyles((theme) => ({
 		marginLeft: theme.spacing(3),
 	},
 	test: {
-		// backgroundColor: theme.palette.secondary.dark,
+    // minWidth: '50vw',
+		backgroundColor: theme.palette.secondary.dark,
 	}
 }));
 
@@ -71,6 +72,12 @@ const options = [
 	{title: '发布时间降序', id: 6, key: 6},
 	{title: '发布状态排序', id: 7, key: 7},
 ];
+const STATUS = {
+  'Saved': 0,
+  'Released': 1,
+  'Suspened': 2,
+  'Deleted': 3,
+}
 
 function SortButtons(props) {
 	const classes = useStyles();
@@ -86,7 +93,7 @@ function SortButtons(props) {
 	}
 
 	return (
-		<Container fixed className={classes.test}>		
+		<Container fixed>		
 			<Grid
 				container
 				direction="row"
@@ -124,7 +131,6 @@ function SortButtons(props) {
 							)}
 						</Menu>
 					</Grid>
-					
 				</Grid>
 			</Grid>
 		</Container>
@@ -137,15 +143,18 @@ export default function QuestionnaireList(props) {
 	const [sortIndex, setSortIndex] = React.useState(0);
 	const [childPropsList, setQuestionaires] = React.useState([]);
 	const [page, setPage] = React.useState(1);
+  const [cap, setCap] = React.useState(5);
 
 	useEffect(() => {
 		setQuestionaires([].concat(props.Questionares));
 		setSortIndex(0);
+    setPage(1)
 	}, [props.Questionares])
 	
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setPage(1);
 		setSortIndex(0);
   };
 
@@ -183,6 +192,123 @@ export default function QuestionnaireList(props) {
 		}
 	};
 
+  function getSearch(page, cap=10) {
+    let tmp = childPropsList.slice();
+    let len = tmp.length;
+    let l = (page - 1) * cap;
+    let r = page * cap;
+    let tmp2 = [];
+    if (r >= len) r = len;
+    for (let i = l;i < r; ++i)
+      tmp2.push(tmp[i]);
+    return tmp2;
+  }
+
+  function getAll(page, cap=10) {
+    let tmp = [];
+    childPropsList.map((childProps) => {
+      if (childProps.status !== STATUS.Deleted) 
+        tmp.push({...childProps})
+    })
+    let len = tmp.length;
+    let l = (page - 1) * cap;
+    let r = page * cap;
+    let tmp2 = [];
+    if (r >= len) r = len;
+    for (let i = l;i < r; ++i)
+      tmp2.push(tmp[i]);
+    return tmp2;
+  }
+
+  function getSaved(page, cap=10) {
+    let tmp = [];
+    childPropsList.map((childProps) => {
+      if (childProps.status === STATUS.Saved) 
+        tmp.push({...childProps})
+    })
+    let len = tmp.length;
+    let l = (page - 1) * cap;
+    let r = page * cap;
+    let tmp2 = [];
+    if (r >= len) r = len;
+    for (let i = l;i < r; ++i)
+      tmp2.push(tmp[i]);
+    return tmp2;
+  }
+
+  function getReleased(page, cap=10) {
+    let tmp = [];
+    childPropsList.map((childProps) => {
+      if (childProps.status === STATUS.Released) 
+        tmp.push({...childProps})
+    })
+    let len = tmp.length;
+    let l = (page - 1) * cap;
+    let r = page * cap;
+    let tmp2 = [];
+    if (r >= len) r = len;
+    for (let i = l;i < r; ++i)
+      tmp2.push(tmp[i]);
+    return tmp2;
+  }
+
+  function getSuspened(page, cap=10) {
+    let tmp = [];
+    childPropsList.map((childProps) => {
+      if (childProps.status === STATUS.Suspened) 
+        tmp.push({...childProps})
+    })
+    let len = tmp.length;
+    let l = (page - 1) * cap;
+    let r = page * cap;
+    let tmp2 = [];
+    if (r >= len) r = len;
+    for (let i = l;i < r; ++i)
+      tmp2.push(tmp[i]);
+    return tmp2;
+  }
+
+  function getDeleted(page, cap=10) {
+    let tmp = [];
+    childPropsList.map((childProps) => {
+      if (childProps.status === STATUS.Deleted) 
+        tmp.push({...childProps})
+    })
+    let len = tmp.length;
+    let l = (page - 1) * cap;
+    let r = page * cap;
+    let tmp2 = [];
+    if (r >= len) r = len;
+    for (let i = l;i < r; ++i)
+      tmp2.push(tmp[i]);
+    return tmp2;
+  }
+
+  function getCount() {
+    let tmp = []
+    switch (value) {
+      case 0:
+        tmp = getAll(1, 998244353);
+        break;
+      case 1:
+        tmp = getSaved(1, 998244353);
+        break;
+      case 2:
+        tmp = getReleased(1, 998244353);
+        break;
+      case 3:
+        tmp = getSuspened(1, 998244353);
+        break;
+      case 4: 
+        tmp = getDeleted(1, 998244353);
+        break;
+      default:
+        tmp = getSearch(1, 998244353);
+        break;
+    }
+    return Math.ceil(tmp.length / cap);
+  }
+
   return (
     <Grid container className={classes.root}>
 			<Grid item xs={2}>
@@ -202,11 +328,11 @@ export default function QuestionnaireList(props) {
 				</Tabs>
 			</Grid>
 			<Grid item xs={10}
-				container
-				direction="column"
-				justifyContent="center"
-				alignItems="center"
-			>
+        container
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="stretch"
+      >
 				<TabPanel value={value} index={0}>
 					<SortButtons 
 						setQuestionaires={setQuestionaires} 
@@ -215,7 +341,7 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={-1}/>)}
+					{getAll(page, 5).map((childProps) => <Questionare {...childProps} {...props}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={1}>
 					<SortButtons 
@@ -225,7 +351,7 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={0}/>)}
+					{getSaved(page, 5).map((childProps) => <Questionare {...childProps} {...props} showType={0}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={2}>
 					<SortButtons 
@@ -235,18 +361,18 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={1}/>)}
+					{getReleased(page, 5).map((childProps) => <Questionare {...childProps} {...props} showType={1}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={3}>
 					
 					<SortButtons 
 						setQuestionaires={setQuestionaires} 
-						title="已完成问卷" 
+						title="已暂停问卷" 
 						index={sortIndex} 
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={2}/>)}
+					{getSuspened(page, 5).map((childProps) => <Questionare {...childProps} {...props} showType={2}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={4}>
 					
@@ -257,7 +383,7 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={3}/>)}
+					{getDeleted(page, 5).map((childProps) => <Questionare {...childProps} {...props} showType={3}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={5}>
 					<SortButtons 
@@ -267,10 +393,15 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{childPropsList.map((childProps) => <Questionare {...childProps} {...props} showType={4}/>)}
+					{getSearch(page, 5).map((childProps) => <Questionare {...childProps} {...props} showType={4}/>)}
 				</TabPanel>
-				<Grid item >
-					<Pagination count={10} page={page} onChange={handlePageChange} showFirstButton showLastButton/>
+				<Grid item 
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+					<Pagination count={getCount()} page={page} onChange={handlePageChange} showFirstButton showLastButton/>
 				</Grid>
 			</Grid>
     </Grid>
