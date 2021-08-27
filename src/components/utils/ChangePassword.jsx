@@ -113,7 +113,7 @@ function ChangePassword({ open, setOpen }) {
             width='100%'
             marginTop={1}
           >
-            <Grid container xs={12} spacing={1} justifyContent='space-between'>
+            <Grid container spacing={1} justifyContent='space-between'>
               <Grid item xs={6}>
                 <Button
                   type='submit'
