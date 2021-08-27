@@ -25,11 +25,14 @@ const useStyles = makeStyles((theme) => ({
     height: '40px',
     width: '97%',
     borderRadius: theme.shape.borderRadius * 8,
+    color: 'white',
   },
   formBtn: {
     borderRadius: theme.shape.borderRadius * 8,
     height: '45px',
     marginTop: theme.spacing(1.5),
+    color: 'white',
+    fontSize: '1.2em',
   },
   link: {
     width: '100%',
