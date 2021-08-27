@@ -75,8 +75,7 @@ const options = [
 const STATUS = {
   'Saved': 0,
   'Released': 1,
-  'Suspened': 2,
-  'Deleted': 3,
+  'Deleted': 2,
 }
 
 function SortButtons(props) {
@@ -323,8 +322,7 @@ export default function QuestionnaireList(props) {
 					<Tab label="全部问卷" {...a11yProps(0)} />
 					<Tab label="未发布问卷" {...a11yProps(1)} />
 					<Tab label="已发布问卷" {...a11yProps(2)} />
-					<Tab label="已暂停问卷" {...a11yProps(3)} />
-					<Tab label="回收站" {...a11yProps(4)} />
+					<Tab label="回收站" {...a11yProps(3)} />
 				</Tabs>
 			</Grid>
 			<Grid item xs={10}
@@ -364,18 +362,6 @@ export default function QuestionnaireList(props) {
 					{getReleased(page, 5).map((childProps) => <Questionare {...childProps} {...props} showType={1}/>)}
 				</TabPanel>
 				<TabPanel value={value} index={3}>
-					
-					<SortButtons 
-						setQuestionaires={setQuestionaires} 
-						title="已暂停问卷" 
-						index={sortIndex} 
-						handle={handleSortIndexChange} 
-						{...props} 
-					/>
-					{getSuspened(page, 5).map((childProps) => <Questionare {...childProps} {...props} showType={2}/>)}
-				</TabPanel>
-				<TabPanel value={value} index={4}>
-					
 					<SortButtons 
 						setQuestionaires={setQuestionaires} 
 						title="回收站" 
@@ -383,9 +369,9 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{getDeleted(page, 5).map((childProps) => <Questionare {...childProps} {...props} showType={3}/>)}
+					{getDeleted(page, 5).map((childProps) => <Questionare {...childProps} {...props} showType={2}/>)}
 				</TabPanel>
-				<TabPanel value={value} index={5}>
+				<TabPanel value={value} index={4}>
 					<SortButtons 
 						setQuestionaires={setQuestionaires} 
 						title="搜索结果" 
@@ -393,7 +379,7 @@ export default function QuestionnaireList(props) {
 						handle={handleSortIndexChange} 
 						{...props} 
 					/>
-					{getSearch(page, 5).map((childProps) => <Questionare {...childProps} {...props} showType={4}/>)}
+					{getSearch(page, 5).map((childProps) => <Questionare {...childProps} {...props} showType={3}/>)}
 				</TabPanel>
 				<Grid item 
           container
