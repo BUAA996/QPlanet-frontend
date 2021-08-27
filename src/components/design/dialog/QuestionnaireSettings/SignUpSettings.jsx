@@ -58,6 +58,7 @@ function SignUpSettings(props) {
                 shrink
                 variant="filled"
                 value={props.settings.quota}
+                onChange={handleQuota}
                 startAdornment={<InputAdornment position="start">至多</InputAdornment>}
                 endAdornment={<InputAdornment position="end">份</InputAdornment>}
               />)}

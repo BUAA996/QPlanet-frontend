@@ -35,23 +35,23 @@ async function transformGet(data) {
       break;
     case 1:
       type = "VOTE";
-      settings.before = "1";
-      settings.after = "0";
+      settings.displayBefore = true;
+      settings.displayAfter = false;
       break;
     case 2:
       type = "VOTE";
-      settings.before = "0";
-      settings.after = "1";
+      settings.displayBefore = false;
+      settings.displayAfter = true;
       break;
     case 3:
       type = "VOTE";
-      settings.before = "1";
-      settings.after = "1";
+      settings.displayBefore = true;
+      settings.displayAfter = true;
       break;
     case 4:
       type = "VOTE";
-      settings.before = '0';
-      settings.after = '0';
+      settings.displayBefore = false;
+      settings.displayAfter = false;
       break;
     case 5:
       type = "SIGNUP";

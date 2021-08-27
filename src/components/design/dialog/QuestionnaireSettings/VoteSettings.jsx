@@ -16,14 +16,25 @@ const useStyle = makeStyles((theme) => ({
   choiceRow: {
     margin: theme.spacing(1)
   },
-  title:{
-    margin:theme.spacing(1)
+  title: {
+    margin: theme.spacing(1)
   }
 }))
 
 function VoteSettings(props) {
   const classes = useStyle();
-  const [limitTime, setLimitTime] = useState("1");
+
+  const handleBefore = (event) => {
+    const ori = JSON.parse(JSON.stringify(props.settings));
+    ori.displayBefore = event.target.checked;
+    props.setSettings(ori)
+  }
+
+  const handleAfter = (event) => {
+    const ori = JSON.parse(JSON.stringify(props.settings));
+    ori.displayAfter = event.target.checked;
+    props.setSettings(ori)
+  }
 
   return (
     <Grid container
@@ -35,13 +46,11 @@ function VoteSettings(props) {
           <FormLabel component="legend">填写者可以在这些时候看到投票结果：</FormLabel>
           <FormGroup row={true}>
             <FormControlLabel
-              control={<Checkbox checked={1} onChange={() => {
-              }} name="gilad"/>}
+              control={<Checkbox checked={props.displayBefore} onChange={handleBefore} name="gilad"/>}
               label="作答前"
             />
             <FormControlLabel
-              control={<Checkbox checked={1} onChange={() => {
-              }} name="jason"/>}
+              control={<Checkbox checked={props.displayAfter} onChange={handleAfter} name="jason"/>}
               label="提交后"
             />
           </FormGroup>
