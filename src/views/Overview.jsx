@@ -24,6 +24,8 @@ import useRouteDefender from 'hooks/useRouteDefender'
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3),
     flexGrow: 1,
   },
   sideBar: {
@@ -229,6 +231,12 @@ function Overview() {
       })
     }
   }, [change])
+
+  function handleChange() {
+    let tmp = change ^ 1;
+    setChange(tmp);
+  }
+
   return (
     <Container fixed className={classes.root}>
       <Grid
@@ -244,7 +252,7 @@ function Overview() {
           <HeadBar search={handleSearch} />
         </Grid>
         <Grid item xs={12}>
-          <QuestionnaireList Questionares={data} />
+          <QuestionnaireList Questionares={data} onChange={() => handleChange()}/>
         </Grid>
       </Grid>
     </Container>
