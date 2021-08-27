@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Questionaire_STATUS = ['未发布', '已发布', '已完成', '已删除']
+const Questionaire_STATUS = ['未发布', '已发布', '已关闭', '已删除']
 
 function Info(props) {
   const classes = useStyles()
@@ -95,37 +95,35 @@ function Questionare(props) {
 
   function handleDelete(data) {
     deleteQuestionnaire(data)
-    history.go(0)
+    props.onChange();
   }
 
   function handleRecover() {
     recover({ id: props.id })
-    history.go(0)
+    props.onChange();
   }
 
   function handleRelease() {
     release({ id: props.id })
-    history.go(0)
+    props.onChange();
   }
 
   function handleClose() {
     close({ id: props.id })
-    history.go(0)
+    props.onChange();
   }
 
   function handleReset() {
     reset({ id: props.id })
-    history.go(0)
+    props.onChange();
   }
 
   function handleCopy() {
     copy({ qid: props.id, title: props.title + '-副本' })
-    history.go(0)
+    props.onChange();
   }
 
-  return (props.showType === -1  && props.status !== 3) ||
-    props.showType === 5 ||
-    props.showType === props.status ? (
+  return (true ? (
     <>
       <Card className={classes.root}>
         <Grid container>
@@ -248,7 +246,7 @@ function Questionare(props) {
         url={'https://qplanet.matrix53.top/fill/' + props.hash}
       />
     </>
-  ) : null
+  ) : null);
 }
 
 export default Questionare
