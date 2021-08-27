@@ -129,6 +129,8 @@ function Questionare(props) {
     props.onChange();
   }
 
+  console.log(props);
+
   return (true ? (
     <>
       <Card className={classes.root}>
