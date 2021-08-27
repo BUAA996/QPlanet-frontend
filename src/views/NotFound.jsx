@@ -3,6 +3,7 @@ import { CardContent, Container } from '@material-ui/core'
 import useTitle from 'hooks/useTitle'
 import {Title, PreviewPage} from 'views/Preview'
 import { makeStyles } from '@material-ui/core/styles'
+import CountDown from 'components/utils/CountDown'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,8 +101,9 @@ function NotFound() {
 
   return (
     <>
+      <CountDown time="2021-08-27 16:30:11" duration={300}/>
       <Container maxWidth="md" className={classes.root}>
-        <PreviewPage title={title} Questionare={Questions}/>
+        <PreviewPage title={title} Questionare={[]}/>
       </Container>
     </>
   )

@@ -212,7 +212,7 @@ function Overview() {
               uploadTime: res.data.questionnaires[i].upload_time,
               createNum: res.data.questionnaires[i].create_time_int,
               uploadNum: res.data.questionnaires[i].upload_time_int,
-              key: res.data.questionnaires[i].id,
+              key: '' + new Date().getTime() + res.data.questionnaires[i].id,
             })
           }
         }

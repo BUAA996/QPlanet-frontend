@@ -7,7 +7,7 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core'
-import { fill as view, submit } from 'api/questionaire'
+import { fill, submit } from 'api/questionaire'
 import { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Problem from 'components/utils/Problem'
@@ -19,6 +19,7 @@ import { downloadQuestionnaire } from 'api/questionaire'
 import { download } from 'utils'
 import { func } from 'prop-types'
 import { useSnackbar } from 'notistack'
+import CountDown from 'components/utils/CountDown'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,7 +115,7 @@ const TITLE = '给zht买女装 & lls小课堂 的问卷调查'
 const DESCRIPTION =
   '感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！'
 
-function Fill() {
+function FillPage() {
   useTitle('填写问卷 - 问卷星球')
 
   const classes = useStyles()
@@ -128,12 +129,9 @@ function Fill() {
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
-    setTitle(TITLE)
-    setDescription(DESCRIPTION)
-    setQuestionare([].concat(QUESTIONAIRE))
 
-    view({ hash: id }).then((res) => {
-      // console.log(res);
+    fill({ hash: id }).then((res) => {
+      console.log(res);
       if (res.data.result === 1) {
         const ori = res.data.questions
         const settings = res.data
@@ -183,7 +181,7 @@ function Fill() {
 
   function checkMust() {
     let res = true,
-      tmp = ansList.slice()
+    tmp = ansList.slice()
     Questionare.map((problem, index) => {
       if (problem.must) {
         switch (problem.kind) {
@@ -241,7 +239,7 @@ function Fill() {
 
   return (
     <>
-      <Container maxWidth='md' className={classes.root}>
+      <Container maxWidth='md'>
         <Card className={classes.card}>
           <Grid
             container
@@ -297,6 +295,26 @@ function Fill() {
       />
     </>
   )
+}
+
+function Fill() {
+  const classes = useStyles();
+
+  return (
+    <Grid
+      container
+      direction="row"
+      justifyContent="center"
+      alignItems="flex-start"
+      className={classes.root}
+    >
+      <Grid item xs={1}></Grid>
+      <Grid item xs={1}><CountDown time="2021-8-31 0:17" duration={300}/></Grid>
+      <Grid item xs={8}><FillPage /></Grid>
+      <Grid item xs={1}></Grid>
+      <Grid item xs={1}></Grid>
+    </Grid>
+  );
 }
 
 export default Fill
