@@ -1,5 +1,5 @@
 import {makeStyles} from '@material-ui/core/styles'
-import Problem from 'components/utils/Problem'
+import Problem, {ProblemSkeleton} from 'components/utils/Problem'
 import {Container, Button, Card, Grid, Divider} from '@material-ui/core'
 import MovableProblemEdit from 'components/design/MovableProblemEdit'
 import {useState} from 'react'
@@ -62,7 +62,7 @@ function Design(props) {
   const {id} = useParams()
   const [title, setTitle] = useState()
   const [detail, setDetail] = useState()
-  const [questionnaire, setQuestionnaire] = useState([])
+  const [questionnaire, setQuestionnaire] = useState(null)
   const [qid, setQid] = useState()
   const history = useHistory()
   const isLogin = useStateStore().isLogin
@@ -206,25 +206,27 @@ function Design(props) {
               className={classes.divider}
             />
             <Grid item className={classes.problems}>
-              {questionnaire.map((x, index) => (
-                <Problem
-                  problem={x}
-                  key={x.id}
-                  updateAns={() => blankFunction()}
-                >
-                  <MovableProblemEdit
+              {/*if questionnaire is null, display Skeleton*/}
+              {questionnaire ? questionnaire.map((x, index) => (
+                  <Problem
+                    problem={x}
                     key={x.id}
-                    questionInfo={x}
-                    index={index}
-                    move={(newIndex) => move(index, newIndex)}
-                    del={() => delQuestion(index)}
-                    add={addQuestion}
-                    edit={(item) => {
-                      editQuestion(index, item)
-                    }}
-                  />
-                </Problem>
-              ))}
+                    updateAns={() => blankFunction()}
+                  >
+                    <MovableProblemEdit
+                      key={x.id}
+                      questionInfo={x}
+                      index={index}
+                      move={(newIndex) => move(index, newIndex)}
+                      del={() => delQuestion(index)}
+                      add={addQuestion}
+                      edit={(item) => {
+                        editQuestion(index, item)
+                      }}
+                    />
+                  </Problem>
+                )) :
+                <ProblemSkeleton/>}
             </Grid>
 
             <Grid item className={classes.buttons}>
