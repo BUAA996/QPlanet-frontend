@@ -1,4 +1,5 @@
 import axios from 'http.js';
+import {isMultiChoice, isSingleChoice} from "../components/utils/Problem";
 
 async function getQuestionnaire(id) {
   return await axios.post("questionnaire/view/", {
@@ -80,6 +81,7 @@ async function transformGet(data) {
   settings.selectLessScore = data.select_less_score;
   settings.duration = data.duration;
   settings.certification = data.certification;
+  settings.deadline = data.deadline;
 
   return {
     qid: data.qid,
@@ -98,8 +100,36 @@ async function transformGet(data) {
   }
 }
 
+function transformSave(data) {
+
+  return {
+    modify_type: data.modifyType,
+    qid: data.qid,
+    title: data.title,
+    description: data.detail,
+    deadline: data.settings.deadline,
+    duration: data.settings.duration,
+    random_order: data.settings.randomOrder,
+    certification: data.settings.certification,
+    show_number: data.settings.showIdx,
+    questions: data.questions.map((x) => (
+      (x) => {
+        const item = {
+          id: x.id,
+          type: x.kind,
+          content: x.title,
+          is_required: x.must === 1,
+          description: x.description,
+        }
+        if (isSingleChoice(x) || isMultiChoice(x)) item.option = x.choices
+        return item
+      }
+    ))
+  }
+}
+
 async function saveQuestionaire(info) {
   return await axios.post("questionnaire/modify/", info);
 }
 
-export {getQuestionnaire, saveQuestionaire, transformGet};
+export {getQuestionnaire, saveQuestionaire, transformGet, transformSave};
