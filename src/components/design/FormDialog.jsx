@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -16,15 +16,20 @@ export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState(props.title);
   const [description, setDescription] = React.useState(props.description);
+  const [settings, setSettings] = useState({})
   const {enqueueSnackbar} = useSnackbar()
-
 
   useEffect(() => {
     setTitle(props.title);
   }, [props.title]);
+
   useEffect(() => {
     setDescription(props.description);
-  }, [props.description])
+  }, [props.description]);
+
+  useEffect(() => {
+    setSettings(props.settings === null? {}: props.settings)
+  }, [props.settings]);
 
 
   const handleClickOpen = () => {
@@ -34,21 +39,35 @@ export default function FormDialog(props) {
   const handleClose = () => {
     setOpen(false);
     setTitle(props.title);
+    setSettings(props.settings);
     setDescription(props.description);
   };
 
+  const checkError = (msg) => {
+
+  }
+
   const handleModify = () => {
     if (title.trim() === "") {
-      enqueueSnackbar("问卷标题不能为空", {variant: 'error'})
+      enqueueSnackbar("问卷标题不能为空", {variant: 'error'});
       return;
     }
     if (description.trim() === "") {
       enqueueSnackbar("问卷简介不能为空", {variant: 'error'})
       return;
     }
+    switch (props.type) {
+      // case "NORMAL":
+      // case "VOTE":
+      case "SIGNUP":
+
+      // case "EXAM":
+
+    }
 
     props.setTitle(title.trim());
     props.setDescription(description.trim());
+
     setOpen(false);
   }
 
@@ -76,6 +95,9 @@ export default function FormDialog(props) {
         close={handleClose}
         save={handleModify}
         title={title}
+        type={props.type}
+        settings={settings}
+        setSettings={setSettings}
         handleTitleChange={handleTitleChange}
         description={description}
         handleDescriptionChange={handleDescriptionChange}

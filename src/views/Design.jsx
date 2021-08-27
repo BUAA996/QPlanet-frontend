@@ -64,6 +64,8 @@ function Design(props) {
   const [detail, setDetail] = useState()
   const [questionnaire, setQuestionnaire] = useState(null)
   const [qid, setQid] = useState()
+  const [settings, setSettings] = useState()
+  const [type, setType] = useState()
   const history = useHistory()
   const isLogin = useStateStore().isLogin
 
@@ -82,11 +84,14 @@ function Design(props) {
       async function fetchMyAPI() {
         const res = await getQuestionnaire(id)
         if (res.data.result === 1) {
-          const data = transformGet(res.data);
+          const data = await transformGet(res.data);
+          // console.log("get datas", data)
           setTitle(data.title)
           setDetail(data.detail)
           setQid(data.qid)
-          setQuestionnaire((await data).questions)
+          setSettings(data.settings)
+          setQuestionnaire(data.questions)
+          setType(data.type)
         }
 
         // console.log(questionare)
@@ -195,9 +200,12 @@ function Design(props) {
 
             <FormDialog
               title={title}
+              type={type}
               description={detail}
+              settings={settings}
               setTitle={setTitle}
               setDescription={setDetail}
+              setSettings={setSettings}
             />
 
             <Divider

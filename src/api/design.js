@@ -25,6 +25,7 @@ async function getQuestionnaire(id) {
 async function transformGet(data) {
   let type = "";
   let settings = {}
+  console.log("ori", data)
   if (data.type === 0) {
     type = "normal"
   }
@@ -57,29 +58,31 @@ async function transformGet(data) {
       break;
     case 6:
       type = "EXAM";
-      settings.score = "1";
-      settings.ans = "0";
+      settings.displayScore = true;
+      settings.displayAns = false;
       break;
     case 7:
       type = "EXAM";
-      settings.score = "0";
-      settings.ans = "1";
+      settings.displayScore = false;
+      settings.displayAns = true;
       break;
     case 8:
       type = "EXAM";
-      settings.score = "1";
-      settings.ans = "1";
+      settings.displayScore = true;
+      settings.displayAns = true;
       break;
     case 9:
       type = "EXAM";
-      settings.score = "0";
-      settings.ans = "0";
+      settings.displayScore = false;
+      settings.displayAns = false;
       break;
   }
 
   settings.showIdx = data.show_number;
   settings.selectLessScore = data.select_less_score;
-  settings.duration = data.duration;
+  // settings.duration = data.duration;
+  settings.randonOrder = data.randonOrder;
+  settings.quota = data.quota;
   settings.certification = data.certification;
   settings.deadline = data.deadline;
 
@@ -108,12 +111,11 @@ function transformSave(data) {
     title: data.title,
     description: data.detail,
     deadline: data.settings.deadline,
-    duration: data.settings.duration,
+    // duration: data.settings.duration,
     random_order: data.settings.randomOrder,
     certification: data.settings.certification,
     show_number: data.settings.showIdx,
-    questions: data.questions.map((x) => (
-      (x) => {
+    questions: data.questions.map((x) => {
         const item = {
           id: x.id,
           type: x.kind,
@@ -124,7 +126,7 @@ function transformSave(data) {
         if (isSingleChoice(x) || isMultiChoice(x)) item.option = x.choices
         return item
       }
-    ))
+    )
   }
 }
 

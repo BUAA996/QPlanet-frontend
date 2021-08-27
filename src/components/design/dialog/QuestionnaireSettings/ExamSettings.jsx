@@ -16,50 +16,54 @@ const useStyle = makeStyles((theme) => ({
   choiceRow: {
     margin: theme.spacing(1)
   },
-  title:{
-    margin:theme.spacing(1)
+  title: {
+    margin: theme.spacing(1)
   }
 }))
 
 function ExamSettings(props) {
   const classes = useStyle();
-  const [limitTime, setLimitTime] = useState("1");
+  const a = 1;
+  console.log(props.settings)
+
+
+  const handleSelectLessScore = (event) => {
+    const ori = JSON.parse(JSON.stringify(props.settings));
+    ori.selectLessScore = event.target.value;
+    console.log(ori);
+    props.setSettings(ori)
+  }
+  const handleDisplayAns = (event) => {
+    const ori = JSON.parse(JSON.stringify(props.settings));
+    ori.displayAns = event.target.checked;
+    props.setSettings(ori)
+  }
+
+  const handleDisplayScore = (event) => {
+    const ori = JSON.parse(JSON.stringify(props.settings));
+    ori.displayScore = event.target.checked;
+    props.setSettings(ori)
+  }
+
+  const handleRandomOrder = (event) => {
+    const ori = JSON.parse(JSON.stringify(props.settings));
+    ori.randomOrder = event.target.value;
+    props.setSettings(ori)
+  }
 
   return (
     <Grid container
           direction="column">
 
       <Typography className={classes.title} variant="h6">考试设置</Typography>
-      <Grid
-        item
-        className={classes.choiceRow}>
-        <FormControl component="fieldset">
-          <FormLabel component="legend">限时</FormLabel>
-          <RadioGroup aria-label="限时" name="限时" value={limitTime} onChange={() => {
-          }} row="true">
-            <FormControlLabel value="0" control={<Radio/>} label="不限时"/>
-            <FormControlLabel value="1" control={<Radio/>} label={
-              (<Input
-                id="filled-number"
-                label="限时"
-                type="number"
-                shrink
-                variant="filled"
-                startAdornment={<InputAdornment position="start">限时</InputAdornment>}
-                endAdornment={<InputAdornment position="end">分钟</InputAdornment>}
-              />)}
-            />
-          </RadioGroup>
-        </FormControl>
-      </Grid>
 
       <Grid
         item
         className={classes.choiceRow}>
         <FormControl component="fieldset">
           <FormLabel component="legend">多选题少选是否得分</FormLabel>
-          <RadioGroup aria-label="多选题多选是否得分" name="multichoice-score" value={limitTime} onChange={() => {
-          }} row={true}>
+          <RadioGroup aria-label="多选题多选是否得分" name="multichoice-score" value={props.settings.selectLessScore}
+                      onChange={handleSelectLessScore} row={true}>
             <FormControlLabel value="0" control={<Radio/>} label="得分"/>
             <FormControlLabel value="1" control={<Radio/>} label="不得分"/>
           </RadioGroup>
@@ -71,7 +75,7 @@ function ExamSettings(props) {
         className={classes.choiceRow}>
         <FormControl component="fieldset">
           <FormLabel component="legend">填写时候顺序</FormLabel>
-          <RadioGroup aria-label="多选题多选是否得分" name="multichoice-score" value={limitTime} onChange={() => {
+          <RadioGroup aria-label="多选题多选是否得分" name="multichoice-score" value={props.randonOrder} onChange={() => {
           }} row={true}>
             <FormControlLabel value="0" control={<Radio/>} label="顺序"/>
             <FormControlLabel value="1" control={<Radio/>} label="随机打乱"/>
@@ -86,13 +90,11 @@ function ExamSettings(props) {
           <FormLabel component="legend">填写者提交后给出</FormLabel>
           <FormGroup row={true}>
             <FormControlLabel
-              control={<Checkbox checked={1} onChange={() => {
-              }} name="gilad"/>}
+              control={<Checkbox checked={props.settings.displayAns} onChange={handleDisplayAns} name="gilad"/>}
               label="答案"
             />
             <FormControlLabel
-              control={<Checkbox checked={1} onChange={() => {
-              }} name="jason"/>}
+              control={<Checkbox checked={props.settings.displayScore} onChange={handleDisplayScore} name="jason"/>}
               label="自动评分结果"
             />
           </FormGroup>

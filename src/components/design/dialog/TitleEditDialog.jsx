@@ -1,21 +1,15 @@
 import {
   DialogTitle,
   TextField,
-  Grid,
   FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
-  Input,
-  InputAdornment, FormControl
+  FormControl
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import {useForm} from "react-hook-form";
 import EditDialog from "./EditDialog";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
 import React from "react";
 import ExamSettings from "./QuestionnaireSettings/ExamSettings";
 import VoteSettings from "./QuestionnaireSettings/VoteSettings";
@@ -30,6 +24,21 @@ const useStyle = makeStyles((theme) => ({
 
 function TitleEditDialog(props) {
   const classes = useStyle();
+  const otherSettings = (type) => {
+    switch (type) {
+      // case "NORMAL":
+      //   return null;
+      case "VOTE":
+        return <VoteSettings settings={props.settings} setSettings={props.setSettings}/>
+      case "SIGNUP":
+        return <SignUpSettings settings={props.settings} setSettings={props.setSettings}/>
+      case "EXAM":
+        return <ExamSettings settings={props.settings} setSettings={props.setSettings}/>
+      default:
+        return null;
+    }
+  }
+
 
   const dialogTitle = (
     <DialogTitle>
@@ -81,7 +90,7 @@ function TitleEditDialog(props) {
           />
         </RadioGroup>
       </FormControl>
-      <SignUpSettings/>
+      {otherSettings(props.type)}
     </DialogContent>
   );
 
