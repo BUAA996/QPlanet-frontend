@@ -82,6 +82,7 @@ async function transformGet(data) {
   settings.selectLessScore = data.select_less_score;
   // settings.duration = data.duration;
   settings.randonOrder = data.randonOrder;
+  settings.hasQuota = data.quota === -1 ? "0" : "1";
   settings.quota = data.quota;
   settings.certification = data.certification;
   settings.deadline = data.deadline;
