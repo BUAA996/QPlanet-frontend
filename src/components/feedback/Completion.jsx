@@ -52,7 +52,13 @@ function DialogTemplate({ open, setOpen, title, children }) {
 function DetailDialog({ open, setOpen, title }) {
   return (
     <DialogTemplate open={open} setOpen={setOpen} title={title}>
-      <Box width='100%' height='300px' marginTop={1} marginBottom={2}></Box>
+      <Box
+        width='100%'
+        height='300px'
+        marginTop={1}
+        marginBottom={2}
+        style={{ backgroundColor: 'blue' }}
+      ></Box>
     </DialogTemplate>
   )
 }
