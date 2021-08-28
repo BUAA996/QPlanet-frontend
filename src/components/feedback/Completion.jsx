@@ -174,20 +174,22 @@ function Completion({ data }) {
         >
           查看详细信息
         </Button>
-        <Button
-          size='small'
-          variant='outlined'
-          color='primary'
-          onClick={() => {
-            if (data.total === 0) {
-              enqueueSnackbar('该题暂时还无人填写哦', { variant: 'warning' })
-            } else {
-              setFrequencyOpen(true)
-            }
-          }}
-        >
-          词频分析
-        </Button>
+        {data.type !== '定位题' && (
+          <Button
+            size='small'
+            variant='outlined'
+            color='primary'
+            onClick={() => {
+              if (data.total === 0) {
+                enqueueSnackbar('该题暂时还无人填写哦', { variant: 'warning' })
+              } else {
+                setFrequencyOpen(true)
+              }
+            }}
+          >
+            词频分析
+          </Button>
+        )}
       </Template>
       <DetailDialog open={detailOpen} setOpen={setDetailOpen} data={data} />
       <FrequencyDialog
