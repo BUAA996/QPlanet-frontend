@@ -348,7 +348,7 @@ function Fill() {
             {vis && <CountDown time={endTime} />}
           </Grid>
           <Grid item xs={8}>
-            <FillPage setState={setState} />
+            <FillPage setState={setState} phone={phone} need={data.requirement} />
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>

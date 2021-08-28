@@ -19,6 +19,7 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import { getIP, getLocation } from 'api/location'
 import Skeleton from '@material-ui/lab/Skeleton'
+import { surplus } from 'api/result'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,12 +67,24 @@ function ShowClasses(props) {
   const classes = useStyles()
   return (
     <Container fixed className={classes.title}>
-      <Typography component='span' className={classes.must}>
-        {props.must ? '*' : null}
-      </Typography>
-      <Typography component='span' className={classes.titleContent}>
-        {props.title}
-      </Typography>
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="center"
+      >
+        <Grid item xs={7}>
+          <Typography component='span' className={classes.must}>
+            {props.must ? '*' : null}
+          </Typography>
+          <Typography component='span' className={classes.titleContent}>
+            {props.title}
+          </Typography>
+        </Grid>
+        <Grid item>
+          {props.children}
+        </Grid>
+      </Grid>
     </Container>
   )
 }
@@ -116,7 +129,7 @@ function SingleChoice(props) {
             choice.content +
             (props.showquota
               ? props.quota[0] === -1
-                ? ' 余量: ' + choice.maxquota
+                ? ' 总容量: ' + choice.maxquota
                 : ' (' + choice.quota + '/' + choice.maxquota + ')'
               : '')
           }
@@ -339,7 +352,16 @@ function Location(props) {
 
 function Problem(props) {
   const classes = useStyles()
-  // console.log(props.showindex)
+  const [quota, setQuota] = useState([-1]);
+
+  function handleQuery() {
+    surplus({qid: props.problem.id}).then((res) => {
+      console.log(res.data);
+      setQuota(res.data.surplus);
+    })
+  }
+
+  console.log(props)
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -350,7 +372,20 @@ function Problem(props) {
               : '') + props.problem.title
           }
           must={props.problem.must}
-        />
+        >
+          {
+            props.fillmode && isChoice(props.problem) &&
+            <Button  
+              color="secondary" 
+              variant="contained"
+              size="small"
+              onClick={() => handleQuery()}
+            >
+              刷新余量
+            </Button>
+          }
+        </ShowClasses>
+        
         <Divider />
         <Typography className={classes.description}>
           {' '}
@@ -421,6 +456,7 @@ function isChoice(problem) {
 Problem.defaultProps = {
   showindex: false,
   showquota: false,
+  fillmode: false,
   quota: [-1],
 }
 

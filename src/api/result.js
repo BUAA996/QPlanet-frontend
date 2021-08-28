@@ -18,4 +18,8 @@ function checkCaptcha(data) {
   return axios.post('result/check_captcha/', data)
 }
 
-export { getStatistics, downloadStatistics, sendCaptcha, checkCaptcha }
+function surplus(data) {
+  return axios.post('question/surplus/', data);
+}
+
+export { getStatistics, downloadStatistics, sendCaptcha, checkCaptcha, surplus}

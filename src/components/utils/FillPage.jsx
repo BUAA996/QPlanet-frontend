@@ -182,11 +182,15 @@ export default function FillPage(props) {
   function handleClick() {
     // console.log({id: questionID, results: ansList})
     if (checkMust()) {
-      submit({ qid: questionID, results: ansList }).then((res) => {
-        // console.log(res);
-        enqueueSnackbar('提交成功，感谢您的回答', { variant: 'success' })
-        // history.replace('/finish')
-        props.setState(3)
+			let tmp = { qid: questionID, results: ansList };
+			if (props.need > 1) {
+				tmp = {...tmp, phone: props.phone}
+			}
+			submit(tmp).then((res) => {
+				// console.log(res);
+				enqueueSnackbar('提交成功，感谢您的回答', { variant: 'success' })
+				// history.replace('/finish')
+				props.setState(3)
       })
     } else {
       enqueueSnackbar('有必做题尚未完成：' + getTodoID(), {
@@ -223,6 +227,7 @@ export default function FillPage(props) {
                   problem={problem}
                   showindex={data.show_number}
                   showquota={problem.quota[0] === -1 ? false : true}
+									fillmode={true}
                   key={problem.key}
                   updateAns={(ans) => handleAns(problem.key, ans)}
                 />
