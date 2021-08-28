@@ -84,6 +84,7 @@ async function transformGet(data) {
   settings.hasQuota = data.quota === -1 ? "0" : "1";
   settings.quota = data.quota;
   settings.certification = data.certification;
+  settings.hasDdl = data.deadline != "";
   settings.deadline = data.deadline;
 
   return {
@@ -110,6 +111,8 @@ async function transformGet(data) {
 }
 
 function transformSave(data) {
+  console.log("before change", data)
+
   let type = 0;
   const settings = data.settings;
   if(data.type === "VOTE"){
@@ -139,7 +142,7 @@ function transformSave(data) {
     qid: data.qid,
     title: data.title,
     description: data.detail,
-    deadline: "2214-01-08 11:59",/////// data.settings.deadline, ////////
+    deadline: data.settings.hasDdl? data.settings.deadline: null,/////// data.settings.deadline, ////////
     duration: 300,
     random_order: data.settings.randomOrder,
     certification: data.settings.certification,
@@ -169,7 +172,7 @@ async function saveQuestionaire(info) {
   console.log("push", info)
   console.log("info", JSON.stringify(info))
   const ans = await axios.post("questionnaire/modify/", info);
-  console.log(ans)
+  console.log("get save" , ans)
   return ans;
 }
 

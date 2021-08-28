@@ -10,10 +10,15 @@ import {
 import {makeStyles} from "@material-ui/core/styles";
 import EditDialog from "./EditDialog";
 import DialogContent from "@material-ui/core/DialogContent";
-import React from "react";
+import React, {useState} from "react";
 import ExamSettings from "./QuestionnaireSettings/ExamSettings";
 import VoteSettings from "./QuestionnaireSettings/VoteSettings";
 import SignUpSettings from "./QuestionnaireSettings/SignUpSettings";
+import {
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 const useStyle = makeStyles((theme) => ({
   grid: {
@@ -24,6 +29,7 @@ const useStyle = makeStyles((theme) => ({
 
 function TitleEditDialog(props) {
   const classes = useStyle();
+  const [selectedDate, handleDateChange] = useState(new Date());
   const otherSettings = (type) => {
     switch (type) {
       // case "NORMAL":
@@ -53,64 +59,74 @@ function TitleEditDialog(props) {
   );
 
   const dialogContent = (
-    <DialogContent>
-      <TextField
-        autoFocus
-        margin="dense"
-        id="title"
-        label="标题"
-        type="text"
-        value={props.title || ''}
-        error={props.title === ""}
-        onChange={props.handleTitleChange}
-        helperText={"为了更好的呈现效果，请把标题控制在 20 个字以内"}
-        fullWidth
-      />
-      <TextField
-        autoFocus
-        margin="dense"
-        id="description"
-        label="简介"
-        type="text"
-        multiline
-        value={props.description || ''}
-        onChange={props.handleDescriptionChange}
-        fullWidth
-      />
+      <DialogContent>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="title"
+          label="标题"
+          type="text"
+          value={props.title || ''}
+          error={props.title === ""}
+          onChange={props.handleTitleChange}
+          helperText={"为了更好的呈现效果，请把标题控制在 20 个字以内"}
+          fullWidth
+        />
+        <TextField
+          autoFocus
+          margin="dense"
+          id="description"
+          label="简介"
+          type="text"
+          multiline
+          value={props.description || ''}
+          onChange={props.handleDescriptionChange}
+          fullWidth
+        />
 
-      {/*todo: replace this with picker, currently not support by firefox */}
-      <FormControl component="fieldset">
-        <FormLabel component="legend">问卷填写截至时间</FormLabel>
-        <RadioGroup aria-label="限时" name="限时" value={1} onChange={() => {
-        }} row="true">
-          <FormControlLabel value="0" control={<Radio/>} label="无"/>
-          <FormControlLabel value="1" control={<Radio/>} label={
-            (<TextField
-              id="datetime-local"
-              label="截止到"
-              type="datetime-local"
-              defaultValue="2017-05-24T10:30"
-              // className={classes.textField}
-              shrink
-            />)}
-          />
-        </RadioGroup>
-      </FormControl>
+        {/*todo: replace this with picker, currently not support by firefox */}
+        <FormControl component="fieldset">
+          <FormLabel component="legend">问卷填写截至时间</FormLabel>
+          <RadioGroup aria-label="限时" name="限时" value={props.settings.hasDdl ? "1" : "0"}
+                      onChange={(event) => {
+                        const ori = JSON.parse(JSON.stringify(props.settings));
+                        ori.hasDdl = event.target.value === "1";
+                        props.setSettings(ori)
+                      }} row="true">
+            <FormControlLabel value="0" control={<Radio/>} label="无"/>
+            <FormControlLabel value="1" control={<Radio/>} label={
+              (<MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <DateTimePicker value={props.settings.deadline} onChange={(event) => {
+                    const ori = JSON.parse(JSON.stringify(props.settings));
+                    const data = event.toISOString().substr(0,16 )  ;
 
-
-      <FormControl component="fieldset">
-        <FormLabel component="legend">是否显示题号</FormLabel>
-        <RadioGroup aria-label="是否显示题号" value={props.settings.showIdx}
-                    onChange={handleIdx} row={true}>
-          <FormControlLabel value="0" control={<Radio/>} label="显示题号"/>
-          <FormControlLabel value="1" control={<Radio/>} label="不显示"/>
-        </RadioGroup>
-      </FormControl>
+                    ori.deadline = data.substr(0, 10) + ' ' + data.substr(11, 5);
+                    console.log(ori.deadline)
+                    props.setSettings(ori)
+                  }}/>
+                </MuiPickersUtilsProvider>
+              )}
+            />
+          </RadioGroup>
+        </FormControl>
 
 
-      {otherSettings(props.type)}
-    </DialogContent>
-  );
+        <FormControl component="fieldset">
+          <FormLabel component="legend">是否显示题号</FormLabel>
+          <RadioGroup aria-label="是否显示题号" value={props.settings.showIdx}
+                      onChange={handleIdx} row={true}>
+            <FormControlLabel value="0" control={<Radio/>} label="显示题号"/>
+            <FormControlLabel value="1" control={<Radio/>} label="不显示"/>
+          </RadioGroup>
+        </FormControl>
+
+
+        {
+          otherSettings(props.type)
+        }
+      </DialogContent>
+    )
+  ;
 
 
   return (
