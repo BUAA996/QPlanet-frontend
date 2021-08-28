@@ -129,9 +129,8 @@ function FillPage() {
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
-
     fill({ hash: id }).then((res) => {
-      console.log(res);
+      console.log(res)
       if (res.data.result === 1) {
         const ori = res.data.questions
         const settings = res.data
@@ -176,12 +175,12 @@ function FillPage() {
       answer: singleAns,
     }
     setAns(tmp)
-    // console.log(tmp);
+    // console.log(tmp)
   }
 
   function checkMust() {
     let res = true,
-    tmp = ansList.slice()
+      tmp = ansList.slice()
     Questionare.map((problem, index) => {
       if (problem.must) {
         switch (problem.kind) {
@@ -298,23 +297,27 @@ function FillPage() {
 }
 
 function Fill() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Grid
       container
-      direction="row"
-      justifyContent="center"
-      alignItems="flex-start"
+      direction='row'
+      justifyContent='center'
+      alignItems='flex-start'
       className={classes.root}
     >
       <Grid item xs={1}></Grid>
-      <Grid item xs={1}><CountDown time="2021-8-31 0:17" duration={300}/></Grid>
-      <Grid item xs={8}><FillPage /></Grid>
+      <Grid item xs={1}>
+        <CountDown time='2021-8-31 0:17' duration={300} />
+      </Grid>
+      <Grid item xs={8}>
+        <FillPage />
+      </Grid>
       <Grid item xs={1}></Grid>
       <Grid item xs={1}></Grid>
     </Grid>
-  );
+  )
 }
 
 export default Fill
