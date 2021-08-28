@@ -51,15 +51,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Questionnaire = [
-  {
-    id: 1,
-    kind: 0,
-    must: 1,
-    title: '第一题 balabalabalabala',
-    choices: ['选项1', '选项2', '选项3', '选项4'],
-  },
-]
 
 function Design(props) {
   const classes = useStyles()
@@ -185,7 +176,7 @@ function Design(props) {
         questions: questionnaire,
       })
     )
-    history.push('/overview')
+    // history.push('/overview')
   }
 
   return (
