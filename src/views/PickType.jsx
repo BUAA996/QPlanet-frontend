@@ -6,6 +6,8 @@ import exam from 'assets/questionnaire_type/exam.png'
 import form from 'assets/questionnaire_type/form.png'
 import survey from 'assets/questionnaire_type/survey.png'
 import vote from 'assets/questionnaire_type/vote.png'
+import other from 'assets/questionnaire_type/other.png'
+import clock from 'assets/questionnaire_type/clock.png'
 import { useState } from 'react'
 import clsx from 'clsx'
 import { useLocation, useHistory } from 'react-router-dom'
@@ -15,13 +17,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '5vh',
     height: '79vh',
     position: 'relative',
-    right: '-1.5vw',
+    right: '-3.5vw',
+  },
+  cardBoxCenter: {
+    marginTop: '5vh',
+    height: '79vh',
   },
   cardBoxRight: {
     marginTop: '5vh',
     height: '79vh',
     position: 'relative',
-    left: '-1.5vw',
+    left: '-3.5vw',
   },
   card: {
     height: '35vh',
@@ -120,10 +126,10 @@ function PickType() {
 
   return (
     <Grid container justifyContent='center'>
-      <Grid item xs={6} container justifyContent='space-around'>
+      <Grid item xs={9} container justifyContent='space-evenly'>
         <Grid
           item
-          xs={6}
+          xs={4}
           container
           alignItems='center'
           direction='column'
@@ -143,14 +149,25 @@ function PickType() {
         </Grid>
         <Grid
           item
-          xs={6}
+          xs={4}
+          container
+          alignItems='center'
+          direction='column'
+          className={classes.cardBoxCenter}
+        >
+          <TypeCard title='报名' word='活动报名，快捷登记' url={form} />
+          <TypeCard title='考试' word='限时作答，自动阅卷' url={exam} />
+        </Grid>
+        <Grid
+          item
+          xs={4}
           container
           alignItems='center'
           direction='column'
           className={classes.cardBoxRight}
         >
-          <TypeCard title='报名' word='活动报名，快捷登记' url={form} />
-          <TypeCard title='考试' word='限时作答，自动阅卷' url={exam} />
+          <TypeCard title='疫情打卡' word='每日上报，一键导出' url={clock} />
+          <TypeCard title='其他' word='更多问卷，敬请期待' url={other} />
         </Grid>
       </Grid>
     </Grid>
