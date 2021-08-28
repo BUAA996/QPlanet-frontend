@@ -46,6 +46,7 @@ function NotFound() {
       must: 1,
       title: '第一题 balabalabalabala',
       choices: ['选项1', '选项2', '选项3', '选项4'],
+      quota: [1, 2, 5, 8],
     },
     {
       id: 2,
@@ -97,13 +98,19 @@ function NotFound() {
 
   const classes = useStyles();
   const title = <Title title="404 NotFound" description="啊呀，问卷走丢了QAQ。请检查问卷链接，或者与问卷发布者联系。"/>  
-  const Questions = Questionare.map((problem, index) => (<Problem problem={{...problem, key: index}} show={true} updateAns={(ans) => blankFunction()} />));
+  const Questions = Questionare.map((problem, index) => (
+    <Problem problem={{...problem, key: index}} 
+      showindex={true} 
+      showquota={true} 
+      quota={[1, 2, 3, 4]} 
+      updateAns={(ans) => blankFunction()} />
+  ));
 
   return (
     <>
       <CountDown time="2021-08-27 16:30:11" duration={300}/>
       <Container maxWidth="md" className={classes.root}>
-        <PreviewPage title={title} Questionare={[]}/>
+        <PreviewPage title={title} Questionare={Questions}/>
       </Container>
     </>
   )
