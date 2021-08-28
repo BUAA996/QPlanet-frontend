@@ -18,6 +18,7 @@ export default function CountDown(props) {
   const classes = useStyles()
 
   const [content, setContent] = useState('0 分 0 秒')
+  const [timeoutID, settimeoutID] = useState();
 
   function updateTime(end_time) {
     let time = Math.ceil((end_time.getTime() - new Date().getTime()) / 1000)
@@ -34,8 +35,12 @@ export default function CountDown(props) {
           second +
           ' 秒 '
       )
-      setTimeout(() => updateTime(end_time), 1000)
+      settimeoutID(setTimeout(() => updateTime(end_time), 1000)) 
     }
+  }
+
+  function cleanup() {
+    clearTimeout(timeoutID);
   }
 
   useEffect(() => {
@@ -43,6 +48,9 @@ export default function CountDown(props) {
     // time.setMinutes(time.getMinutes() + props.duration)
     console.log(time);
     updateTime(time)
+    return () => {
+      cleanup();
+    }
   }, [props])
 
   return (
