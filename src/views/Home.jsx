@@ -83,7 +83,6 @@ function IntroCard({
   return (
     <>
       <Grid
-        xs={12}
         container
         justifyContent='center'
         className={position === 'left' ? classes.pageLeft : classes.pageRight}
