@@ -14,6 +14,7 @@ import { Close } from '@material-ui/icons'
 import { useState } from 'react'
 import Graph from './Graph'
 import { useSnackbar } from 'notistack'
+import { DataGrid } from '@mui/x-data-grid'
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -121,7 +122,7 @@ function FrequencyDialog({ open, setOpen, data }) {
 }
 
 function Completion({ data }) {
-  // const classes = useStyles()
+  const classes = useStyles()
   const [detailOpen, setDetailOpen] = useState(false)
   const [frequencyOpen, setFrequencyOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
@@ -129,17 +130,21 @@ function Completion({ data }) {
   return (
     <>
       <Template title={data.title} type={data.type}>
-        {/* <Button
+        <Button
           variant='outlined'
           className={classes.btn}
           color='primary'
           size='small'
           onClick={() => {
-            setDetailOpen(true)
+            if (data.total === 0) {
+              enqueueSnackbar('该题暂时还无人填写哦', { variant: 'warning' })
+            } else {
+              setDetailOpen(true)
+            }
           }}
         >
           查看详细信息
-        </Button> */}
+        </Button>
         <Button
           size='small'
           variant='outlined'
