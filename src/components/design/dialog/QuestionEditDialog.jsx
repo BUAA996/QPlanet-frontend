@@ -44,6 +44,7 @@ function QuestionEditDialog(props) {
   const [description, setDescription] = useState("");
   const [score, setScore] = useState(0);
   const [closeId, setCloseId] = useState(0);
+  const [fillAns, setFillAns] = useState("")
   // let index = 1; // add when close
   useEffect(() => {
     setTitle(props.questionInfo.title)
@@ -52,10 +53,12 @@ function QuestionEditDialog(props) {
     setKind("" + props.questionInfo.kind);
     setDescription("" + props.questionInfo.description);
     setScore(props.questionInfo.standardAnswer.score ?? 0)
+    setFillAns(props.questionInfo.standardAnswer.content.join(';'))
 
     if (props.type === "EXAM" && (kind == "0" || kind == "1")) { // edit choice for right answer
 
       props.questionInfo.standardAnswer.content.forEach((x) => {
+        if (isNaN(x)) return;
         const newChoice = choices.slice();
         newChoice[x].selected = true;
         setChoices(newChoice)
@@ -64,18 +67,17 @@ function QuestionEditDialog(props) {
     }
   }, [props.questionInfo, closeId])
 
-  const handleChangeMust = (event) => {
-    setMust(event.target.value);
-  };
+
   const handleChangeKind = (event) => {
+    // TODO: I believe there is a bug when change question type
     setKind(event.target.value);
+    if (((kind == '0' || kind == '1') && (props.questionInfo.kind != '0' && props.questionInfo.kind != '1'))
+      || ((kind != '0' && kind != '1') && (props.questionInfo.kind == '0' || props.questionInfo.kind == '1'))) {
+      setFillAns("");
+      // set
+    }
   }
-  const handleChangeTitle = (event) => {
-    setTitle(event.target.value)
-  }
-  const handleChangeDescription = (event) => {
-    setDescription(event.target.value)
-  }
+
   const handleChangeScore = (event) => {
     setScore(event.target.value)
   }
@@ -120,11 +122,11 @@ function QuestionEditDialog(props) {
       choices: choices.map((x) => x.content.trim()),
       standardAnswer: {
         score: score,
-        content: choices.map((x) => x.selected).reduce((pre, cur, index) => {
+        content: kind == '0' || kind == '1' ? choices.map((x) => x.selected).reduce((pre, cur, index) => {
           const newArray = pre.slice();
           if (cur) newArray.push(index)
           return newArray
-        }, [])
+        }, []) : fillAns.split(/[；;]+/)
       }
     }
 
@@ -144,7 +146,9 @@ function QuestionEditDialog(props) {
         id="filled-required"
         label="题目"
         value={title}
-        onChange={handleChangeTitle}
+        onChange={(event) => {
+          setTitle(event.target.value)
+        }}
         error={title.trim() === ""}
         helperText={title.trim() === "" && "题目不得为空"}
         multiline
@@ -153,14 +157,18 @@ function QuestionEditDialog(props) {
       <TextField
         label="描述"
         value={description}
-        onChange={handleChangeDescription}
+        onChange={(event) => {
+          setDescription(event.target.value)
+        }}
         multiline
         fullWidth
       />
       <FormControl component="fieldset" className={classes.content}>
         <FormLabel component="legend"> 是否必填：</FormLabel>
         <RadioGroup aria-label="must?"
-                    onChange={handleChangeMust}
+                    onChange={(event) => {
+                      setMust(event.target.value);
+                    }}
                     value={must}
                     row
         >
@@ -206,6 +214,24 @@ function QuestionEditDialog(props) {
           type={props.type}
           settings={props.settings}
         /> : null
+      }
+
+      {/*填空题答案*/}
+      {(kind == '2' || kind == '3') && props.type === "EXAM" ?
+        <TextField
+          required
+          id="filled-required"
+          label="答案（多个可行的答案中间用分号（；）隔开）"
+          value={fillAns}
+          onChange={(event) => {
+            setFillAns(event.target.value)
+          }}
+          error={title.trim() === ""}
+          helperText={title.trim() === "" && "答案不得为空"}
+          multiline
+          fullWidth
+        />
+        : null
       }
 
 

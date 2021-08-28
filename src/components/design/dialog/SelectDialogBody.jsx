@@ -27,9 +27,6 @@ const useStyle = makeStyles(theme => ({
 function SelectRow(props) {
   const classes = useStyle();
 
-  useEffect(()=>{
-    // console.log("aaa", props.choiceContent)
-  })
   return (
     <Grid container
           className={classes.row}>
@@ -96,9 +93,6 @@ function SelectDialogBody(props) {
     props.setChoices(newChoice)
   }
 
-  useEffect(()=>{
-    // console.log("choice" , props.choices)
-  })
   return (
     <DialogContent>
 

@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import {useEffect} from "react";
+import {useState} from "react";
 
-const { makeStyles, IconButton, Grid, Box, TextField, Button } = require("@material-ui/core");
-const { ExpandLessRounded, ExpandMoreRounded, DehazeRounded } = require("@material-ui/icons");
-const { default: ProblemEdit } = require("./ProblemEdit");
+const {makeStyles, IconButton, Grid, Box, TextField, Button} = require("@material-ui/core");
+const {ExpandLessRounded, ExpandMoreRounded, DehazeRounded} = require("@material-ui/icons");
+const {default: ProblemEdit} = require("./ProblemEdit");
 
 const useStyle = makeStyles(theme => ({
   inputNum: {
@@ -26,24 +26,26 @@ function MovableProblemEdit(props) {
     if (props.index > 0)
       props.move(props.index - 1)
   }
-  const moveDown = () => { props.move(props.index + 1) }
+  const moveDown = () => {
+    props.move(props.index + 1)
+  }
 
   return (
     <Grid container
-      direction="row"
-      alignItems="center"
-      justifyContent="space-around"
+          direction="row"
+          alignItems="center"
+          justifyContent="space-around"
     >
       <Grid container item
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-start"
-        xs={5}>
-        <Grid item >
+            direction="row"
+            alignItems="center"
+            justifyContent="flex-start"
+            xs={5}>
+        <Grid item>
           <Button
             className={classes.moveButton}
             variant="outlined"
-            startIcon={(<ExpandLessRounded />)}
+            startIcon={(<ExpandLessRounded/>)}
             onClick={moveUp}>
             题目上移
           </Button>
@@ -54,7 +56,7 @@ function MovableProblemEdit(props) {
             className={classes.moveButton}
             onClick={moveDown}
             variant="outlined"
-            startIcon={<ExpandMoreRounded />}>
+            startIcon={<ExpandMoreRounded/>}>
             题目下移
           </Button>
         </Grid>
@@ -68,6 +70,7 @@ function MovableProblemEdit(props) {
           settings={props.settings}
           del={props.del}
           add={props.add}
+          addDefault={props.addDefault}
           edit={props.edit}
           questionInfo={props.questionInfo}
           index={props.index}

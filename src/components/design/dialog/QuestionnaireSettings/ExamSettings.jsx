@@ -24,8 +24,6 @@ const useStyle = makeStyles((theme) => ({
 function ExamSettings(props) {
   const classes = useStyle();
   const a = 1;
-  console.log(props.settings)
-
 
   const handleSelectLessScore = (event) => {
     const ori = JSON.parse(JSON.stringify(props.settings));

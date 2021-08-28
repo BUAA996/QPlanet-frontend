@@ -153,6 +153,15 @@ function Design(props) {
       title: '题目',
       description: '',
       choices: ['选项1', '选项2', '选项3'],
+      isEssential: true,
+      // quota: x.quota, //TODO
+      lower: 0,
+      // upper: x.upper, //TODO
+      requirement: 0,
+      standardAnswer: {
+        score: 0,
+        content: []
+      },
     }
     addQuestion(index, item)
   }
@@ -164,7 +173,7 @@ function Design(props) {
 
   function save() {
     saveQuestionaire(transformSave({
-      modify_type : 1,
+      modify_type: 1,
       title: title,
       qid: qid,
       detail: detail,
@@ -222,6 +231,7 @@ function Design(props) {
                       move={(newIndex) => move(index, newIndex)}
                       del={() => delQuestion(index)}
                       add={addQuestion}
+                      addDefault={addDefault}
                       edit={(item) => {
                         editQuestion(index, item)
                       }}
@@ -238,8 +248,7 @@ function Design(props) {
                 onClick={() => addDefault(-1)}
                 className={classes.buttons}
               >
-                {' '}
-                添加题目{' '}
+                {' 添加题目 '}
               </Button>
               <Button
                 variant='contained'
@@ -247,8 +256,7 @@ function Design(props) {
                 onClick={() => save()}
                 className={classes.buttons}
               >
-                {' '}
-                保存并返回{' '}
+                {' 保存并返回 '}
               </Button>
               <Button
                 variant='contained'
@@ -256,8 +264,7 @@ function Design(props) {
                 onClick={() => history.go(-1)}
                 className={classes.buttons}
               >
-                {' '}
-                取消编辑{' '}
+                {' 取消编辑 '}
               </Button>
               {/* <Button variant='contained' color='secondary' onClick={() => print()} className={classes.buttons}> 打印 </Button> */}
             </Grid>

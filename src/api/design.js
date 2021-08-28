@@ -96,12 +96,12 @@ async function transformGet(data) {
       id: x.id,
       kind: x.type,
       must: x.is_required ? 1 : 0,
-      isEssential: x.is_essential,
+      isEssential: x.is_essential ?? true,
       title: x.content,
-      description: x.description,
+      description: x.description ?? "",
       choices: x.option ?? [],
       quota: x.quota,
-      lower: x.lower,
+      lower: x.lower ?? 0,
       upper: x.upper,
       requirement: x.requirement,
       standardAnswer: x.standard_answer,
@@ -151,11 +151,11 @@ function transformSave(data) {
         type: x.kind,
         content: x.title,
         is_required: x.must === 1,
-        is_essential: x.isEssential,
-        description: x.detail,
+        is_essential: x.isEssential ?? false,
+        description: x.detail ?? "",
         option: x.choices,
         quota: x.quota,
-        lower: x.lower,
+        lower: x.lower ?? 0,
         upper: x.upper,
         requirement: x.requirement ?? 0,
         standard_answer: x.standardAnswer
@@ -167,6 +167,7 @@ function transformSave(data) {
 
 async function saveQuestionaire(info) {
   console.log("push", info)
+  console.log("info", JSON.stringify(info))
   const ans = await axios.post("questionnaire/modify/", info);
   console.log(ans)
   return ans;
