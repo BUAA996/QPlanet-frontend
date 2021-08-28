@@ -56,50 +56,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-// const TEMPLEATE = {
-//   "title": "请修改标题",
-//   "description": "感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！",
-//   "validity": 998244353,
-//   "limit_time": 998244353,
-//   "type": 0,
-//   "questions": [],
-// };
-
-const TEMPLEATE = {
-  title: '123',
-  description: '感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！',
-  deadline: '2214-01-08 11:59',
-  duration: 120,
-  type: 1,
-  random_order: true,
-  certification: 1,
-  select_less_score: true,
-  show_number: true,
-  questions: [
-    {
-			type: 0,
-			content: "What would you like to drink?",
-			is_required: true,
-			option: ["Cola", "Sprite", "Lemonade"],
-			quota: [0, 0, 0],
-			description: "",
-      lower: -1,
-      upper: -1,
-      requirement: -1,
-		},
-  ],
-}
-
 function SideBar() {
   const classes = useStyles()
   const history = useHistory()
 
   function handleCreate() {
-    createQuestionnaire(TEMPLEATE).then((res) => {
-      if (res.data.result == 1) {
-        history.push('/picktype/', { hash: res.data.hash })
-      }
-    })
+    history.push('/picktype')
   }
 
   return (
@@ -222,8 +184,8 @@ function Overview() {
   }, [change])
 
   function handleChange() {
-    let tmp = change ^ 1;
-    setChange(tmp);
+    let tmp = change ^ 1
+    setChange(tmp)
   }
 
   return (
@@ -241,7 +203,10 @@ function Overview() {
           <HeadBar search={handleSearch} />
         </Grid>
         <Grid item xs={12}>
-          <QuestionnaireList Questionares={data} onChange={() => handleChange()}/>
+          <QuestionnaireList
+            Questionares={data}
+            onChange={() => handleChange()}
+          />
         </Grid>
       </Grid>
     </Container>
