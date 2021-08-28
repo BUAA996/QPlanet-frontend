@@ -5,7 +5,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  FormControl
+  FormControl, Grid
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import EditDialog from "./EditDialog";
@@ -37,6 +37,12 @@ function TitleEditDialog(props) {
       default:
         return null;
     }
+  }
+
+  const handleIdx = (event) => {
+    const ori = JSON.parse(JSON.stringify(props.settings));
+    ori.displayAfter = event.target.value;
+    props.setSettings(ori)
   }
 
 
@@ -90,6 +96,18 @@ function TitleEditDialog(props) {
           />
         </RadioGroup>
       </FormControl>
+
+
+      <FormControl component="fieldset">
+        <FormLabel component="legend">是否显示题号</FormLabel>
+        <RadioGroup aria-label="是否显示题号" value={props.settings.showIdx}
+                    onChange={handleIdx} row={true}>
+          <FormControlLabel value="0" control={<Radio/>} label="显示题号"/>
+          <FormControlLabel value="1" control={<Radio/>} label="不显示"/>
+        </RadioGroup>
+      </FormControl>
+
+
       {otherSettings(props.type)}
     </DialogContent>
   );

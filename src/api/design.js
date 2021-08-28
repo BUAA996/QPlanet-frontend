@@ -1,5 +1,4 @@
 import axios from 'http.js';
-import {isMultiChoice, isSingleChoice} from "../components/utils/Problem";
 
 async function getQuestionnaire(id) {
   return await axios.post("questionnaire/view/", {
@@ -81,7 +80,7 @@ async function transformGet(data) {
   settings.showIdx = data.show_number;
   settings.selectLessScore = data.select_less_score;
   // settings.duration = data.duration;
-  settings.randonOrder = data.randonOrder;
+  settings.randomOrder = data.random_order;
   settings.hasQuota = data.quota === -1 ? "0" : "1";
   settings.quota = data.quota;
   settings.certification = data.certification;
@@ -97,42 +96,80 @@ async function transformGet(data) {
       id: x.id,
       kind: x.type,
       must: x.is_required ? 1 : 0,
+      isEssential: x.is_essential,
       title: x.content,
       description: x.description,
-      choices: x.option == null ? [] : x.option,
+      choices: x.option ?? [],
+      quota: x.quota,
+      lower: x.lower,
+      upper: x.upper,
+      requirement: x.requirement,
+      standardAnswer: x.standard_answer,
     }))
   }
 }
 
 function transformSave(data) {
+  let type = 0;
+  const settings = data.settings;
+  if(data.type === "VOTE"){
+    if(settings.displayBefore && ! settings.displayAfter)
+      type = 1;
+    else if(! settings.displayBefore && settings.displayAfter)
+      type = 2
+    else if(settings.displayBefore && settings.displayAfter)
+      type = 3
+    else if(! settings.displayBefore && ! settings.displayAfter)
+      type = 4
+  }else if(data.type === "SIGNUP"){
+    type = 5;
+  }else if(data.type === "EXAM"){
+    if(settings.displayScore && ! settings.displayAns)
+      type = 6;
+    else if(!settings.displayScore && settings.displayAns)
+      type = 7;
+    else if(settings.displayScore && settings.displayAns)
+      type = 8;
+    else if(! settings.displayScore && ! settings.displayAns)
+      type = 9;
+  }
 
   return {
-    modify_type: data.modifyType,
+    modify_type: data.modify_type,
     qid: data.qid,
     title: data.title,
     description: data.detail,
-    deadline: data.settings.deadline,
-    // duration: data.settings.duration,
+    deadline: "2214-01-08 11:59",/////// data.settings.deadline, ////////
+    duration: 300,
     random_order: data.settings.randomOrder,
     certification: data.settings.certification,
     show_number: data.settings.showIdx,
+    type: type,
     questions: data.questions.map((x) => {
-        const item = {
-          id: x.id,
-          type: x.kind,
-          content: x.title,
-          is_required: x.must === 1,
-          description: x.description,
-        }
-        if (isSingleChoice(x) || isMultiChoice(x)) item.option = x.choices
-        return item
+      return {
+        id: x.id,
+        type: x.kind,
+        content: x.title,
+        is_required: x.must === 1,
+        is_essential: x.isEssential,
+        description: x.detail,
+        option: x.choices,
+        quota: x.quota,
+        lower: x.lower,
+        upper: x.upper,
+        requirement: x.requirement ?? 0,
+        standard_answer: x.standardAnswer
+      };
       }
     )
   }
 }
 
 async function saveQuestionaire(info) {
-  return await axios.post("questionnaire/modify/", info);
+  console.log("push", info)
+  const ans = await axios.post("questionnaire/modify/", info);
+  console.log(ans)
+  return ans;
 }
 
 export {getQuestionnaire, saveQuestionaire, transformGet, transformSave};

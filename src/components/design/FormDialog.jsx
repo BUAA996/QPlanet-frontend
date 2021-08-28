@@ -28,7 +28,7 @@ export default function FormDialog(props) {
   }, [props.description]);
 
   useEffect(() => {
-    setSettings(props.settings === null? {}: props.settings)
+    setSettings(props.settings ?? {})
   }, [props.settings]);
 
 

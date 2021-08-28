@@ -4,7 +4,7 @@ import {Container, Button, Card, Grid, Divider} from '@material-ui/core'
 import MovableProblemEdit from 'components/design/MovableProblemEdit'
 import {useState} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {getQuestionnaire, saveQuestionaire, transformGet} from 'api/design'
+import {getQuestionnaire, saveQuestionaire, transformGet, transformSave} from 'api/design'
 import {useEffect} from 'react'
 import useTitle from 'hooks/useTitle'
 import {isSingleChoice} from 'components/utils/Problem'
@@ -64,7 +64,7 @@ function Design(props) {
   const [detail, setDetail] = useState()
   const [questionnaire, setQuestionnaire] = useState(null)
   const [qid, setQid] = useState()
-  const [settings, setSettings] = useState()
+  const [settings, setSettings] = useState({})
   const [type, setType] = useState()
   const history = useHistory()
   const isLogin = useStateStore().isLogin
@@ -89,7 +89,7 @@ function Design(props) {
           setTitle(data.title)
           setDetail(data.detail)
           setQid(data.qid)
-          setSettings(data.settings)
+          setSettings(data.settings ?? {})
           setQuestionnaire(data.questions)
           setType(data.type)
         }
@@ -157,32 +157,22 @@ function Design(props) {
     addQuestion(index, item)
   }
 
-  const content = <Title title={title} description={detail}/>
+  // const content = <Title title={title + type} description={detail}/>
 
   function blankFunction() {
   }
 
   function save() {
-    saveQuestionaire({
-      modify_type: 'delete_all_results',
-      qid: qid,
+    saveQuestionaire(transformSave({
+      modify_type : 1,
       title: title,
-      description: detail,
-      validity: '2021-8-23 18:20',
-      limit_time: 998244353,
-      questions: questionnaire.map((x) => {
-        const item = {
-          id: x.id,
-          type: x.kind,
-          content: x.title,
-          is_required: x.must === 1,
-          description: x.description,
-        }
-        if (isSingleChoice(x) || isMultiChoice(x)) item.option = x.choices
-        return item
-      }),
-    })
-    history.push('/overview')
+      qid: qid,
+      detail: detail,
+      type: type,
+      settings: settings,
+      questions: questionnaire
+    }))
+    // history.push('/overview')
   }
 
   return (
@@ -196,7 +186,7 @@ function Design(props) {
             alignItems='center'
             spacing={3}
           >
-            <Title title={title} description={detail}/>
+            <Title title={title + type} description={detail}/>
 
             <FormDialog
               title={title}
@@ -213,12 +203,14 @@ function Design(props) {
               variant={'middle'}
               className={classes.divider}
             />
+            {settings.showIdx}
             <Grid item className={classes.problems}>
               {/*if questionnaire is null, display Skeleton*/}
               {questionnaire ? questionnaire.map((x, index) => (
                   <Problem
                     problem={x}
                     key={x.id}
+                    showindex={settings.showIdx === "1"}
                     updateAns={() => blankFunction()}
                   >
                     <MovableProblemEdit
