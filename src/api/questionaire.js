@@ -70,6 +70,10 @@ function getTotal() {
   return axios.get('questionnaire/get_total/')
 }
 
+function checkType(data) {
+  return axios.post('questionnaire/check_type/', data);
+}
+
 export {
   createQuestionnaire,
   deleteQuestionnaire,
@@ -85,4 +89,5 @@ export {
   downloadQuestionnaire,
   fill,
   getTotal,
+  checkType,
 }
