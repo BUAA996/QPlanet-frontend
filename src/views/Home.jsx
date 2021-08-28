@@ -38,12 +38,12 @@ const useStyles = makeStyles((theme) => ({
   },
   pageLeft: {
     backgroundColor: theme.palette.background.default,
-    width: '99vw',
+    width: '98vw',
     height: '58vh',
   },
   pageRight: {
     backgroundColor: theme.palette.background.paper,
-    width: '99vw',
+    width: '98vw',
     height: '58vh',
   },
   cardTitle: {
@@ -257,7 +257,7 @@ function Home() {
 
   return (
     <>
-      <Grid xs={12} container className={classes.home} justifyContent='center'>
+      <Grid container className={classes.home} justifyContent='center'>
         <Grid
           item
           lg={6}
