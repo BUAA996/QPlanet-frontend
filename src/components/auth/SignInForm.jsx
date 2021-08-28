@@ -28,12 +28,15 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius * 8,
     height: '50px',
     marginTop: theme.spacing(1),
+    color: 'white',
+    fontSize: '1.2em',
   },
   link: {
     width: '100%',
     marginTop: theme.spacing(2),
     textAlign: 'center',
     marginBottom: theme.spacing(2),
+    margin: 'auto',
   },
   captcha: {
     height: 56,
@@ -84,6 +87,10 @@ function SignInForm() {
   const onSubmit = (data) => {
     if (data.captcha.toLowerCase() !== webCaptcha.toLowerCase()) {
       enqueueSnackbar('验证码错误', { variant: 'warning' })
+      getCaptcha().then((res) => {
+        setWebCaptcha(res.data.key)
+        setWebCaptchaUrl('https://api.matrix53.top' + res.data.new_cptch_image)
+      })
       return
     }
     login(data).then((res) => {

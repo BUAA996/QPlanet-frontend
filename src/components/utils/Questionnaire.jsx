@@ -56,12 +56,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Questionaire_STATUS = ['未发布', '已发布', '已关闭', '已删除']
+const Questionaire_STATUS = ['未发布', '已发布', '已删除']
 const STATUS = {
   'Saved': 0,
   'Released': 1,
-  'Suspened': 2,
-  'Deleted': 3,
+  'Deleted': 2,
 }
 
 function Info(props) {
@@ -100,34 +99,30 @@ function Questionare(props) {
   const { enqueueSnackbar } = useSnackbar()
 
   function handleDelete(data) {
-    deleteQuestionnaire(data)
-    props.onChange();
+    deleteQuestionnaire(data).then(() => props.onChange());
   }
 
   function handleRecover() {
-    recover({ id: props.id })
-    props.onChange();
+    recover({ id: props.id }).then(() => props.onChange());
   }
 
   function handleRelease() {
-    release({ id: props.id })
-    props.onChange();
+    release({ id: props.id }).then(() => props.onChange());
   }
 
   function handleClose() {
-    close({ id: props.id })
-    props.onChange();
+    close({ id: props.id }).then(() => props.onChange());
   }
 
   function handleReset() {
-    reset({ id: props.id })
-    props.onChange();
+    reset({ id: props.id }).then(() => props.onChange());
   }
 
   function handleCopy() {
-    copy({ qid: props.id, title: props.title + '-副本' })
-    props.onChange();
+    copy({ qid: props.id, title: props.title + '-副本' }).then(() => props.onChange());
   }
+
+  console.log(props);
 
   return (true ? (
     <>

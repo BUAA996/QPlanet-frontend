@@ -1,7 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles'
 import banner from 'assets/banner.png'
 import useTitle from 'hooks/useTitle'
-import { Typography, Grid, Box, Collapse, Fade } from '@material-ui/core'
+import {
+  Typography,
+  Grid,
+  Box,
+  Collapse,
+  Fade,
+  Button,
+} from '@material-ui/core'
 import { ExpandMore } from '@material-ui/icons'
 import form from 'assets/home_img/form.png'
 import survey from 'assets/home_img/survey.png'
@@ -11,6 +18,10 @@ import { Waypoint } from 'react-waypoint'
 import { useState } from 'react'
 import { getTotal } from 'api/questionaire'
 import { useEffect } from 'react'
+import Apply from 'components/intro/Apply'
+import Exam from 'components/intro/Exam'
+import Survey from 'components/intro/Survey'
+import Vote from 'components/intro/Vote'
 
 const useStyles = makeStyles((theme) => ({
   home: {
@@ -39,7 +50,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '40%',
   },
   cardSubTitle: {
-    marginTop: '10%',
+    marginTop: '6%',
+  },
+  cardBtn: {
+    marginTop: '4%',
+    color: 'white',
+    fontSize: '1.1em',
   },
   '@keyframes upAndDown': {
     '0%': { color: theme.palette.grey[300] },
@@ -52,7 +68,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function IntroCard({ imgUrl, title, subTitle, position, callback }) {
+function IntroCard({
+  imgUrl,
+  title,
+  subTitle,
+  btnTitle,
+  position,
+  callback,
+  btnCallback,
+}) {
   const classes = useStyles()
   const [needLoad, setNeedLoad] = useState(false)
 
@@ -88,6 +112,18 @@ function IntroCard({ imgUrl, title, subTitle, position, callback }) {
                 >
                   {subTitle}
                 </Typography>
+                <Button
+                  variant='contained'
+                  style={{
+                    backgroundColor: 'orange',
+                  }}
+                  className={classes.cardBtn}
+                  onClick={() => {
+                    btnCallback()
+                  }}
+                >
+                  {btnTitle}
+                </Button>
               </Collapse>
             </Box>
           )}
@@ -116,6 +152,16 @@ function IntroCard({ imgUrl, title, subTitle, position, callback }) {
                 >
                   {subTitle}
                 </Typography>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  className={classes.cardBtn}
+                  onClick={() => {
+                    btnCallback()
+                  }}
+                >
+                  {btnTitle}
+                </Button>
               </Collapse>
             </Box>
           )}
@@ -142,26 +188,24 @@ function DataShow({ ...other }) {
   const [release, setRelease] = useState(0)
 
   useEffect(() => {
-    // getTotal().then((res) => {
-    //res.data.total
-    const max = 300
-    const gap = 30
-    const cost = 2000
-    const offset = 500
-    setRelease(max)
-    let id = setInterval(() => {
-      setTotal((total) => {
-        if (total < max) {
-          return total + Math.ceil((max * gap) / cost)
-        } else {
-          return max
-        }
-      })
-    }, gap)
-    setTimeout(() => {
-      clearInterval(id)
-    }, cost + offset)
-    // })
+    getTotal().then((res) => {
+      const gap = 30
+      const cost = 2000
+      const offset = 500
+      setRelease(res.data.total)
+      let id = setInterval(() => {
+        setTotal((total) => {
+          if (total < res.data.submit_total) {
+            return total + Math.ceil((res.data.submit_total * gap) / cost)
+          } else {
+            return res.data.submit_total
+          }
+        })
+      }, gap)
+      setTimeout(() => {
+        clearInterval(id)
+      }, cost + offset)
+    })
   }, [])
 
   return (
@@ -200,6 +244,10 @@ function DataShow({ ...other }) {
 function Home() {
   const classes = useStyles()
   const [showIcon, setShowIcon] = useState(true)
+  const [showApply, setShowApply] = useState(false)
+  const [showVote, setShowVote] = useState(false)
+  const [showExam, setShowExam] = useState(false)
+  const [showSurvey, setShowSurvey] = useState(false)
 
   useTitle('首页 - 问卷星球')
 
@@ -242,25 +290,45 @@ function Home() {
         callback={() => {
           setShowIcon(false)
         }}
+        btnTitle='调查问卷介绍'
+        btnCallback={() => {
+          setShowSurvey(true)
+        }}
       />
       <IntroCard
         position='right'
         imgUrl={test}
         title='十分钟搭建在线考试系统'
         subTitle='深度结合考试场景，在教学考试、业务考试等领域，问卷星球在线考试系统对您大有助益。'
+        btnTitle='考试问卷介绍'
+        btnCallback={() => {
+          setShowExam(true)
+        }}
       />
       <IntroCard
         position='left'
         imgUrl={form}
         title='报名表单，尽在掌握'
         subTitle='报名表单功能总是能让您的工作事半功倍。'
+        btnTitle='报名问卷介绍'
+        btnCallback={() => {
+          setShowApply(true)
+        }}
       />
       <IntroCard
         position='right'
         imgUrl={vote}
         title='简单易上手的在线投票平台'
         subTitle='准备好素材，分分钟就可以拥有一个强大的在线投票平台。'
+        btnTitle='投票问卷介绍'
+        btnCallback={() => {
+          setShowVote(true)
+        }}
       />
+      <Survey open={showSurvey} setOpen={setShowSurvey} />
+      <Vote open={showVote} setOpen={setShowVote} />
+      <Exam open={showExam} setOpen={setShowExam} />
+      <Apply open={showApply} setOpen={setShowApply} />
     </>
   )
 }

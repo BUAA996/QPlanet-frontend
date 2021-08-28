@@ -56,77 +56,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-// const TEMPLEATE = {
-//   "title": "请修改标题",
-//   "description": "感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！",
-//   "validity": 998244353,
-//   "limit_time": 998244353,
-//   "type": 0,
-//   "questions": [],
-// };
-
-const TEMPLEATE = {
-  title: '123',
-  description: '感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！',
-  deadline: '2214-01-08 11:59',
-  duration: '120',
-  type: 1,
-  random_order: true,
-  certification: 1,
-  select_less_score: true,
-  show_number: true,
-  questions: [
-    {
-      type: 0,
-      content: 'What would you like to drink?',
-      is_required: true,
-      option: ['Cola', 'Sprite', 'Lemonade'],
-      description: '',
-    },
-    {
-      type: 1,
-      content: 'What would you like to drink?',
-      is_required: true,
-      option: ['Cola', 'Sprite', 'Lemonade'],
-      description: 'hi',
-    },
-    {
-      type: 2,
-      content: 'How are you today?',
-      is_required: false,
-      description: 'bye',
-    },
-    {
-      type: 3,
-      content: 'How are you today?',
-      is_required: false,
-      description: 'bye',
-    },
-    {
-      type: 4,
-      content: 'How are you today?',
-      is_required: false,
-      description: 'bye',
-    },
-    {
-      type: 5,
-      content: 'How are you today?',
-      is_required: false,
-      description: 'bye',
-    },
-  ],
-}
-
 function SideBar() {
   const classes = useStyles()
   const history = useHistory()
 
   function handleCreate() {
-    createQuestionnaire(TEMPLEATE).then((res) => {
-      if (res.data.result == 1) {
-        history.push('/picktype/', { hash: res.data.hash })
-      }
-    })
+    history.push('/picktype')
   }
 
   return (
@@ -239,7 +174,7 @@ function Overview() {
               uploadTime: res.data.questionnaires[i].upload_time,
               createNum: res.data.questionnaires[i].create_time_int,
               uploadNum: res.data.questionnaires[i].upload_time_int,
-              key: res.data.questionnaires[i].id,
+              key: '' + new Date().getTime() + res.data.questionnaires[i].id,
             })
           }
         }
@@ -249,8 +184,8 @@ function Overview() {
   }, [change])
 
   function handleChange() {
-    let tmp = change ^ 1;
-    setChange(tmp);
+    let tmp = change ^ 1
+    setChange(tmp)
   }
 
   return (
@@ -268,7 +203,10 @@ function Overview() {
           <HeadBar search={handleSearch} />
         </Grid>
         <Grid item xs={12}>
-          <QuestionnaireList Questionares={data} onChange={() => handleChange()}/>
+          <QuestionnaireList
+            Questionares={data}
+            onChange={() => handleChange()}
+          />
         </Grid>
       </Grid>
     </Container>

@@ -78,12 +78,14 @@ function SingleChoice(props) {
   const [value, setValue] = useState('');
 
   useEffect(() => {
-    // console.log(props)
+    console.log(props.showquota)
     let tmp = [];
     for (let i = 0; i < props.problem.choices.length; ++i) {
       tmp.push({
-        key: "" + i,
+        key: "" + new Date().getTime() + i,
         content: props.problem.choices[i],
+        maxquota: props.problem.quota ? props.problem.quota[i] : 5,
+        quota: props.quota ? props.quota[i] : 0,
       })
     }
     setChoice(tmp);
@@ -100,7 +102,9 @@ function SingleChoice(props) {
   return (
     <RadioGroup className={classes.content} value={value} onChange={handleChange}>
       {choice.map((choice) =>
-        <FormControlLabel value={choice.key} control={<Radio key={choice.key}/>} label={choice.content}
+        <FormControlLabel value={choice.key} 
+                          control={<Radio key={choice.key}/>} 
+                          label={choice.content + (props.showquota ? ( props.quota[0] === -1 ? (' 余量: ' + choice.maxquota) : (' (' + choice.quota + '/' + choice.maxquota + ')')) : '')}
                           key={choice.key}/>
       )}
     </RadioGroup>
@@ -116,12 +120,16 @@ function MultiChoice(props) {
     let tmp = [];
     for (let i = 0; i < props.problem.choices.length; ++i) {
       tmp.push({
-        key: '' + i,
+        key: '' + new Date().getTime() +  i,
         content: props.problem.choices[i],
+        maxquota: props.problem.quota ? props.problem.quota[i] : 5,
+        quota: props.quota ? props.quota[i] : 0,
       })
     }
     setChoice(tmp);
   }, [props])
+
+  console.log(props.quota)
 
   var option = {};
   props.problem.choices.map((choice) => option[choice.key] = false);
@@ -146,7 +154,7 @@ function MultiChoice(props) {
       {choice.map((choice) =>
         <FormControlLabel
           control={<Checkbox checked={choice[choice.key]} onChange={handleChange} name={choice.key}/>}
-          label={choice.content}
+          label={choice.content + (props.showquota ? ( props.quota[0] === -1 ? (' 余量: ' + choice.maxquota) : (' (' + choice.quota + '/' + choice.maxquota + ')')) : '')}
           key={choice.key}
         />
       )}
@@ -309,11 +317,11 @@ function Location(props) {
 
 function Problem(props) {
   const classes = useStyles();
-  console.log(props.show)
+  // console.log(props.showindex)
   return (
     <Card className={classes.root}>
       <CardContent>
-        <ShowClasses title={(props.show === true ? ("第 " + (props.problem.key + 1) + " 题 ") : '') + props.problem.title}
+        <ShowClasses title={(props.showindex === true ? ("第 " + (props.problem.key + 1) + " 题 ") : '') + props.problem.title}
                      must={props.problem.must}/>
         <Divider/>
         <Typography className={classes.description}> {props.problem.description}</Typography>
@@ -331,7 +339,7 @@ function Problem(props) {
 
 function ProblemSkeleton(props) {
   const classes = useStyles();
-  console.log(props.show)
+  console.log(props.showindex)
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -376,7 +384,12 @@ function isChoice(problem) {
   return isSingleChoice(problem) || isMultiChoice(problem)
 }
 
-export default Problem;
+Problem.defaultProps = {
+  showindex: false,
+  showquota: false,
+  quota: [-1],
+}
 
+export default Problem;
 
 export {isSingleChoice, isMultiChoice, isFillBlank, isShortAnswer, isScoring, ProblemSkeleton}

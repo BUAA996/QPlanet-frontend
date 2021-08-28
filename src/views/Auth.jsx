@@ -27,7 +27,14 @@ function Auth({ form }) {
     <>
       <img src={banner} className={classes.banner} alt='banner' />
       <Container className={classes.root}>
-        <Box marginTop='7vh'>{form}</Box>
+        <Box
+          marginTop='7vh'
+          display='flex'
+          flexDirection='column'
+          alignItems='center'
+        >
+          {form}
+        </Box>
       </Container>
     </>
   )
