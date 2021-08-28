@@ -103,6 +103,7 @@ function NotFound() {
     <Problem problem={{...problem, key: index}} 
       showindex={true} 
       showquota={true} 
+      showscore={true}
       // quota={[1, 2, 3, 4]} 
       updateAns={(ans) => blankFunction()} />
   ));

@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
   info: {
     fontSize: 12,
     // paddingRight: theme.spacing(1)
+    backgroundColor: theme.palette.secondary.dark,
   },
   sub: {
     marginLeft: 20,
@@ -72,7 +73,6 @@ const STATUS = {
 
 function Info(props) {
   const classes = useStyles()
-
   return (
     <Grid item {...props}>
       <Typography
@@ -96,6 +96,7 @@ function TimeInfo(props) {
       justifyContent='center'
       alignItems='center'
       component='span'
+      {...props}
     >
       <Info>创建时间: {props.createTime}</Info>
       {props.status === 1 ? <Info>发布时间: {props.uploadTime}</Info> : null}
