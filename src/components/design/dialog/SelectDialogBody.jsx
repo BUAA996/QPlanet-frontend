@@ -9,7 +9,7 @@ import {
   Dialog,
   DialogContent,
   Checkbox,
-  FormControlLabel
+  FormControlLabel, FormControl, FormLabel, RadioGroup, Radio
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {useEffect, useState} from "react";
@@ -36,7 +36,7 @@ function SelectRow(props) {
           required
           label={"选项" + props.index}
           onChange={(e) => {
-            props.editChoice(e.target.value, props.choiceContent.selected)
+            props.editChoice(e.target.value, props.choiceContent.selected, props.choiceContent.limit)
           }}
           value={props.choiceContent.content}
           error={props.choiceContent.content.trim() === ""}
@@ -46,13 +46,30 @@ function SelectRow(props) {
         />
       </Grid>
 
+      {props.type === "EXAM" ?
+        <Grid item>
+          <FormControlLabel
+            control={<Checkbox checked={props.choiceContent.selected} onChange={(event) => {
+              props.editChoice(props.choiceContent.content, event.target.checked, props.choiceContent.limit)
+            }}/>}
+            label="答案"
+          />
+        </Grid> : null}
 
-      <FormControlLabel
-        control={<Checkbox checked={props.choiceContent.selected} onChange={(event) => {
-          props.editChoice(props.choiceContent.content, event.target.checked)
-        }}/>}
-      label="答案"
-      />
+
+      {props.type === "SIGNUP" && props.hasLimit ?
+        <Grid item>
+          <TextField
+            label="限额"
+            value={props.choiceContent.limit}
+            onChange={(event) => {
+              props.editChoice(props.choiceContent.content, props.choiceContent.selected, event.target.value)
+            }}
+            multiline
+            fullWidth
+          />
+        </Grid> : null}
+
 
       <Grid item>
         <IconButton
@@ -71,10 +88,11 @@ function SelectRow(props) {
 function SelectDialogBody(props) {
   const classes = useStyle();
 
-  const editChoice = (index, content, select) => {
+  const editChoice = (index, content, select, limit) => {
     const newChoices = props.choices.slice()
     newChoices[index].content = content;
-    newChoices[index].selected = select
+    newChoices[index].selected = select;
+    newChoices[index].limit = limit;
     props.setChoices(newChoices);
   }
 
@@ -95,15 +113,33 @@ function SelectDialogBody(props) {
 
   return (
     <DialogContent>
+      {props.type === "SIGNUP" ?
+        <FormControl component="fieldset" className={classes.content}>
+          <FormLabel component="legend"> 该题是否设置限额：</FormLabel>
+          <RadioGroup
+            aria-label="must?"
+            onChange={(event) => {
+              console.log("aaa", props.hasLimit, event.target.value, event.target.value !== "1")
+              props.setHasLimit(event.target.value === "1")
+            }}
+            value={props.hasLimit ? "1" : "0"}
+            row
+          >
+            <FormControlLabel value={"1"} control={<Radio/>} label="是"/>
+            <FormControlLabel value={"0"} control={<Radio/>} label="否"/>
+          </RadioGroup>
+        </FormControl> : null}
+
 
       {props.choices.map((item, idx) =>
         (<SelectRow
           key={item.key}
           choiceContent={item}
           index={idx}
+          hasLimit={props.hasLimit}
           type={props.type}
-          editChoice={(content, select) => {
-            editChoice(idx, content, select)
+          editChoice={(content, select, limit) => {
+            editChoice(idx, content, select, limit)
           }}
           delChoice={() => delChoice(idx)}
         />)

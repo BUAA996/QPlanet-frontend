@@ -154,9 +154,9 @@ function Design(props) {
       description: '',
       choices: ['选项1', '选项2', '选项3'],
       isEssential: true,
-      // quota: x.quota, //TODO
+      quota: [0, 0, 0], //TODO
       lower: 0,
-      // upper: x.upper, //TODO
+      upper: 500, //TODO
       requirement: 0,
       standardAnswer: {
         score: 0,

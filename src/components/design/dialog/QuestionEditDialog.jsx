@@ -24,15 +24,6 @@ const useStyle = makeStyles((theme) => ({
   }
 }))
 
-// const example = {
-//   id: 1,
-//   kind: 0,
-//   must: 1,
-//   title: '第一题 balabalabalabala',
-//   choices: [
-//     '选项1',
-//   ]
-// }
 function QuestionEditDialog(props) {
   const classes = useStyle();
   const {enqueueSnackbar} = useSnackbar()
@@ -43,17 +34,24 @@ function QuestionEditDialog(props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [score, setScore] = useState(0);
-  const [closeId, setCloseId] = useState(0);
+  const [closeId, setCloseId] = useState(0); // add to update
   const [fillAns, setFillAns] = useState("")
-  // let index = 1; // add when close
+  const [hasLimit, setHasLimit] = useState(false);
+
   useEffect(() => {
     setTitle(props.questionInfo.title)
-    setChoices(props.questionInfo.choices.map((x, index) => ({content: x, selected: false, key: index})))
+    setChoices(props.questionInfo.choices.map((x, index) => ({
+      content: x,
+      selected: false,
+      key: index,
+      limit: 0,
+    })))
     setMust("" + props.questionInfo.must);
     setKind("" + props.questionInfo.kind);
     setDescription("" + props.questionInfo.description);
     setScore(props.questionInfo.standardAnswer.score ?? 0)
     setFillAns(props.questionInfo.standardAnswer.content.join(';'))
+    setHasLimit(! props.questionInfo.isElement)
 
     if (props.type === "EXAM" && (kind == "0" || kind == "1")) { // edit choice for right answer
 
@@ -113,6 +111,7 @@ function QuestionEditDialog(props) {
       return;
     }
 
+    console.log("hasLimit", hasLimit);
     const newQ = {
       id: props.questionInfo.id,
       description: description,
@@ -120,6 +119,8 @@ function QuestionEditDialog(props) {
       must: must === "1" ? 1 : 0,
       title: title.trim(),
       choices: choices.map((x) => x.content.trim()),
+      isElement: !hasLimit,
+      quota: choices.map((x) => x.limit),
       standardAnswer: {
         score: score,
         content: kind == '0' || kind == '1' ? choices.map((x) => x.selected).reduce((pre, cur, index) => {
@@ -207,12 +208,15 @@ function QuestionEditDialog(props) {
       }
 
 
+      {/* 选择题*/}
       {kind == '0' || kind == '1' ?
         <SelectDialogBody
           choices={choices}
           setChoices={setChoices}
           type={props.type}
           settings={props.settings}
+          hasLimit={hasLimit}
+          setHasLimit={setHasLimit}
         /> : null
       }
 
