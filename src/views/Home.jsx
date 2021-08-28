@@ -187,24 +187,32 @@ function DataShow({ ...other }) {
   const [release, setRelease] = useState(0)
 
   useEffect(() => {
+    let isMounted = true
     getTotal().then((res) => {
       const gap = 30
       const cost = 2000
       const offset = 500
       setRelease(res.data.total)
       let id = setInterval(() => {
-        setTotal((total) => {
-          if (total < res.data.submit_total) {
-            return total + Math.ceil((res.data.submit_total * gap) / cost)
-          } else {
-            return res.data.submit_total
-          }
-        })
+        if (isMounted) {
+          setTotal((total) => {
+            if (total < res.data.submit_total) {
+              return total + Math.ceil((res.data.submit_total * gap) / cost)
+            } else {
+              return res.data.submit_total
+            }
+          })
+        }
       }, gap)
       setTimeout(() => {
-        clearInterval(id)
+        if (isMounted) {
+          clearInterval(id)
+        }
       }, cost + offset)
     })
+    return () => {
+      isMounted = false
+    }
   }, [])
 
   return (
