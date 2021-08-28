@@ -10,4 +10,12 @@ function downloadStatistics(data) {
   return axios.post('result/download/', data)
 }
 
-export { getStatistics, downloadStatistics }
+function sendCaptcha(data) {
+  return axios.post('result/send_captcha/', data)
+}
+
+function checkCaptcha(data) {
+  return axios.post('result/check_captcha/', data)
+}
+
+export { getStatistics, downloadStatistics, sendCaptcha, checkCaptcha }

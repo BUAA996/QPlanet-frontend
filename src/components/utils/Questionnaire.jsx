@@ -72,7 +72,6 @@ const STATUS = {
 
 function Info(props) {
   const classes = useStyles()
-
   return (
     <Grid item {...props}>
       <Typography
@@ -96,6 +95,7 @@ function TimeInfo(props) {
       justifyContent='center'
       alignItems='center'
       component='span'
+      {...props}
     >
       <Info>创建时间: {props.createTime}</Info>
       {props.status === 1 ? <Info>发布时间: {props.uploadTime}</Info> : null}
@@ -135,7 +135,7 @@ function Questionare(props) {
     )
   }
 
-  console.log(props)
+  // console.log(props)
 
   return true ? (
     <>

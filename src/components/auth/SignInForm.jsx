@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function SignInForm() {
+function SignInForm(props) {
   const dispatch = useDispatchStore()
   const { enqueueSnackbar } = useSnackbar()
   const {
@@ -61,7 +61,7 @@ function SignInForm() {
   const [webCaptcha, setWebCaptcha] = useState('')
   const [webCaptchaUrl, setWebCaptchaUrl] = useState('')
 
-  useRouteDefender({ assert: isLogin, msg: '您已登录，无需重复登录' })
+  useRouteDefender({ assert: isLogin && props.home, msg: '您已登录，无需重复登录' })
 
   useEffect(() => {
     if (!isLogin) {
@@ -97,7 +97,8 @@ function SignInForm() {
       if (res.data.result) {
         enqueueSnackbar('登录成功', { variant: 'success' })
         dispatch({ type: 'login' })
-        history.replace('/overview')
+        if (props.home) 
+          history.replace('/overview')
       } else {
         enqueueSnackbar(res.data.message, { variant: 'warning' })
       }
@@ -106,9 +107,12 @@ function SignInForm() {
 
   return (
     <>
-      <Typography component='h1' variant='h4' className={classes.title}>
-        登录
-      </Typography>
+      {
+        props.home && 
+        <Typography component='h1' variant='h4' className={classes.title}>
+          登录
+        </Typography>
+      }
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <TextField
           label='用户名'
@@ -178,16 +182,24 @@ function SignInForm() {
           登录
         </Button>
       </form>
-      <Link
-        variant='body1'
-        component={RouterLink}
-        to='/signup'
-        className={classes.link}
-      >
-        Don't have an account? Sign Up
-      </Link>
+      {
+        props.home && 
+        <Link
+          variant='body1'
+          component={RouterLink}
+          to='/signup'
+          className={classes.link}
+        >
+          Don't have an account? Sign Up
+        </Link>
+      }
     </>
   )
 }
+
+SignInForm.defaultProps = {
+  home: true,
+}
+
 
 export default SignInForm
