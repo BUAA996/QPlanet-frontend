@@ -156,7 +156,7 @@ function transformSave(data) {
         option: x.choices,
         quota: x.quota,
         lower: x.lower ?? 0,
-        upper: x.upper,
+        upper: x.upper ?? 500,
         requirement: x.requirement ?? 0,
         standard_answer: x.standardAnswer
       };
