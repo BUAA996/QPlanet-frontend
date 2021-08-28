@@ -174,7 +174,7 @@ function Feedback() {
           </FormControl>
         </Grid>
         <Grid item xs={6} container>
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{ marginTop: '2.6%' }}>
             {data.map((item) => {
               if (item.type === '填空题' || item.type === '简答题')
                 return <Completion data={item} key={item.key} />
