@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core'
 import Completion from 'components/feedback/Completion'
 import Choice from 'components/feedback/Choice'
+import Cross from 'components/feedback/Cross'
 import { useEffect } from 'react'
 import { getStatistics, downloadStatistics } from 'api/result'
 import useTitle from 'hooks/useTitle'
@@ -90,6 +91,7 @@ function Feedback() {
   const history = useHistory()
   const [shareOpen, setShareOpen] = useState(false)
   const isLogin = useStateStore().isLogin
+  const [crossData, setCrossData] = useState({})
 
   useRouteDefender({
     assert: !isLogin,
@@ -102,39 +104,57 @@ function Feedback() {
 
   useEffect(() => {
     if (isLogin) {
-      getStatistics({ hash: hashcode }).then((res) => {
-        if (res.data.result === 1) {
-          let map = ['单选题', '多选题', '填空题', '简答题', '评分题', '定位题']
-          let data = res.data.questions.map((item, index) => ({
-            type: map[item.type],
-            total: res.data.total,
-            title: item.content,
-            choice:
-              item.type === 5
-                ? []
-                : item.option.map((innerItem, innerIndex) => ({
-                    option: innerItem,
-                    count: item.count[innerIndex],
-                    key: innerIndex,
-                  })),
-            key: index,
-            ansList:
-              item.type === 2 || item.type === 3 || item.type === 5
-                ? item.all.map((innerItem, innerIndex) => {
-                    return {
-                      id: innerIndex,
-                      time: item.submit_time[innerIndex],
-                      ans: innerItem,
-                    }
-                  })
-                : [],
-          }))
-          setData(data)
-        }
-      })
-      // .catch(() => {
-      //   enqueueSnackbar('该问卷不存在', { variant: 'warning' })
-      // })
+      getStatistics({ hash: hashcode })
+        .then((res) => {
+          console.log(res.data)
+          if (res.data.result === 1) {
+            let map = [
+              '单选题',
+              '多选题',
+              '填空题',
+              '简答题',
+              '评分题',
+              '定位题',
+            ]
+            let data = res.data.questions.map((item, index) => ({
+              type: map[item.type],
+              total: res.data.total,
+              title: item.content,
+              choice:
+                item.type === 5
+                  ? []
+                  : item.option.map((innerItem, innerIndex) => ({
+                      option: innerItem,
+                      count: item.count[innerIndex],
+                      key: innerIndex,
+                    })),
+              key: index,
+              ansList:
+                item.type === 2 || item.type === 3 || item.type === 5
+                  ? item.all.map((innerItem, innerIndex) => {
+                      return {
+                        id: innerIndex,
+                        time: item.submit_time[innerIndex],
+                        ans: innerItem,
+                      }
+                    })
+                  : [],
+            }))
+            setData(data)
+            let crossData = {
+              qid: res.data.qid,
+              choice: res.data.questions
+                .filter((item) => item.id !== undefined)
+                .map((item) => {
+                  return { id: item.id, content: item.content }
+                }),
+            }
+            setCrossData(crossData)
+          }
+        })
+        .catch(() => {
+          enqueueSnackbar('该问卷不存在', { variant: 'warning' })
+        })
     }
   }, [hashcode, enqueueSnackbar])
 
@@ -187,15 +207,19 @@ function Feedback() {
         </Grid>
         <Grid item xs={6} container>
           <Grid item xs={12} style={{ marginTop: '2.6%' }}>
-            {data.map((item) => {
-              if (
-                item.type === '填空题' ||
-                item.type === '简答题' ||
-                item.type === '定位题'
-              )
-                return <Completion data={item} key={item.key} />
-              else return <Choice data={item} key={item.key} />
-            })}
+            {model === 1 ? (
+              data.map((item) => {
+                if (
+                  item.type === '填空题' ||
+                  item.type === '简答题' ||
+                  item.type === '定位题'
+                )
+                  return <Completion data={item} key={item.key} />
+                else return <Choice data={item} key={item.key} />
+              })
+            ) : (
+              <Cross {...crossData} />
+            )}
           </Grid>
         </Grid>
         <Grid item xs={3}>
