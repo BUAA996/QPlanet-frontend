@@ -54,6 +54,7 @@ function NotFound() {
       must: 1,
       title: '第二题 balabalabalabala',
       choices: ['选项1', '选项2', '选项3', '选项4'],
+      quota: [1, 3, 5, 7],
     },
     {
       id: 3,
@@ -102,7 +103,7 @@ function NotFound() {
     <Problem problem={{...problem, key: index}} 
       showindex={true} 
       showquota={true} 
-      quota={[1, 2, 3, 4]} 
+      // quota={[1, 2, 3, 4]} 
       updateAns={(ans) => blankFunction()} />
   ));
 

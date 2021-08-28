@@ -104,7 +104,7 @@ function SingleChoice(props) {
       {choice.map((choice) =>
         <FormControlLabel value={choice.key} 
                           control={<Radio key={choice.key}/>} 
-                          label={choice.content + (props.showquota ? ' (' + choice.quota + '/' + choice.maxquota + ')': '')}
+                          label={choice.content + (props.showquota ? ( props.quota[0] === -1 ? (' 余量: ' + choice.maxquota) : (' (' + choice.quota + '/' + choice.maxquota + ')')) : '')}
                           key={choice.key}/>
       )}
     </RadioGroup>
@@ -129,6 +129,8 @@ function MultiChoice(props) {
     setChoice(tmp);
   }, [props])
 
+  console.log(props.quota)
+
   var option = {};
   props.problem.choices.map((choice) => option[choice.key] = false);
 
@@ -152,7 +154,7 @@ function MultiChoice(props) {
       {choice.map((choice) =>
         <FormControlLabel
           control={<Checkbox checked={choice[choice.key]} onChange={handleChange} name={choice.key}/>}
-          label={choice.content + (props.showquota ? ' (' + choice.quota + '/' + choice.maxquota + ')': '')}
+          label={choice.content + (props.showquota ? ( props.quota[0] === -1 ? (' 余量: ' + choice.maxquota) : (' (' + choice.quota + '/' + choice.maxquota + ')')) : '')}
           key={choice.key}
         />
       )}
@@ -382,7 +384,12 @@ function isChoice(problem) {
   return isSingleChoice(problem) || isMultiChoice(problem)
 }
 
-export default Problem;
+Problem.defaultProps = {
+  showindex: false,
+  showquota: false,
+  quota: [-1],
+}
 
+export default Problem;
 
 export {isSingleChoice, isMultiChoice, isFillBlank, isShortAnswer, isScoring, ProblemSkeleton}
