@@ -42,15 +42,27 @@ function QuestionEditDialog(props) {
   const [kind, setKind] = useState("0");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
+  const [score, setScore] = useState(0);
+  const [closeId, setCloseId] = useState(0);
+  // let index = 1; // add when close
   useEffect(() => {
     setTitle(props.questionInfo.title)
-    setChoices(props.questionInfo.choices)
+    setChoices(props.questionInfo.choices.map((x, index) => ({content: x, selected: false, key: index})))
     setMust("" + props.questionInfo.must);
     setKind("" + props.questionInfo.kind);
     setDescription("" + props.questionInfo.description);
-    console.log(props.questionInfo)
-  }, [props.questionInfo.must, props.questionInfo.kind, props.questionInfo.description])
+    setScore(props.questionInfo.standardAnswer.score ?? 0)
+
+    if (props.type === "EXAM" && (kind == "0" || kind == "1")) { // edit choice for right answer
+
+      props.questionInfo.standardAnswer.content.forEach((x) => {
+        const newChoice = choices.slice();
+        newChoice[x].selected = true;
+        setChoices(newChoice)
+      })
+
+    }
+  }, [props.questionInfo, closeId])
 
   const handleChangeMust = (event) => {
     setMust(event.target.value);
@@ -64,7 +76,9 @@ function QuestionEditDialog(props) {
   const handleChangeDescription = (event) => {
     setDescription(event.target.value)
   }
-
+  const handleChangeScore = (event) => {
+    setScore(event.target.value)
+  }
 
   useEffect(() => {
     if (!Boolean(choices)) {
@@ -75,30 +89,25 @@ function QuestionEditDialog(props) {
 
   const handleClose = () => {
     props.close()
-    setChoices(props.questionInfo.choices)
-    setMust("" + props.questionInfo.must)
-    setTitle(props.questionInfo.title)
-    setDescription(props.questionInfo.description)
-    // console.log(props.questionInfo)
+    setCloseId(closeId + 1)
   }
 
 
   const saveFunc = () => {
-    // console.log(choices)
     if (title.trim() === "") {
       enqueueSnackbar("题目不能为空", {variant: 'error'});
       return;
     }
-    if ((kind == '0' || kind == '1') && choices.length < 2) {
-      enqueueSnackbar("选择题选项不能少于两个", {variant: 'error'});
+    if ((kind == '0' || kind == '1') && choices.length < 1) {
+      enqueueSnackbar("选择题选项没有选项", {variant: 'error'});
       return;
     }
 
     if ((kind == '0' || kind == '1') &&
       !choices
-        .map((x) => x.trim() !== "")
+        .map((x) => x.content.trim() !== "")
         .reduce((x, y) => x && y)) {
-      enqueueSnackbar("选项不能为空", {variant: 'error'});
+      enqueueSnackbar("选择题选项不能为空", {variant: 'error'});
       return;
     }
 
@@ -108,8 +117,17 @@ function QuestionEditDialog(props) {
       kind: parseInt(kind),
       must: must === "1" ? 1 : 0,
       title: title.trim(),
-      choices: choices
+      choices: choices.map((x) => x.content.trim()),
+      standardAnswer: {
+        score: score,
+        content: choices.map((x) => x.selected).reduce((pre, cur, index) => {
+          const newArray = pre.slice();
+          if (cur) newArray.push(index)
+          return newArray
+        }, [])
+      }
     }
+
     props.edit(newQ)
     props.close()
   }
@@ -167,12 +185,29 @@ function QuestionEditDialog(props) {
         <MenuItem value={4}>评分</MenuItem>
         <MenuItem value={5}>定位</MenuItem>
       </Select>
+
+
+      {props.type === "EXAM" ?
+        <TextField
+          label="题目分值"
+          value={score}
+          type="number"
+          onChange={handleChangeScore}
+          multiline
+          fullWidth
+        /> : null
+      }
+
+
       {kind == '0' || kind == '1' ?
         <SelectDialogBody
           choices={choices}
           setChoices={setChoices}
+          type={props.type}
+          settings={props.settings}
         /> : null
       }
+
 
     </DialogContent>
 
@@ -182,6 +217,8 @@ function QuestionEditDialog(props) {
   return (
     <EditDialog
       dialogTitle={dialogTitle}
+      type={props.type}
+      settings={props.settings}
       dialogContent={dialogContent}
       open={props.open}
       close={handleClose}

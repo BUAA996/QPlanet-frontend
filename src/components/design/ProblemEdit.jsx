@@ -91,6 +91,8 @@ function ProblemEdit(props) {
         open={dialogOpen}
         close={handleDialogClose}
         questionInfo={props.questionInfo}
+        type = {props.type}
+        settings={props.settings}
         del={props.del}
         edit={props.edit}
         index={props.index}

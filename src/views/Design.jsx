@@ -65,7 +65,7 @@ function Design(props) {
   const [questionnaire, setQuestionnaire] = useState(null)
   const [qid, setQid] = useState()
   const [settings, setSettings] = useState({})
-  const [type, setType] = useState()
+  const [type, setType] = useState("")
   const history = useHistory()
   const isLogin = useStateStore().isLogin
 
@@ -91,7 +91,7 @@ function Design(props) {
           setQid(data.qid)
           setSettings(data.settings ?? {})
           setQuestionnaire(data.questions)
-          setType(data.type)
+          setType(data.type ?? "")
         }
 
         // console.log(questionare)
@@ -215,6 +215,8 @@ function Design(props) {
                   >
                     <MovableProblemEdit
                       key={x.id}
+                      type={type}
+                      settings={settings}
                       questionInfo={x}
                       index={index}
                       move={(newIndex) => move(index, newIndex)}

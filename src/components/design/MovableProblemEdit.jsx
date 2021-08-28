@@ -48,10 +48,6 @@ function MovableProblemEdit(props) {
             题目上移
           </Button>
         </Grid>
-        {/*         
-        <Grid item>
-          <DehazeRounded />
-        </Grid> */}
 
         <Grid item>
           <Button
@@ -68,6 +64,8 @@ function MovableProblemEdit(props) {
       <Grid item xs={7}>
         <ProblemEdit
           content={props.question}
+          type={props.type}
+          settings={props.settings}
           del={props.del}
           add={props.add}
           edit={props.edit}
