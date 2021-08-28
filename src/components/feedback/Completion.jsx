@@ -14,7 +14,8 @@ import { Close } from '@material-ui/icons'
 import { useState } from 'react'
 import Graph from './Graph'
 import { useSnackbar } from 'notistack'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridToolbar } from '@mui/x-data-grid'
+import { localeText } from 'utils.js'
 
 const useStyles = makeStyles((theme) => ({
   btn: {
@@ -49,16 +50,38 @@ function DialogTemplate({ open, setOpen, title, children }) {
   )
 }
 
-function DetailDialog({ open, setOpen, title }) {
+function DetailDialog({ open, setOpen, data }) {
+  const columns = [
+    {
+      field: 'time',
+      headerName: '提交答卷时间',
+      width: 170,
+      type: 'dateTime',
+    },
+    {
+      field: 'ans',
+      headerName: '答案文本',
+      type: 'string',
+      flex: 1,
+    },
+  ]
+
   return (
-    <DialogTemplate open={open} setOpen={setOpen} title={title}>
-      <Box
-        width='100%'
-        height='300px'
-        marginTop={1}
-        marginBottom={2}
-        style={{ backgroundColor: 'blue' }}
-      ></Box>
+    <DialogTemplate open={open} setOpen={setOpen} title={data.title}>
+      <Box width='100%' height='430px' marginBottom={2}>
+        <DataGrid
+          rows={data.ansList}
+          columns={columns}
+          pageSize={5}
+          disableSelectionOnClick
+          localeText={localeText}
+          components={{
+            Toolbar: GridToolbar,
+          }}
+          rowsPerPageOptions={[5]}
+          componentsProps={{ panel: { disablePortal: true } }}
+        />
+      </Box>
     </DialogTemplate>
   )
 }
@@ -120,7 +143,7 @@ function FrequencyDialog({ open, setOpen, data }) {
       <Box display='flex' width='100%' justifyContent='center'>
         <ButtonSet index={index} setIndex={setIndex} />
       </Box>
-      <Box width='100%' height='300px' marginTop={1} marginBottom={2}>
+      <Box width='100%' height='400px' marginTop={1} marginBottom={2}>
         <Graph type={index} data={data} />
       </Box>
     </DialogTemplate>
@@ -166,11 +189,7 @@ function Completion({ data }) {
           词频分析
         </Button>
       </Template>
-      <DetailDialog
-        open={detailOpen}
-        setOpen={setDetailOpen}
-        title={data.title}
-      />
+      <DetailDialog open={detailOpen} setOpen={setDetailOpen} data={data} />
       <FrequencyDialog
         open={frequencyOpen}
         setOpen={setFrequencyOpen}

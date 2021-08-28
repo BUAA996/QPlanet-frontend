@@ -105,7 +105,14 @@ function Feedback() {
       getStatistics({ hash: hashcode })
         .then((res) => {
           if (res.data.result === 1) {
-            let map = ['单选题', '多选题', '填空题', '简答题']
+            let map = [
+              '单选题',
+              '多选题',
+              '填空题',
+              '简答题',
+              '评分题',
+              '定位题',
+            ]
             let data = res.data.questions.map((item, index) => ({
               type: map[item.type],
               total: res.data.total,
@@ -116,6 +123,16 @@ function Feedback() {
                 key: innerIndex,
               })),
               key: index,
+              ansList:
+                item.type === 2 || item.type === 3
+                  ? item.all.map((innerItem, innerIndex) => {
+                      return {
+                        id: innerIndex,
+                        time: item.submit_time[innerIndex],
+                        ans: innerItem,
+                      }
+                    })
+                  : [],
             }))
             setData(data)
           }
