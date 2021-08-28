@@ -10,7 +10,10 @@ import other from 'assets/questionnaire_type/other.png'
 import clock from 'assets/questionnaire_type/clock.png'
 import { useState } from 'react'
 import clsx from 'clsx'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import { createQuestionnaire } from 'api/questionaire'
+import { SURVEY, EXAM, FORM, VOTE, CLOCK } from 'template.js'
+import { useSnackbar } from 'notistack'
 
 const useStyles = makeStyles((theme) => ({
   cardBoxLeft: {
@@ -114,8 +117,8 @@ function TypeCard({ url, title, word, ...other }) {
 function PickType() {
   const classes = useStyles()
   const isLogin = useStateStore().isLogin
-  const location = useLocation()
   const history = useHistory()
+  const { enqueueSnackbar } = useSnackbar()
 
   useRouteDefender({
     assert: !isLogin,
@@ -140,12 +143,25 @@ function PickType() {
             word='丰富题型，强大逻辑'
             url={survey}
             onClick={() => {
-              if (location.state !== undefined) {
-                history.push('/design/' + location.state.hash)
-              }
+              createQuestionnaire(SURVEY).then((res) => {
+                if (res.data.result === 1) {
+                  history.push('/design/' + res.data.hash)
+                }
+              })
             }}
           />
-          <TypeCard title='投票' word='实时计算，微信投票' url={vote} />
+          <TypeCard
+            title='投票'
+            word='实时计算，微信投票'
+            url={vote}
+            onClick={() => {
+              createQuestionnaire(VOTE).then((res) => {
+                if (res.data.result === 1) {
+                  history.push('/design/' + res.data.hash)
+                }
+              })
+            }}
+          />
         </Grid>
         <Grid
           item
@@ -155,8 +171,30 @@ function PickType() {
           direction='column'
           className={classes.cardBoxCenter}
         >
-          <TypeCard title='报名' word='活动报名，快捷登记' url={form} />
-          <TypeCard title='考试' word='限时作答，自动阅卷' url={exam} />
+          <TypeCard
+            title='报名'
+            word='活动报名，快捷登记'
+            url={form}
+            onClick={() => {
+              createQuestionnaire(FORM).then((res) => {
+                if (res.data.result === 1) {
+                  history.push('/design/' + res.data.hash)
+                }
+              })
+            }}
+          />
+          <TypeCard
+            title='考试'
+            word='限时作答，自动阅卷'
+            url={exam}
+            onClick={() => {
+              createQuestionnaire(EXAM).then((res) => {
+                if (res.data.result === 1) {
+                  history.push('/design/' + res.data.hash)
+                }
+              })
+            }}
+          />
         </Grid>
         <Grid
           item
@@ -166,8 +204,26 @@ function PickType() {
           direction='column'
           className={classes.cardBoxRight}
         >
-          <TypeCard title='疫情打卡' word='每日上报，一键导出' url={clock} />
-          <TypeCard title='其他' word='更多问卷，敬请期待' url={other} />
+          <TypeCard
+            title='疫情打卡'
+            word='每日上报，一键导出'
+            url={clock}
+            onClick={() => {
+              createQuestionnaire(CLOCK).then((res) => {
+                if (res.data.result === 1) {
+                  history.push('/design/' + res.data.hash)
+                }
+              })
+            }}
+          />
+          <TypeCard
+            title='其他'
+            word='更多问卷，敬请期待'
+            url={other}
+            onClick={() => {
+              enqueueSnackbar('更多问卷正在制作中...', { variant: 'success' })
+            }}
+          />
         </Grid>
       </Grid>
     </Grid>
