@@ -24,6 +24,7 @@ import { Skeleton } from '@material-ui/lab'
 import SignInForm from 'components/auth/SignInForm'
 import { useStateStore } from 'store'
 import { sendCaptcha, checkCaptcha } from 'api/result'
+import { setDate } from 'date-fns/esm'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,10 +82,12 @@ function FillPage() {
   const { id } = useParams()
   const history = useHistory()
   const { enqueueSnackbar } = useSnackbar()
+  const [data, setData] = useState({})
 
   useEffect(() => {
     fill({ hash: id }).then((res) => {
-      console.log(res)
+      console.log(res);
+      setData(res.data);
       if (res.data.result === 1) {
         const ori = res.data.questions
         const settings = res.data
@@ -98,6 +101,7 @@ function FillPage() {
             must: ori[i].is_required,
             title: ori[i].content,
             choices: ori[i].option,
+            quota: ori[i].quota
           })
         }
         setQuestionare([].concat(tmp))
@@ -216,6 +220,8 @@ function FillPage() {
               {Questionare.map((problem) => (
                 <Problem
                   problem={problem}
+                  showindex={data.show_number}
+                  showquota={problem.quota[0] === -1 ? false : true}
                   key={problem.key}
                   updateAns={(ans) => handleAns(problem.key, ans)}
                 />
@@ -255,6 +261,7 @@ function Fill() {
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const [state, setState] = useState(0);
+  const [endTime, setEndTime] = useState('');
   const [certification, setCertification] = useState('');
   const [vis, setVis] = useState(false);
   const { id } = useParams();
@@ -265,13 +272,22 @@ function Fill() {
 
   useEffect(() => {
     checkType({hash: '' + id}).then((res) => {
-      console.log(res.data); const data = res.data;
+      // console.log(res.data); 
+      const data = res.data;
       if (data.result === 1) {
         setCertification(CERTIFICATION_LEVEL[data.requirement])
         setState(data.requirement === 0 ? 2 : 1);
         if (data.requirement === 1 && isLogin)
           setState(2)
-        console.log(CERTIFICATION_LEVEL[data.requirement])
+        // console.log(CERTIFICATION_LEVEL[data.requirement])
+
+        fill({hash: id}).then((res) => {
+          if (res.data.deadline != null) {
+            setVis(true);
+            setEndTime(res.data.deadline);
+          }
+        })
+
       } else {
         enqueueSnackbar(data.message, {variant: "warning"});
         history.push('/')
@@ -518,7 +534,7 @@ function Fill() {
         >
           <Grid item xs={1}></Grid>
           <Grid item xs={1}>
-            {vis && <CountDown time='2021-8-31 0:17' duration={300} />}
+            {vis && <CountDown time={endTime} />}
           </Grid>
           <Grid item xs={8}>
             <FillPage />

@@ -82,7 +82,7 @@ function SingleChoice(props) {
   const [value, setValue] = useState('')
 
   useEffect(() => {
-    console.log(props.showquota)
+    // console.log(props.showquota)
     let tmp = []
     for (let i = 0; i < props.problem.choices.length; ++i) {
       tmp.push({
@@ -145,7 +145,7 @@ function MultiChoice(props) {
     setChoice(tmp)
   }, [props])
 
-  console.log(props.quota)
+  // console.log(props.quota)
 
   var option = {}
   props.problem.choices.map((choice) => (option[choice.key] = false))
@@ -216,7 +216,7 @@ function FillBlanks(props) {
   return (
     <TextField
       className={classes.blankContent}
-      id='outlined-multiline-static'
+      // id='outlined-multiline-static'
       error={checkError()}
       helperText={getErrorMSG()}
       multiline={props.problem.kind === 3}
@@ -253,7 +253,7 @@ function ShortAnswer(props) {
   return (
     <TextField
       className={classes.blankContent}
-      id='outlined-multiline-static'
+      // id='outlined-multiline-static'
       error={checkError()}
       helperText={getErrorMSG()}
       multiline
@@ -311,7 +311,7 @@ function Location(props) {
   const handleGetLocation = () => {
     getIP()
       .then((res) => {
-        console.log(res.data.ip)
+        // console.log(res.data.ip)
         getLocation(res.data.ip, handleSetAddress)
       })
       .catch(() => {
@@ -370,7 +370,7 @@ function Problem(props) {
 
 function ProblemSkeleton(props) {
   const classes = useStyles()
-  console.log(props.showindex)
+  // console.log(props.showindex)
   return (
     <Card className={classes.root}>
       <CardContent>

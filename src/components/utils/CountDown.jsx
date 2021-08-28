@@ -40,7 +40,8 @@ export default function CountDown(props) {
 
   useEffect(() => {
     let time = new Date(props.time)
-    time.setMinutes(time.getMinutes() + props.duration)
+    // time.setMinutes(time.getMinutes() + props.duration)
+    console.log(time);
     updateTime(time)
   }, [props])
 

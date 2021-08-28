@@ -138,7 +138,7 @@ function SignInForm(props) {
           type='password'
         />
         <Grid container>
-          <Grid xs={6}>
+          <Grid item xs={6}>
             <TextField
               label='验证码'
               margin='normal'
@@ -151,7 +151,7 @@ function SignInForm(props) {
               variant='outlined'
             />
           </Grid>
-          <Grid xs={6} container justifyContent='flex-end'>
+          <Grid item xs={6} container justifyContent='flex-end'>
             {webCaptchaUrl === '' ? (
               <Skeleton variant='rect' className={classes.captcha} />
             ) : (
