@@ -136,7 +136,7 @@ function MultiChoice(props) {
     let tmp = []
     for (let i = 0; i < props.problem.choices.length; ++i) {
       tmp.push({
-        key: '' + new Date().getTime() + i,
+        key: '' + i,
         content: props.problem.choices[i],
         maxquota: props.problem.quota ? props.problem.quota[i] : 5,
         quota: props.quota ? props.quota[i] : 0,

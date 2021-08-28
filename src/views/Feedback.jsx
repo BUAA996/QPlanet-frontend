@@ -102,44 +102,39 @@ function Feedback() {
 
   useEffect(() => {
     if (isLogin) {
-      getStatistics({ hash: hashcode })
-        .then((res) => {
-          if (res.data.result === 1) {
-            let map = [
-              '单选题',
-              '多选题',
-              '填空题',
-              '简答题',
-              '评分题',
-              '定位题',
-            ]
-            let data = res.data.questions.map((item, index) => ({
-              type: map[item.type],
-              total: res.data.total,
-              title: item.content,
-              choice: item.option.map((innerItem, innerIndex) => ({
-                option: innerItem,
-                count: item.count[innerIndex],
-                key: innerIndex,
-              })),
-              key: index,
-              ansList:
-                item.type === 2 || item.type === 3
-                  ? item.all.map((innerItem, innerIndex) => {
-                      return {
-                        id: innerIndex,
-                        time: item.submit_time[innerIndex],
-                        ans: innerItem,
-                      }
-                    })
-                  : [],
-            }))
-            setData(data)
-          }
-        })
-        .catch(() => {
-          enqueueSnackbar('该问卷不存在', { variant: 'warning' })
-        })
+      getStatistics({ hash: hashcode }).then((res) => {
+        if (res.data.result === 1) {
+          let map = ['单选题', '多选题', '填空题', '简答题', '评分题', '定位题']
+          let data = res.data.questions.map((item, index) => ({
+            type: map[item.type],
+            total: res.data.total,
+            title: item.content,
+            choice:
+              item.type === 5
+                ? []
+                : item.option.map((innerItem, innerIndex) => ({
+                    option: innerItem,
+                    count: item.count[innerIndex],
+                    key: innerIndex,
+                  })),
+            key: index,
+            ansList:
+              item.type === 2 || item.type === 3 || item.type === 5
+                ? item.all.map((innerItem, innerIndex) => {
+                    return {
+                      id: innerIndex,
+                      time: item.submit_time[innerIndex],
+                      ans: innerItem,
+                    }
+                  })
+                : [],
+          }))
+          setData(data)
+        }
+      })
+      // .catch(() => {
+      //   enqueueSnackbar('该问卷不存在', { variant: 'warning' })
+      // })
     }
   }, [hashcode, enqueueSnackbar])
 
@@ -193,7 +188,11 @@ function Feedback() {
         <Grid item xs={6} container>
           <Grid item xs={12} style={{ marginTop: '2.6%' }}>
             {data.map((item) => {
-              if (item.type === '填空题' || item.type === '简答题')
+              if (
+                item.type === '填空题' ||
+                item.type === '简答题' ||
+                item.type === '定位题'
+              )
                 return <Completion data={item} key={item.key} />
               else return <Choice data={item} key={item.key} />
             })}
