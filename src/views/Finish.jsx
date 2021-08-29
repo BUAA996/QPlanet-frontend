@@ -47,6 +47,7 @@ function Finish() {
 
   const { type, fillData, result } = location.state
 
+  console.log(result)
   useTitle('填写已完成')
 
   return (
