@@ -1,23 +1,22 @@
-import { makeStyles } from '@material-ui/core/styles'
-import Problem, { ProblemSkeleton } from 'components/utils/Problem'
-import { Container, Button, Card, Grid, Divider } from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
+import Problem, {ProblemSkeleton} from 'components/utils/Problem'
+import {Container, Button, Card, Grid, Divider} from '@material-ui/core'
 import MovableProblemEdit from 'components/design/MovableProblemEdit'
-import { useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import {useState} from 'react'
+import {useHistory, useParams} from 'react-router-dom'
 import {
   getQuestionnaire,
   saveQuestionaire,
   transformGet,
   transformSave,
 } from 'api/design'
-import { useEffect } from 'react'
+import {useEffect} from 'react'
 import useTitle from 'hooks/useTitle'
-import { isSingleChoice } from 'components/utils/Problem'
-import { isMultiChoice } from 'components/utils/Problem'
-import { Title } from 'views/Preview'
+import {Title} from 'views/Preview'
 import FormDialog from 'components/design/FormDialog'
-import { useStateStore } from 'store'
+import {useStateStore} from 'store'
 import useRouteDefender from 'hooks/useRouteDefender'
+import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 function Design(props) {
   const classes = useStyles()
 
-  const { id } = useParams()
+  const {id} = useParams()
   const [title, setTitle] = useState()
   const [detail, setDetail] = useState()
   const [questionnaire, setQuestionnaire] = useState(null)
@@ -64,6 +63,7 @@ function Design(props) {
   const [type, setType] = useState('')
   const history = useHistory()
   const isLogin = useStateStore().isLogin
+  const {enqueueSnackbar} = useSnackbar()
 
   useRouteDefender({
     assert: !isLogin,
@@ -85,7 +85,7 @@ function Design(props) {
           setDetail(data.detail)
           setQid(data.qid)
           setSettings(data.settings ?? {})
-          setQuestionnaire(data.questions)
+          setQuestionnaire(data.questions ?? [])
           setType(data.type ?? '')
         }
 
@@ -162,10 +162,11 @@ function Design(props) {
 
   // const content = <Title title={title + type} description={detail}/>
 
-  function blankFunction() {}
+  function blankFunction() {
+  }
 
-  function save() {
-    saveQuestionaire(
+  async function save() {
+    const res = await saveQuestionaire(
       transformSave({
         modify_type: 1,
         title: title,
@@ -176,7 +177,13 @@ function Design(props) {
         questions: questionnaire,
       })
     )
-    // history.push('/overview')
+    if (res.data.result === 1)
+      history.push('/overview')
+    else {
+      enqueueSnackbar("题目不能为空", {variant: 'error'});
+      return;
+    }
+
   }
 
   return (
@@ -190,7 +197,7 @@ function Design(props) {
             alignItems='center'
             spacing={3}
           >
-            <Title title={title + type} description={detail} />
+            <Title title={title} description={detail}/>
 
             <FormDialog
               title={title}
@@ -213,9 +220,10 @@ function Design(props) {
               {questionnaire ? (
                 questionnaire.map((x, index) => (
                   <Problem
-                    problem={x}
+                    problem={{...x, key: index}}
                     key={x.id}
-                    showindex={settings.showIdx === '1'}
+                    showindex={settings.showIdx}
+
                     updateAns={() => blankFunction()}
                   >
                     <MovableProblemEdit
@@ -235,7 +243,7 @@ function Design(props) {
                   </Problem>
                 ))
               ) : (
-                <ProblemSkeleton />
+                <ProblemSkeleton/>
               )}
             </Grid>
 

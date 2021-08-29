@@ -47,25 +47,32 @@ function SelectRow(props) {
       </Grid>
 
       {props.type === "EXAM" ?
-        <Grid item>
+        <Grid item
+              className={classes.rowButton}>
           <FormControlLabel
             control={<Checkbox checked={props.choiceContent.selected} onChange={(event) => {
               props.editChoice(props.choiceContent.content, event.target.checked, props.choiceContent.limit)
             }}/>}
-            label="答案"
+            label="设为答案"
           />
         </Grid> : null}
 
 
       {props.type === "SIGNUP" && props.hasLimit ?
-        <Grid item>
+        <Grid
+          item
+          className={classes.rowButton}
+        >
           <TextField
             label="限额"
             value={props.choiceContent.limit}
             onChange={(event) => {
               props.editChoice(props.choiceContent.content, props.choiceContent.selected, event.target.value)
             }}
-            multiline
+            error={isNaN(props.choiceContent.limit) || props.choiceContent.limit < 0}
+            helperText={(isNaN(props.choiceContent.limit) || props.choiceContent.limit < 0) && "请输入正整数"}
+            type="number"
+            shrink
             fullWidth
           />
         </Grid> : null}
@@ -77,8 +84,6 @@ function SelectRow(props) {
           <Delete/>
         </IconButton>
       </Grid>
-
-
     </Grid>
   )
 
@@ -119,7 +124,7 @@ function SelectDialogBody(props) {
           <RadioGroup
             aria-label="must?"
             onChange={(event) => {
-              console.log("aaa", props.hasLimit, event.target.value, event.target.value !== "1")
+              // console.log("aaa", props.hasLimit, event.target.value, event.target.value !== "1")
               props.setHasLimit(event.target.value === "1")
             }}
             value={props.hasLimit ? "1" : "0"}

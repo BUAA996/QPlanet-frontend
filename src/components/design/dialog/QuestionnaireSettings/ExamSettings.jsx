@@ -25,12 +25,6 @@ function ExamSettings(props) {
   const classes = useStyle();
   const a = 1;
 
-  const handleSelectLessScore = (event) => {
-    const ori = JSON.parse(JSON.stringify(props.settings));
-    ori.selectLessScore = event.target.value;
-    console.log(ori);
-    props.setSettings(ori)
-  }
   const handleDisplayAns = (event) => {
     const ori = JSON.parse(JSON.stringify(props.settings));
     ori.displayAns = event.target.checked;
@@ -60,8 +54,14 @@ function ExamSettings(props) {
         className={classes.choiceRow}>
         <FormControl component="fieldset">
           <FormLabel component="legend">多选题少选是否得分</FormLabel>
-          <RadioGroup aria-label="多选题多选是否得分" name="multichoice-score" value={props.settings.selectLessScore}
-                      onChange={handleSelectLessScore} row={true}>
+          <RadioGroup aria-label="多选题多选是否得分"
+                      name="multichoice-score"
+                      value={props.settings.selectLessScore? "0" : '1'}
+                      onChange={(event) => {
+                        const ori = JSON.parse(JSON.stringify(props.settings));
+                        ori.selectLessScore = event.target.value === "0";
+                        props.setSettings(ori)
+                      }} row={true}>
             <FormControlLabel value="0" control={<Radio/>} label="得分"/>
             <FormControlLabel value="1" control={<Radio/>} label="不得分"/>
           </RadioGroup>
@@ -73,8 +73,13 @@ function ExamSettings(props) {
         className={classes.choiceRow}>
         <FormControl component="fieldset">
           <FormLabel component="legend">填写时候顺序</FormLabel>
-          <RadioGroup aria-label="多选题多选是否得分" name="multichoice-score" value={props.randonOrder} onChange={() => {
-          }} row={true}>
+          <RadioGroup aria-label="填写顺序"
+                      value={props.settings.randomOrder ? "1" : "0"}
+                      onChange={(event) => {
+                        const ori = JSON.parse(JSON.stringify(props.settings));
+                        ori.randomOrder = event.target.value === "1";
+                        props.setSettings(ori)
+                      }} row={true}>
             <FormControlLabel value="0" control={<Radio/>} label="顺序"/>
             <FormControlLabel value="1" control={<Radio/>} label="随机打乱"/>
           </RadioGroup>
