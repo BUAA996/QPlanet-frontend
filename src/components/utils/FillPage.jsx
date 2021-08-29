@@ -142,7 +142,7 @@ export default function FillPage(props) {
 
   function checkMust() {
     let res = true,
-      tmp = ansList.slice()
+    tmp = ansList.slice()
     Questionare.map((problem, index) => {
       if (problem.must) {
         switch (problem.kind) {
@@ -150,7 +150,11 @@ export default function FillPage(props) {
           case 1:
           case 2:
           case 3:
-            if (tmp[index].answer.length === 0 || tmp[index].answer[0] == '')
+          case 4:
+          case 5:
+          case 6:
+          case 7:
+            if (tmp[index].answer.length === 0 || tmp[index].answer[0] == '' || tmp[index].answer[0] == null)
               res = false
             break
           default:
@@ -171,7 +175,11 @@ export default function FillPage(props) {
           case 1:
           case 2:
           case 3:
-            if (tmp[index].answer.length === 0 || tmp[index].answer[0] == '')
+          case 4:
+          case 5:
+          case 6:
+          case 7:
+            if (tmp[index].answer.length === 0 || tmp[index].answer[0] == '' || tmp[index].answer[0] == null)
               if (res === '') res = res + (index + 1)
               else res = res + ', ' + (index + 1)
             break
