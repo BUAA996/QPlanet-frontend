@@ -7,6 +7,7 @@ import {
   Grid,
   InputLabel,
   MenuItem,
+  NativeSelect,
   Select,
   Typography,
 } from '@material-ui/core'
@@ -79,6 +80,9 @@ const useStyles = makeStyles((theme) => ({
   red: {
     fontWeight: 'bold',
     color: 'red'
+  },
+  select: {
+    textOverflow: 'ellipsis',
   }
 }))
 
