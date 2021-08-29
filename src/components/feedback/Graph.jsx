@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 import * as echarts from 'echarts/core'
-import { BarChart, PieChart } from 'echarts/charts'
+import { BarChart, PieChart, RadarChart } from 'echarts/charts'
 import {
   GridComponent,
   TooltipComponent,
@@ -12,6 +12,7 @@ import { useRef } from 'react'
 import 'echarts-wordcloud'
 
 echarts.use([
+  RadarChart,
   PieChart,
   GridComponent,
   BarChart,
@@ -41,6 +42,7 @@ function Graph({ type, data }) {
     else if (type === 3) option = barOption(data)
     else if (type === 4) option = histogramOption(data)
     else if (type === 5) option = cloudOption(data)
+    else if (type === 6) option = radarOption(data)
 
     chart.setOption(option, true)
   }, [type, data])
@@ -204,6 +206,39 @@ function cloudOption(data) {
           name: item.option,
           value: item.count,
         })),
+      },
+    ],
+  }
+}
+
+function radarOption(data) {
+  return {
+    tooltip: {
+      trigger: 'item',
+    },
+    toolbox: {
+      show: true,
+      right: '5%',
+      feature: {
+        saveAsImage: { title: '保存为图片', name: data.title + '-雷达图' },
+      },
+    },
+    radar: {
+      indicator: data.choice.map((item) => {
+        return {
+          name: item.option,
+          max: Math.max(...data.choice.map((item) => item.count)),
+        }
+      }),
+    },
+    series: [
+      {
+        type: 'radar',
+        data: [
+          {
+            value: data.choice.map((item) => item.count),
+          },
+        ],
       },
     ],
   }

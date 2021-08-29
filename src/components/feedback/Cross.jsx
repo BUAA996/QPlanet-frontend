@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+function CrossTable() {
+  return null
+}
+
 function Cross({ qid, choice }) {
   const classes = useStyles()
   const [first, setFirst] = useState('')
@@ -127,6 +131,7 @@ function Cross({ qid, choice }) {
                 }
                 let graphData = {
                   total: res.data.total,
+                  title: '交叉分析',
                   choice: data,
                 }
                 console.log(graphData)
@@ -175,14 +180,14 @@ function Cross({ qid, choice }) {
         <Fade in={showGraph} timeout={500}>
           <Button
             color='primary'
-            variant={index === 4 ? 'contained' : 'outlined'}
+            variant={index === 6 ? 'contained' : 'outlined'}
             onClick={() => {
               setIndex((index) => {
-                return index === 4 ? 0 : 4
+                return index === 6 ? 0 : 6
               })
             }}
           >
-            条形图
+            雷达图
           </Button>
         </Fade>
         <Fade in={showGraph} timeout={600}>
