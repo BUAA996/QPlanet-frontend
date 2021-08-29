@@ -54,7 +54,7 @@ function Finish() {
     <>
       <Box className={classes.root}>
         {showDetail && ['VOTING_AFTER', 'VOTING_BOTH'].includes(type) && (
-          <VoteResult />
+          <VoteResult votes={result.votes} />
         )}
         {showDetail &&
           ['TESTING_SCORE', 'TESTING_CORRECTION', 'TESTING_BOTH'].includes(
