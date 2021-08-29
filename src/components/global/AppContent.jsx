@@ -1,4 +1,4 @@
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import Auth from 'views/Auth'
 import Home from 'views/Home'
 import NotFound from 'views/NotFound'
