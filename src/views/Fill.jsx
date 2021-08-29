@@ -383,12 +383,20 @@ function Fill() {
                 setState={setState}
                 phone={phone}
                 need={data.requirement}
+                finishData={{
+                  type: FORM_LEVEL[ques.type],
+                  fillData: ques,
+                }}
               />
             ) : (
               <FillPage
                 setState={setState}
                 phone={phone}
                 need={data.requirement}
+                finishData={{
+                  type: FORM_LEVEL[ques.type],
+                  fillData: ques,
+                }}
               />
             )}
           </Grid>
