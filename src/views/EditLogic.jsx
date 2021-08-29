@@ -110,6 +110,7 @@ function LogicField(props) {
         onChange={handleChange}
       >
         {list.map((value) => <MenuItem value={value} key={value}>第 {value + 1} 题: {props.allProblem[value].title}</MenuItem>)}
+        <MenuItem value={-1}>不跳转</MenuItem>
       </Select>
     </FormControl>
   );
@@ -294,6 +295,7 @@ export default function EditLogic(props) {
                     key={problem.id}
                   >
                       { 
+                        index !== Questionare.length - 1 && 
                         <Fields 
                           problem={problem} 
                           handleChange={(choice, next) => hanldeLogicChange(index, choice, next)}
