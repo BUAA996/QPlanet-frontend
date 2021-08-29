@@ -61,7 +61,10 @@ function SignInForm(props) {
   const [webCaptcha, setWebCaptcha] = useState('')
   const [webCaptchaUrl, setWebCaptchaUrl] = useState('')
 
-  useRouteDefender({ assert: isLogin && props.home, msg: '您已登录，无需重复登录' })
+  useRouteDefender({
+    assert: isLogin && props.home,
+    msg: '您已登录，无需重复登录',
+  })
 
   useEffect(() => {
     if (!isLogin) {
@@ -97,8 +100,7 @@ function SignInForm(props) {
       if (res.data.result) {
         enqueueSnackbar('登录成功', { variant: 'success' })
         dispatch({ type: 'login' })
-        if (props.home) 
-          history.replace('/overview')
+        if (props.home) history.replace('/overview')
       } else {
         enqueueSnackbar(res.data.message, { variant: 'warning' })
       }
@@ -107,12 +109,11 @@ function SignInForm(props) {
 
   return (
     <>
-      {
-        props.home && 
+      {props.home && (
         <Typography component='h1' variant='h4' className={classes.title}>
           登录
         </Typography>
-      }
+      )}
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <TextField
           label='用户名'
@@ -182,17 +183,16 @@ function SignInForm(props) {
           登录
         </Button>
       </form>
-      {
-        props.home && 
+      {props.home && (
         <Link
           variant='body1'
           component={RouterLink}
           to='/signup'
           className={classes.link}
         >
-          Don't have an account? Sign Up
+          还没有账号？ 注册一个
         </Link>
-      }
+      )}
     </>
   )
 }
@@ -200,6 +200,5 @@ function SignInForm(props) {
 SignInForm.defaultProps = {
   home: true,
 }
-
 
 export default SignInForm
