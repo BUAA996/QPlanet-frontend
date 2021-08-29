@@ -16,7 +16,6 @@ import Graph from './Graph'
 import { useSnackbar } from 'notistack'
 import {
   DataGrid,
-  GridExportCsvOptions,
   GridToolbarContainer,
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
