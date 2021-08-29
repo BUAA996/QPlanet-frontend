@@ -204,8 +204,12 @@ export default function FillPage(props) {
       }
       submit(tmp).then((res) => {
         // console.log(res);
-        enqueueSnackbar('提交成功，感谢您的回答', { variant: 'success' })
-        history.replace('/finish', { ...props.finishData, result: res.data })
+        if (res.data.result === 1) {
+          enqueueSnackbar('提交成功，感谢您的回答', { variant: 'success' })
+          history.replace('/finish', { ...props.finishData, result: res.data })
+        } else {
+          enqueueSnackbar(res.data.message, { variant: 'warning' })
+        }
       })
     } else {
       enqueueSnackbar('有必做题尚未完成：' + getTodoID(), {
