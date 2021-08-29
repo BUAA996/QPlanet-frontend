@@ -6,21 +6,6 @@ async function getQuestionnaire(id) {
   });
 }
 
-// const data = res.data
-// setQ(data.data)
-// setDetail(data.description)
-
-// handleSetQuestionnaire(
-// data.questions.map((x) => ({
-//   id: x.id,
-//   kind: x.type,
-//   must: x.is_required ? 1 : 0,
-//   title: x.content,
-//   description: x.description,
-//   choices: x.option == null ? [] : x.option,
-// }))
-// )
-
 async function transformGet(data) {
   let type = "";
   let settings = {}
@@ -79,12 +64,11 @@ async function transformGet(data) {
 
   settings.showIdx = data.show_number;
   settings.selectLessScore = data.select_less_score;
-  // settings.duration = data.duration;
   settings.randomOrder = data.random_order;
-  settings.hasQuota = data.quota === -1 ? "0" : "1";
+  settings.hasQuota = data.quota !== -1;
   settings.quota = data.quota;
   settings.certification = data.certification;
-  settings.hasDdl = data.deadline != "";
+  settings.hasDdl = !!data.deadline ;
   settings.deadline = data.deadline;
 
   return {
@@ -147,7 +131,8 @@ function transformSave(data) {
     random_order: data.settings.randomOrder,
     certification: data.settings.certification,
     show_number: data.settings.showIdx,
-    type: type,
+    type: type ,
+    quota: data.settings.hasQuota? data.settings.quota : -1,
     questions: data.questions.map((x) => {
       return {
         id: x.id,
@@ -157,7 +142,6 @@ function transformSave(data) {
         is_essential: x.isEssential ?? false,
         description: x.detail ?? "",
         option: x.choices,
-        quota: x.quota,
         lower: x.lower ?? 0,
         upper: x.upper ?? 500,
         requirement: x.requirement ?? 0,

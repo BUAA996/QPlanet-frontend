@@ -22,7 +22,7 @@ export default function FormDialog(props) {
   }, [props.description]);
 
   useEffect(() => {
-    setSettings(props.settings ?? {})
+    setSettings(props.settings ?? {certification: 0})
   }, [props.settings]);
 
 

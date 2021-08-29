@@ -10,7 +10,7 @@ import {
 import {makeStyles} from "@material-ui/core/styles";
 import EditDialog from "./EditDialog";
 import DialogContent from "@material-ui/core/DialogContent";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ExamSettings from "./QuestionnaireSettings/ExamSettings";
 import VoteSettings from "./QuestionnaireSettings/VoteSettings";
 import SignUpSettings from "./QuestionnaireSettings/SignUpSettings";
@@ -19,6 +19,7 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import {ScheduleRounded} from "@material-ui/icons";
 
 const useStyle = makeStyles((theme) => ({
   grid: {
@@ -45,18 +46,16 @@ function TitleEditDialog(props) {
     }
   }
 
-  const handleIdx = (event) => {
-    const ori = JSON.parse(JSON.stringify(props.settings));
-    ori.displayAfter = event.target.value;
-    props.setSettings(ori)
-  }
-
 
   const dialogTitle = (
     <DialogTitle>
       全局设置
     </DialogTitle>
   );
+
+  useEffect(() => {
+    console.log("settings", props.settings)
+  })
 
   const dialogContent = (
       <DialogContent>
@@ -96,14 +95,20 @@ function TitleEditDialog(props) {
             <FormControlLabel value="0" control={<Radio/>} label="无"/>
             <FormControlLabel value="1" control={<Radio/>} label={
               (<MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <DateTimePicker value={props.settings.deadline} onChange={(event) => {
-                    const ori = JSON.parse(JSON.stringify(props.settings));
-                    const data = event.toISOString().substr(0,16 )  ;
-
-                    ori.deadline = data.substr(0, 10) + ' ' + data.substr(11, 5);
-                    console.log(ori.deadline)
-                    props.setSettings(ori)
-                  }}/>
+                  <DateTimePicker
+                    keyboardIcon={<ScheduleRounded/>}
+                    label="截止日期"
+                    margin="normal"
+                    format="yyyy/MM/dd hh:mm"
+                    disablePast
+                    value={props.settings.deadline}
+                    onChange={(event) => {
+                      const ori = JSON.parse(JSON.stringify(props.settings));
+                      const data = event.toISOString().substr(0, 16);
+                      ori.deadline = data.substr(0, 10) + ' ' + data.substr(11, 5);
+                      console.log(ori.deadline)
+                      props.setSettings(ori)
+                    }}/>
                 </MuiPickersUtilsProvider>
               )}
             />
@@ -112,9 +117,32 @@ function TitleEditDialog(props) {
 
 
         <FormControl component="fieldset">
+          <FormLabel component="legend">答题者需要认证</FormLabel>
+          <RadioGroup
+            aria-label="认证"
+            value={props.settings.certification ? props.settings.certification.toString() : "0"}
+            onChange={(event) => {
+              const ori = JSON.parse(JSON.stringify(props.settings));
+              ori.certification = parseInt(event.target.value);
+              props.setSettings(ori)
+            }}>
+            <FormControlLabel value="0" control={<Radio/>} label="无"/>
+            <FormControlLabel value="1" control={<Radio/>} label="登陆"/>
+            <FormControlLabel value="2" control={<Radio/>} label="手机号验证（发布者不可见）"/>
+            <FormControlLabel value="3" control={<Radio/>} label="手机号验证（发布者可见）"/>
+
+          </RadioGroup>
+        </FormControl>
+
+
+        <FormControl component="fieldset">
           <FormLabel component="legend">是否显示题号</FormLabel>
-          <RadioGroup aria-label="是否显示题号" value={props.settings.showIdx}
-                      onChange={handleIdx} row={true}>
+          <RadioGroup aria-label="是否显示题号" value={props.settings.showIdx ? "0" : "1"}
+                      onChange={(event) => {
+                        const ori = JSON.parse(JSON.stringify(props.settings));
+                        ori.showIdx = event.target.value === "0";
+                        props.setSettings(ori)
+                      }} row={true}>
             <FormControlLabel value="0" control={<Radio/>} label="显示题号"/>
             <FormControlLabel value="1" control={<Radio/>} label="不显示"/>
           </RadioGroup>
