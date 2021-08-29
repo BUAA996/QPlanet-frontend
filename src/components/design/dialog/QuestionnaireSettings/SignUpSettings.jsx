@@ -25,11 +25,6 @@ function SignUpSettings(props) {
   const classes = useStyle();
   const [limitTime, setLimitTime] = useState("1");
 
-  const handleHasQuota = (event) => {
-    const ori = JSON.parse(JSON.stringify(props.settings));
-    ori.hasQuota = event.target.value;
-    props.setSettings(ori)
-  }
   const handleQuota = (event) => {
     const ori = JSON.parse(JSON.stringify(props.settings));
     ori.quota = event.target.value;
@@ -47,7 +42,11 @@ function SignUpSettings(props) {
         className={classes.choiceRow}>
         <FormControl component="fieldset">
           <FormLabel component="legend">答卷接受份数上限</FormLabel>
-          <RadioGroup aria-label="限时" name="限时" value={props.settings.hasQuota} onChange={handleHasQuota} row="true">
+          <RadioGroup aria-label="限时" name="限时" value={props.settings.hasQuota? "1": "0"} onChange={(event) => {
+            const ori = JSON.parse(JSON.stringify(props.settings));
+            ori.hasQuota = event.target.value === "1";
+            props.setSettings(ori)
+          }} row="true">
             <FormControlLabel value="0" control={<Radio/>} label="不限制"/>
             <FormControlLabel value="1" control={<Radio/>} label={
               (<Input
