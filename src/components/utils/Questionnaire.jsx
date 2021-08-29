@@ -136,6 +136,11 @@ function Questionare(props) {
     )
   }
 
+  function handleEdit() {
+    enqueueSnackbar('修改问卷可能导致之前收集的问卷被清空，请谨慎修改', {variant: 'warning'})
+    history.push('/design/' + props.hash)
+  }
+
   // console.log(props)
 
   return true ? (
@@ -170,12 +175,13 @@ function Questionare(props) {
             {props.status !== STATUS.Deleted && (
               <Button
                 component={RouterLink}
-                to={'/design/' + props.hash}
+                // to={'/design/' + props.hash}
                 color='primary'
                 startIcon={<EditIcon />}
                 size='small'
                 variant='outlined'
                 className={classes.buttons}
+                onClick={() => handleEdit()}
               >
                 编辑
               </Button>
