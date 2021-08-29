@@ -35,10 +35,11 @@ import {Card, Typography} from "@material-ui/core";
 //   </div>);
 // });
 
-function QuestionTitle(props){
+function QuestionTitle(props) {
+
 
   return (
-    <Card >
+    <Card>
       <Typography>
         {props.question.title}
       </Typography>
