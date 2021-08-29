@@ -20,6 +20,7 @@ import { useState } from 'react'
 import { getIP, getLocation } from 'api/location'
 import Skeleton from '@material-ui/lab/Skeleton'
 import { surplus } from 'api/result'
+import { useSnackbar } from 'notistack'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -380,18 +381,41 @@ function Location(props) {
 function Problem(props) {
   const classes = useStyles()
   const [quota, setQuota] = useState([-1])
+  const { enqueueSnackbar } = useSnackbar()
+
+  // function handleQuery() {
+  //   surplus({ qid: props.problem.id }).then((res) => {
+  //     // console.log(res.data);
+  //     setQuota(res.data.surplus)
+  //     console.log(quota)
+  //   })
+  // }
+
+  const [lastTime, setTime] = useState(new Date().getSeconds() - 20)
 
   function handleQuery() {
-    surplus({ qid: props.problem.id }).then((res) => {
-      // console.log(res.data);
-      setQuota(res.data.surplus)
-      console.log(quota)
-    })
+    let now = new Date().getSeconds() - lastTime
+    console.log(now)
+
+    if (now < 20) {
+      enqueueSnackbar('刷新太频繁啦' + (20 - now) + 's 后再试', {
+        variant: 'warning',
+      })
+    } else {
+      surplus({ qid: props.problem.id }).then((res) => {
+        enqueueSnackbar('刷新成功', {variant: 'success'})
+        setQuota(res.data.surplus)
+        setTime(new Date().getSeconds())
+      })
+    }
   }
 
   useEffect(() => {
-    if(isChoice(props.problem) && props.showquota && props.fillmode) 
-      handleQuery();
+    if(isChoice(props.problem) && props.showquota && props.fillmode) {
+      surplus({ qid: props.problem.id }).then((res) => {
+        setQuota(res.data.surplus)
+      })
+    }
   }, [])
 
   // console.log(props)
