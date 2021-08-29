@@ -6,7 +6,7 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core'
-import { fill, submit } from 'api/questionaire'
+import { fill, view, submit } from 'api/questionaire'
 import { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Problem from 'components/utils/Problem'
@@ -16,13 +16,7 @@ import { useHistory } from 'react-router-dom'
 import SpeedDialMenu from 'components/utils/SpeedDialMenu'
 import { download } from 'utils'
 import { useSnackbar } from 'notistack'
-import CountDown from 'components/utils/CountDown'
-import { downloadQuestionnaire, checkType } from 'api/questionaire'
-import { Skeleton } from '@material-ui/lab'
-import SignInForm from 'components/auth/SignInForm'
-import { useStateStore } from 'store'
-import { sendCaptcha, checkCaptcha } from 'api/result'
-import { setDate } from 'date-fns/esm'
+import { downloadQuestionnaire } from 'api/questionaire'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,45 +80,87 @@ export default function FillPage(props) {
   const [data, setData] = useState({})
 
   useEffect(() => {
-    fill({ hash: id }).then((res) => {
-      // console.log(res);
-      setData(res.data)
-      if (res.data.result === 1) {
-        const ori = res.data.questions
-        const settings = res.data
-        let tmp = []
-        for (let i = 0; i < ori.length; ++i) {
-          tmp.push({
-            id: ori[i].id,
-            key: i,
-            description: ori[i].description,
-            kind: ori[i].type,
-            must: ori[i].is_required,
-            title: ori[i].content,
-            choices: ori[i].option,
-            quota: ori[i].quota,
-            count: ori[i].count,
-          })
-        }
-        setQuestionare([].concat(tmp))
-        setTitle(settings.title)
-        setDescription(settings.description)
-        setID(settings.qid)
-
-        tmp = new Array(ori.length)
-        for (let i = 0; i < ori.length; ++i) {
-          tmp[i] = {
-            problem_id: ori[i].id,
-            type: ori[i].type,
-            answer: [''],
+    if (props.demo === false) {
+      fill({ hash: id }).then((res) => {
+        // console.log(res);
+        setData(res.data)
+        if (res.data.result === 1) {
+          const ori = res.data.questions
+          const settings = res.data
+          let tmp = []
+          for (let i = 0; i < ori.length; ++i) {
+            tmp.push({
+              id: ori[i].id,
+              key: i,
+              description: ori[i].description,
+              kind: ori[i].type,
+              must: ori[i].is_required,
+              title: ori[i].content,
+              choices: ori[i].option,
+              quota: ori[i].quota,
+              count: ori[i].count,
+            })
           }
+          setQuestionare([].concat(tmp))
+          setTitle(settings.title)
+          setDescription(settings.description)
+          setID(settings.qid)
+  
+          tmp = new Array(ori.length)
+          for (let i = 0; i < ori.length; ++i) {
+            tmp[i] = {
+              problem_id: ori[i].id,
+              type: ori[i].type,
+              answer: [''],
+            }
+          }
+          setAns(tmp)
+        } else {
+          // enqueueSnackbar(res.data.message, {variant: "warning"});
+          history.push('/404/')
         }
-        setAns(tmp)
-      } else {
-        // enqueueSnackbar(res.data.message, {variant: "warning"});
-        history.push('/404/')
-      }
-    })
+      })
+    } else {
+      fill({ hash: id }).then((res) => {
+        // console.log(res);
+        setData(res.data)
+        if (res.data.result === 1) {
+          const ori = res.data.questions
+          const settings = res.data
+          let tmp = []
+          for (let i = 0; i < ori.length; ++i) {
+            tmp.push({
+              id: ori[i].id,
+              key: i,
+              description: ori[i].description,
+              kind: ori[i].type,
+              must: ori[i].is_required,
+              title: ori[i].content,
+              choices: ori[i].option,
+              quota: ori[i].quota,
+              count: ori[i].count,
+            })
+          }
+          setQuestionare([].concat(tmp))
+          setTitle(settings.title)
+          setDescription(settings.description)
+          setID(settings.qid)
+
+          tmp = new Array(ori.length)
+          for (let i = 0; i < ori.length; ++i) {
+            tmp[i] = {
+              problem_id: ori[i].id,
+              type: ori[i].type,
+              answer: [''],
+            }
+          }
+          setAns(tmp)
+        } else {
+          // enqueueSnackbar(res.data.message, {variant: "warning"});
+          history.push('/404/')
+        }
+      })
+    }
   }, [])
 
   function handleAns(id, singleAns) {
