@@ -1,6 +1,16 @@
 import { makeStyles } from '@material-ui/core/styles'
-import { Card, TextField, MenuItem, Box, Button } from '@material-ui/core'
+import {
+  Card,
+  TextField,
+  MenuItem,
+  Box,
+  Button,
+  Fade,
+  IconButton,
+} from '@material-ui/core'
 import { useState } from 'react'
+import { useSnackbar } from 'notistack'
+import { Autorenew } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +34,7 @@ function Cross({ qid, choice }) {
   const [first, setFirst] = useState('')
   const [second, setSecond] = useState('')
   const [showGraph, setShowGraph] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
 
   return (
     <Card className={classes.root}>
@@ -33,7 +44,11 @@ function Cross({ qid, choice }) {
           label='自变量'
           value={first}
           onChange={(event) => {
-            setFirst(event.target.value)
+            if (event.target.value === second) {
+              enqueueSnackbar('自变量和因变量不能重复', { variant: 'warning' })
+            } else {
+              setFirst(event.target.value)
+            }
           }}
           className={classes.input}
         >
@@ -43,12 +58,25 @@ function Cross({ qid, choice }) {
             </MenuItem>
           ))}
         </TextField>
+        <IconButton
+          onClick={() => {
+            let tmp = first
+            setFirst(second)
+            setSecond(tmp)
+          }}
+        >
+          <Autorenew />
+        </IconButton>
         <TextField
           select
           label='因变量'
           value={second}
           onChange={(event) => {
-            setSecond(event.target.value)
+            if (event.target.value === first) {
+              enqueueSnackbar('自变量和因变量不能重复', { variant: 'warning' })
+            } else {
+              setSecond(event.target.value)
+            }
           }}
           className={classes.input}
         >
@@ -74,26 +102,42 @@ function Cross({ qid, choice }) {
         >
           交叉分析
         </Button>
-        {showGraph && (
-          <>
-            <Button color='primary' variant='contained'>
-              表格
-            </Button>
-            <Button color='primary' variant='contained'>
-              柱状图
-            </Button>
-            <Button color='primary' variant='contained'>
-              条形图
-            </Button>
-            <Button color='primary' variant='contained'>
-              雷达图
-            </Button>
-            <Button color='primary' variant='contained'>
-              折线图
-            </Button>
-          </>
-        )}
+        <Fade in={showGraph} timeout={300}>
+          <Button color='primary' variant='contained'>
+            表格
+          </Button>
+        </Fade>
+        <Fade in={showGraph} timeout={400}>
+          <Button color='primary' variant='contained'>
+            柱状图
+          </Button>
+        </Fade>
+        <Fade in={showGraph} timeout={500}>
+          <Button color='primary' variant='contained'>
+            条形图
+          </Button>
+        </Fade>
+        <Fade in={showGraph} timeout={600}>
+          <Button color='primary' variant='contained'>
+            雷达图
+          </Button>
+        </Fade>
+        <Fade in={showGraph} timeout={700}>
+          <Button color='primary' variant='contained'>
+            折线图
+          </Button>
+        </Fade>
       </Box>
+      {showGraph && (
+        <Fade in={showGraph} timeout={1000}>
+          <Box
+            style={{ backgroundColor: 'blue' }}
+            width='100%'
+            height='400px'
+            marginTop='3%'
+          ></Box>
+        </Fade>
+      )}
     </Card>
   )
 }

@@ -144,7 +144,7 @@ function Feedback() {
             let crossData = {
               qid: res.data.qid,
               choice: res.data.questions
-                .filter((item) => item.id !== undefined)
+                .filter((item) => item.type <= 1)
                 .map((item) => {
                   return { id: item.id, content: item.content }
                 }),
