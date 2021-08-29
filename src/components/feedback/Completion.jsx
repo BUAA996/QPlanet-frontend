@@ -77,6 +77,12 @@ function DetailDialog({ open, setOpen, data }) {
       type: 'dateTime',
     },
     {
+      field: 'author',
+      headerName: '提交者',
+      width: '85',
+      type: 'string',
+    },
+    {
       field: 'ans',
       headerName: '答案文本',
       type: 'string',
