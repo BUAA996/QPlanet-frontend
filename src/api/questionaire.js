@@ -74,6 +74,10 @@ function checkType(data) {
   return axios.post('questionnaire/check_type/', data);
 }
 
+function savelogic(data) {
+  return axios.post('/questionnaire/savelogic/', data);
+}
+
 export {
   createQuestionnaire,
   deleteQuestionnaire,
@@ -90,4 +94,5 @@ export {
   fill,
   getTotal,
   checkType,
+  savelogic,
 }

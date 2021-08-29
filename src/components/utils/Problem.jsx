@@ -314,6 +314,7 @@ function Scoring(props) {
       <Grid item className={classes.scoring}>
         <Rating
           value={value}
+          name={'test'}
           onChange={(event, newValue) => {
             handleChange(newValue)
           }}
@@ -483,5 +484,6 @@ export {
   isFillBlank,
   isShortAnswer,
   isScoring,
+  isChoice,
   ProblemSkeleton,
 }

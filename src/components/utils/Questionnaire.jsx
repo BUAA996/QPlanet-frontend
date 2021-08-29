@@ -30,6 +30,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import RotateLeftIcon from '@material-ui/icons/RotateLeft'
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash'
 import VisibilityIcon from '@material-ui/icons/Visibility'
+import CodeIcon from '@material-ui/icons/Code';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -226,6 +227,23 @@ function Questionare(props) {
             >
               预览
             </Button>
+
+            {
+              props.status === STATUS.Saved && props.type === 0 &&
+              <Button
+                component={RouterLink}
+                to={'/editlogic/' + props.hash}
+                color='primary'
+                startIcon={<CodeIcon />}
+                size='small'
+                variant='outlined'
+                className={classes.buttons}
+              >
+                逻辑
+              </Button>
+            }
+
+            
           </Grid>
           <Grid item xs={5}>
             {props.status == 0 ? (
