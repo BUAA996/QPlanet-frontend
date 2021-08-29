@@ -111,7 +111,8 @@ function SelectDialogBody(props) {
     newChoice.push({
       content: "请输入选项内容" + props.choices.length,
       selected: false,
-      key: Math.random().toString(36).slice(-6)
+      key: Math.random().toString(36).slice(-6),
+      limit:0
     })
     props.setChoices(newChoice)
   }
