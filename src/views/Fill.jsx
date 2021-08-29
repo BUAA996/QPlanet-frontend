@@ -19,7 +19,6 @@ import { Skeleton } from '@material-ui/lab'
 import SignInForm from 'components/auth/SignInForm'
 import { useStateStore } from 'store'
 import { sendCaptcha, checkCaptcha } from 'api/result'
-import Finish from './Finish'
 import FillPage from 'components/utils/FillPage'
 import LogicalFillPage from 'components/utils/LogicalFillPage'
 
