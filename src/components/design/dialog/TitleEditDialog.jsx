@@ -110,7 +110,6 @@ function TitleEditDialog(props) {
                             + "-" + (time.getDate() >= 10 ? time.getDate() : "0" + time.getDate())
                             + " " + (time.getHours() >= 10 ? time.getHours() : "0" + time.getHours())
                             + ":" + (time.getMinutes()>=10? time.getMinutes(): "0" + time.getMinutes());
-                          console.log("new", data)
                           ori.deadline = data.substr(0, 10) + ' ' + data.substr(11, 5);
                           props.setSettings(ori)
                         }}/>
