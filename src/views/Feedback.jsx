@@ -6,6 +6,12 @@ import {
   FormControl,
   MenuItem,
   InputBase,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@material-ui/core'
 import Completion from 'components/feedback/Completion'
 import Choice from 'components/feedback/Choice'
@@ -81,6 +87,59 @@ const BootstrapInput = withStyles((theme) => ({
   },
 }))(InputBase)
 
+function DownloadDialog({ open, setOpen, hashcode }) {
+  return (
+    <Dialog open={open}>
+      <DialogTitle>请选择下载模式</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          精简模式：Excel中会呈现选项的字母序号，如ABC等。
+          <br />
+          完整模式：Excel中会呈现选项的完整内容，不使用字母序号。
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            downloadStatistics({ hash: hashcode, type: '0' }).then((res) => {
+              download(
+                'https://api.matrix53.top/img/' + res.data.name,
+                res.data.name
+              )
+            })
+            setOpen(false)
+          }}
+          color='primary'
+        >
+          精简模式
+        </Button>
+        <Button
+          onClick={() => {
+            downloadStatistics({ hash: hashcode, type: '1' }).then((res) => {
+              download(
+                'https://api.matrix53.top/img/' + res.data.name,
+                res.data.name
+              )
+            })
+            setOpen(false)
+          }}
+          color='primary'
+        >
+          完整模式
+        </Button>
+        <Button
+          onClick={() => {
+            setOpen(false)
+          }}
+          color='primary'
+        >
+          取消下载
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
+
 function Feedback() {
   const classes = useStyles()
   const [open, setOpen] = useState(true)
@@ -92,6 +151,7 @@ function Feedback() {
   const [shareOpen, setShareOpen] = useState(false)
   const isLogin = useStateStore().isLogin
   const [crossData, setCrossData] = useState({})
+  const [openDownload, setOpenDownload] = useState(false)
 
   useRouteDefender({
     assert: !isLogin,
@@ -144,9 +204,14 @@ function Feedback() {
             let crossData = {
               qid: res.data.qid,
               choice: res.data.questions
-                .filter((item) => item.id !== undefined)
-                .map((item) => {
-                  return { id: item.id, content: item.content }
+                .filter((item) => item.type <= 1)
+                .map((item, index) => {
+                  return {
+                    id: index,
+                    content: item.content,
+                    sendId: item.id,
+                    option: item.option,
+                  }
                 }),
             }
             setCrossData(crossData)
@@ -168,9 +233,7 @@ function Feedback() {
 
   const handleClick = (name) => {
     if (name === '下载原始数据') {
-      downloadStatistics({ hash: hashcode }).then((res) => {
-        download('https://api.matrix53.top/img/' + res.data.name, res.data.name)
-      })
+      setOpenDownload(true)
     } else if (name === '发送问卷') {
       setShareOpen(true)
     } else if (name === '预览问卷') {
@@ -248,6 +311,11 @@ function Feedback() {
         open={shareOpen}
         setOpen={setShareOpen}
         url={'https://qplanet.matrix53.top/fill/' + hashcode}
+      />
+      <DownloadDialog
+        open={openDownload}
+        setOpen={setOpenDownload}
+        hashcode={hashcode}
       />
     </>
   )
