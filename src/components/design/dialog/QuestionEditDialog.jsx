@@ -46,7 +46,6 @@ function QuestionEditDialog(props) {
   const [element, setElement] = useState(false); // for EXAM
 
   useEffect(() => {
-      console.log("questionInfo", props.questionInfo)
       setTitle(props.questionInfo.title)
       setChoices(props.questionInfo.choices.map((x, index) => ({
         content: x,
@@ -73,8 +72,6 @@ function QuestionEditDialog(props) {
         })
       }
       if (props.type === "SIGNUP" && (kind == "0" || kind == "1")) { // edit choice for right answer
-        console.log("quota", props.questionInfo.quota)
-        console.log("choice", choices)
         props.questionInfo.quota.map((x, index) => {
           const newChoice = choices.slice();
           if (isNaN(x) || newChoice[index] === undefined) return;

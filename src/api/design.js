@@ -95,7 +95,7 @@ async function transformGet(data) {
 }
 
 function transformSave(data) {
-  console.log("before change", data)
+  // console.log("before change", data)
 
   let type = 0;
   const settings = data.settings;
@@ -154,10 +154,10 @@ function transformSave(data) {
 }
 
 async function saveQuestionaire(info) {
-  console.log("push", info)
-  console.log("info", JSON.stringify(info))
+  // console.log("push", info)
+  // console.log("info", JSON.stringify(info))
   const ans = await axios.post("questionnaire/modify/", info);
-  console.log("get save", ans)
+  // console.log("get save", ans)
   return ans;
 }
 
