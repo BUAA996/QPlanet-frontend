@@ -47,8 +47,8 @@ function QuestionEditDialog(props) {
 
   useEffect(() => {
       setTitle(props.questionInfo.title)
-    console.log(props.questionInfo.choices)
-    setChoices(null)
+      console.log(props.questionInfo.choices)
+      setChoices(null)
       setChoices(props.questionInfo.choices.slice().map((x, index) => ({
         content: x,
         selected: false,
@@ -69,7 +69,7 @@ function QuestionEditDialog(props) {
         props.questionInfo.standardAnswer.content.forEach((x) => {
           if (isNaN(x)) return;
           // newChoice[x].selected = true;
-          setChoices((old) =>{
+          setChoices((old) => {
             const newChoice = old.slice()
             newChoice[x].selected = true;
             return newChoice
@@ -80,7 +80,7 @@ function QuestionEditDialog(props) {
         props.questionInfo.quota.map((x, index) => {
           if (isNaN(x) || choices[index] === undefined) return;
 
-          setChoices((old)=>{
+          setChoices((old) => {
             const newChoice = old.slice();
             newChoice[index].limit = x;
             return newChoice
@@ -139,7 +139,7 @@ function QuestionEditDialog(props) {
     }
     if ((kind == '0' || kind == '1') && props.type === "SIGNUP" && hasLimit &&
       choices
-        .map((x) => isNaN(x.limit) || x.limit < 0)
+        .map((x) => isNaN(x.limit) || x.limit < 0 || Math.ceil(x.limit) !== x.limit)
         .reduce((x, y) => x || y)) {
 
       enqueueSnackbar("选项限额非法", {variant: 'error'});
@@ -152,6 +152,10 @@ function QuestionEditDialog(props) {
       }
       if (score < 0) {
         enqueueSnackbar("题目分值不得小于零", {variant: 'error'});
+        return;
+      }
+      if (Math.ceil(score) !== score) {
+        enqueueSnackbar("题目分值不得为小数", {variant: 'error'});
         return;
       }
     }

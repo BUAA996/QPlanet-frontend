@@ -69,8 +69,11 @@ function SelectRow(props) {
             onChange={(event) => {
               props.editChoice(props.choiceContent.content, props.choiceContent.selected, event.target.value)
             }}
-            error={isNaN(props.choiceContent.limit) || props.choiceContent.limit < 0}
-            helperText={(isNaN(props.choiceContent.limit) || props.choiceContent.limit < 0) && "请输入正整数"}
+            error={isNaN(props.choiceContent.limit)
+            || props.choiceContent.limit < 0
+            || Math.ceil(props.choiceContent.limit) !== props.choiceContent.limit}
+            helperText={(isNaN(props.choiceContent.limit) || props.choiceContent.limit < 0
+              || Math.ceil(props.choiceContent.limit) !== props.choiceContent.limit) && "请输入正整数"}
             type="number"
             shrink
             fullWidth
@@ -112,7 +115,7 @@ function SelectDialogBody(props) {
       content: "请输入选项内容" + props.choices.length,
       selected: false,
       key: Math.random().toString(36).slice(-6),
-      limit:0
+      limit: 0
     })
     props.setChoices(newChoice)
   }
