@@ -10,4 +10,9 @@ function downloadStatistics(data) {
   return axios.post('result/download/', data)
 }
 
-export { getStatistics, downloadStatistics }
+// cross_analyze
+function crossAnalyze(data) {
+  return axios.post('result/cross_analyze/', data)
+}
+
+export { getStatistics, downloadStatistics, crossAnalyze }

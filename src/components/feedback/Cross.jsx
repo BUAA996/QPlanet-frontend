@@ -12,6 +12,7 @@ import { useState } from 'react'
 import { useSnackbar } from 'notistack'
 import { Autorenew } from '@material-ui/icons'
 import Graph from './Graph'
+import { crossAnalyze } from 'api/result'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,10 +107,41 @@ function Cross({ qid, choice }) {
               })
               return
             }
-
-            if (!showGraph) {
-              setShowGraph(true)
-            }
+            crossAnalyze({
+              qid: qid,
+              t1: choice[first].sendId,
+              t2: choice[second].sendId,
+            })
+              .then((res) => {
+                let data = []
+                for (let i = 0; i < res.data.count.length; ++i) {
+                  for (let j = 0; j < res.data.count[i].length; ++j) {
+                    data.push({
+                      option:
+                        choice[first].option[i] +
+                        '/' +
+                        choice[second].option[j],
+                      count: res.data.count[i][j],
+                    })
+                  }
+                }
+                let graphData = {
+                  total: res.data.total,
+                  choice: data,
+                }
+                console.log(graphData)
+                setGraphData(graphData)
+              })
+              .then((res) => {
+                if (!showGraph) {
+                  setShowGraph(true)
+                }
+              })
+              .catch((res) => {
+                enqueueSnackbar('当前网络状况差，请检查网络连接', {
+                  variant: 'warning',
+                })
+              })
           }}
         >
           交叉分析
@@ -117,10 +149,10 @@ function Cross({ qid, choice }) {
         <Fade in={showGraph} timeout={300}>
           <Button
             color='primary'
-            variant={index === 1 ? 'contained' : 'outlined'}
+            variant={index === 5 ? 'contained' : 'outlined'}
             onClick={() => {
               setIndex((index) => {
-                return index === 1 ? 0 : 1
+                return index === 5 ? 0 : 5
               })
             }}
           >
@@ -156,39 +188,34 @@ function Cross({ qid, choice }) {
         <Fade in={showGraph} timeout={600}>
           <Button
             color='primary'
-            variant={index === 6 ? 'contained' : 'outlined'}
+            variant={index === 1 ? 'contained' : 'outlined'}
             onClick={() => {
               setIndex((index) => {
-                return index === 6 ? 0 : 6
+                return index === 1 ? 0 : 1
               })
             }}
           >
-            雷达图
+            饼状图
           </Button>
         </Fade>
         <Fade in={showGraph} timeout={700}>
           <Button
             color='primary'
-            variant={index === 7 ? 'contained' : 'outlined'}
+            variant={index === 2 ? 'contained' : 'outlined'}
             onClick={() => {
               setIndex((index) => {
-                return index === 7 ? 0 : 7
+                return index === 2 ? 0 : 2
               })
             }}
           >
-            折线图
+            圆环图
           </Button>
         </Fade>
       </Box>
       {showGraph && index !== 0 && (
         <Fade in={showGraph} timeout={1000}>
-          <Box
-            style={{ backgroundColor: 'blue' }}
-            width='100%'
-            height='400px'
-            marginTop='3%'
-          >
-            {index !== 1 && <Graph type={index} data={graphData} />}
+          <Box width='100%' height='400px' marginTop='3%'>
+            {index !== 5 && <Graph type={index} data={graphData} />}
           </Box>
         </Fade>
       )}
