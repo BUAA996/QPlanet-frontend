@@ -174,17 +174,32 @@ function MultiChoice(props) {
 
   const [state, setState] = useState(option)
 
+  // useEffect(() => {
+  //   if (props.problem.initialValue !== undefined) {
+  //     setState((state) => {
+  //       let newState = {}
+  //       for (let item in Object.keys(state)) {
+  //         newState[item] = props.problem.initialValue.includes(Number(item))
+  //       }
+
+  //       return newState
+  //     })
+  //   }
+  // }, [])
+
   const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked })
-    let singleAns = []
-    for (let i = 0; i < choice.length; ++i) {
-      if (choice[i].key === event.target.name) {
-        if (event.target.checked) singleAns.push('' + i)
-      } else {
-        if (state[choice[i].key]) singleAns.push('' + i)
+    if (props.problem.initialValue === undefined) {
+      setState({ ...state, [event.target.name]: event.target.checked })
+      let singleAns = []
+      for (let i = 0; i < choice.length; ++i) {
+        if (choice[i].key === event.target.name) {
+          if (event.target.checked) singleAns.push('' + i)
+        } else {
+          if (state[choice[i].key]) singleAns.push('' + i)
+        }
       }
+      props.updateAns(singleAns)
     }
-    props.updateAns(singleAns)
   }
 
   return (
