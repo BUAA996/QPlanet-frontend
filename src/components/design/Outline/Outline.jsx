@@ -1,58 +1,51 @@
-import {memo, useCallback, useState} from "react";
-import {useDrop} from "react-dnd";
-import {Card, Paper, Typography} from "@material-ui/core";
-import {QuestionTitle} from "./card";
-import {makeStyles} from "@material-ui/core/styles";
-
-const ItemTypes = {
-  CARD: 'card',
-}
-
-// export const Container = memo(function Container() {
-//   const [cards, setCards] = useState();
-//   const findCard = useCallback((id) => {
-//     const card = cards.filter((c) => `${c.id}` === id)[0];
-//     return {
-//       card,
-//       index: cards.indexOf(card),
-//     };
-//   }, [cards]);
-//   const moveCard = useCallback((id, atIndex) => {
-//     const {card, index} = findCard(id);
-//     setCards(update(cards, {
-//       $splice: [
-//         [index, 1],
-//         [atIndex, 0, card],
-//       ],
-//     }));
-//   }, [findCard, cards, setCards]);
-//   const [, drop] = useDrop(() => ({accept: ItemTypes.CARD}));
-//   return (<div ref={drop}>
-//     {cards.map((card) => (
-//       <Card key={card.id} id={`${card.id}`} text={card.text} moveCard={moveCard} findCard={findCard}/>))}
-//   </div>);
-// });
-const useStyles = makeStyles((theme) => ({
-  outline: {
-    width: "xs",
-    background: theme.palette.background,
-  }
-}))
-
-function Outline(props) {
-  const classes = useStyles();
-
-  return (
-
-    <Card className={classes.outline}>
-      <Paper>
-        <Typography> 大纲</Typography>
-      </Paper>
-      {props.questions.map((x) => (<QuestionTitle question={x}/>))}
-
-    </Card>
-  )
-}
+import {memo, useCallback, useEffect, useState} from 'react';
+import {useDrop} from 'react-dnd';
+import {QuestionTitle} from './QuestionTitle';
+import update from 'immutability-helper';
+import {ItemTypes} from './ItemTypes';
+import {Card, Paper} from "@material-ui/core";
 
 
-export {ItemTypes, Outline};
+export const Outline = memo(function Container({questions, move, setQuestions}) {
+  const [cards, setCards] = useState(questions??[]);
+
+  useEffect(() => {
+    setCards(questions ?? [])
+  }, [questions])
+
+  useEffect(() => {
+    setQuestions(cards)
+  }, [cards])
+
+  console.log("cards", cards)
+  const findCard = useCallback((id) => {
+    const card = cards.filter((c) => `${c.id}` === id)[0];
+    return {
+      card,
+      index: cards.indexOf(card),
+    };
+  }, [cards]);
+  const moveCard = useCallback((id, atIndex) => {
+    const {card, index} = findCard(id);
+    setCards(update(cards, {
+      $splice: [
+        [index, 1],
+        [atIndex, 0, card],
+      ],
+    }));
+  }, [findCard, cards, setCards]);
+  const [, drop] = useDrop(() => ({accept: ItemTypes.CARD}));
+  return (<Card ref={drop} >
+    {cards.map((card) => (
+      <QuestionTitle
+        key={card.id}
+        id={`${card.id}`}
+        text={card.title}
+        moveCard={moveCard}
+        findCard={findCard}
+        move={() => {
+          setQuestions(cards)
+        }}
+      />))}
+  </Card>);
+});

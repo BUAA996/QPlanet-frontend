@@ -198,14 +198,23 @@ function Design(props) {
 
   return (
     <>
+      <Container  className={classes.root}>
+        <Grid
+          spacing={3}
+          container
+          direction="row">
 
-      <Container maxWidth='md' className={classes.root}>
-        <Grid container direction="row">
+          <Grid item
 
-          <Grid item>
-            <Outline questions={questionnaire ?? []}/>
+          >
+            <Outline questions={questionnaire ?? []} move={move} setQuestions={setQuestionnaire}/>
           </Grid>
-          <Grid item>
+
+          <Grid
+            item
+            xs={9}
+
+          >
             <Card className={classes.card}>
               <Grid
                 container
