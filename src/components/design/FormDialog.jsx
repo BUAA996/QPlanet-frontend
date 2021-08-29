@@ -39,23 +39,44 @@ export default function FormDialog(props) {
 
 
   const handleModify = () => {
+    // check validity:
+    //// title
     if (title.trim() === "") {
       enqueueSnackbar("问卷标题不能为空", {variant: 'error'});
       return;
     }
+    //// description
     if (description.trim() === "") {
       enqueueSnackbar("问卷简介不能为空", {variant: 'error'})
       return;
     }
+    //// deadline
+    if (settings.hasDdl && settings.deadline === "") {
+      enqueueSnackbar("问卷截止时间不能为空", {variant: 'error'})
+      return;
+    }
+
+
     switch (props.type) {
       // case "NORMAL":
       // case "VOTE":
       case "SIGNUP":
-
+        if (settings.hasQuota) {
+          if (isNaN(settings.quota) || settings.quota === null || settings.quota === undefined) {
+            enqueueSnackbar("问卷限额不能为空", {variant: 'error'})
+            return;
+          }
+          if (settings.quota < 0) {
+            enqueueSnackbar("问卷限额不能为负数", {variant: 'error'})
+            return;
+          }
+        }
+        break;
       // case "EXAM":
 
     }
 
+    // set
     props.setTitle(title.trim());
     props.setDescription(description.trim());
     props.setSettings(settings)
