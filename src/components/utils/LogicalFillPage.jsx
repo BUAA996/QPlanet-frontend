@@ -187,7 +187,7 @@ export default function LogicalFillPage(props) {
 			}
 			submit(tmp).then((res) => {
 				enqueueSnackbar('提交成功，感谢您的回答', { variant: 'success' })
-        props.setSubmit(res.data);
+        history.replace('/finish', { ...props.finishData, result: res.data })
 				// history.replace('/finish')
 				props.setState(3)
       })
