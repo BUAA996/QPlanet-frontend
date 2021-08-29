@@ -278,15 +278,15 @@ function Questionare(props) {
               color='primary'
               onClick={() => handleDelete({ id: props.id })}
               startIcon={
-                props.stauts === 3 ? <DeleteForeverIcon /> : <DeleteIcon />
+                props.stauts === 2 ? <DeleteForeverIcon /> : <DeleteIcon />
               }
               size='small'
               variant='outlined'
               className={classes.buttons}
             >
-              {props.status === 3 ? '彻底删除' : '删除'}{' '}
+              {props.status === 2 ? '彻底删除' : '删除'}{' '}
             </Button>
-            {props.status == 3 ? (
+            {props.status == 2 ? (
               <Button
                 color='primary'
                 onClick={() => handleRecover()}

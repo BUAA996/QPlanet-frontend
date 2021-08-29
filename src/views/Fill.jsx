@@ -71,7 +71,7 @@ function Fill() {
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const [state, setState] = useState(0);
-  const [endTime, setEndTime] = useState('');
+  const [endTime, setEndTime] = useState('2021');
   const [certification, setCertification] = useState('');
   const [vis, setVis] = useState(false);
   const { id } = useParams();
@@ -115,7 +115,8 @@ function Fill() {
   const [lastTime, setTime] = useState(new Date().getSeconds() - 60);
   const [phone, setPhone] = useState('');
   const [captcha, setCaptcha] = useState('');
-  
+  const [res, setRes] = useState({});
+
   function handleCertification() {
     if (phone.length === 0) {
       enqueueSnackbar('手机号不能位空！', {variant: 'warning'})
@@ -348,7 +349,7 @@ function Fill() {
             {vis && <CountDown time={endTime} />}
           </Grid>
           <Grid item xs={8}>
-            <FillPage setState={setState} phone={phone} need={data.requirement} />
+            <FillPage setState={setState} phone={phone} need={data.requirement} setSubmit={setRes} />
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
@@ -398,11 +399,6 @@ function Fill() {
           FORM_LEVEL[data.type] === 'TESTING_BOTH' 
         ) 
         && 
-        <Finish />
-      }
-
-      {
-        state === 4 && // Voting Before 
         <Finish />
       }
     </>

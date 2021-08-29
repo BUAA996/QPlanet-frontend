@@ -101,7 +101,8 @@ export default function FillPage(props) {
             must: ori[i].is_required,
             title: ori[i].content,
             choices: ori[i].option,
-            quota: ori[i].quota
+            quota: ori[i].quota,
+            count: ori[i].count,
           })
         }
         setQuestionare([].concat(tmp))
@@ -189,6 +190,7 @@ export default function FillPage(props) {
 			submit(tmp).then((res) => {
 				// console.log(res);
 				enqueueSnackbar('提交成功，感谢您的回答', { variant: 'success' })
+        props.setSubmit(res.data);
 				// history.replace('/finish')
 				props.setState(3)
       })
@@ -227,6 +229,7 @@ export default function FillPage(props) {
                   problem={problem}
                   showindex={data.show_number}
                   showquota={problem.quota[0] === -1 ? false : true}
+                  showvote={data.type === 3 || data.type === 1}
 									fillmode={true}
                   key={problem.key}
                   updateAns={(ans) => handleAns(problem.key, ans)}

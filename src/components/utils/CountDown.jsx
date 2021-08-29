@@ -18,40 +18,25 @@ export default function CountDown(props) {
   const classes = useStyles()
 
   const [content, setContent] = useState('0 分 0 秒')
-  const [timeoutID, settimeoutID] = useState();
-
-  function updateTime(end_time) {
-    let time = Math.ceil((end_time.getTime() - new Date().getTime()) / 1000)
-    let second = time % 60
-    time = Math.floor(time / 60)
-    let min = time
-    if (time >= 0) {
-      setContent(
-        '' +
-          (min < 10 ? '0' : '') +
-          min +
-          ' 分 ' +
-          (second < 10 ? '0' : '') +
-          second +
-          ' 秒 '
-      )
-      settimeoutID(setTimeout(() => updateTime(end_time), 1000)) 
-    }
-  }
-
-  function cleanup() {
-    clearTimeout(timeoutID);
-  }
 
   useEffect(() => {
-    let time = new Date(props.time)
-    // time.setMinutes(time.getMinutes() + props.duration)
-    console.log(time);
-    updateTime(time)
+    let myInterval = setInterval(() => {
+      const end_time = new Date(props.time);
+      const now = new Date();
+      const duration = Math.ceil((end_time.getTime() - now.getTime()) / 1000);
+      const seconds = duration % 60;
+      const min = Math.floor(duration / 60);
+      if (duration > 0) {
+        setContent('' + min + ' 分 ' + seconds + ' 秒');
+      }
+      if (duration == 0) {
+        clearInterval(myInterval);
+      }
+    }, 1000)
     return () => {
-      cleanup();
-    }
-  }, [props])
+      clearInterval(myInterval);
+    };
+  });
 
   return (
     <Card className={classes.root}>

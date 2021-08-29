@@ -121,17 +121,24 @@ function SingleChoice(props) {
       value={value}
       onChange={handleChange}
     >
-      {choice.map((choice) => (
+      {choice.map((choice, index) => (
         <FormControlLabel
           value={choice.key}
           control={<Radio key={choice.key} />}
           label={
             choice.content +
-            (props.showquota
+            (
+              props.showquota
               ? props.quota[0] === -1
                 ? ' 总容量: ' + choice.maxquota
                 : ' (' + choice.quota + '/' + choice.maxquota + ')'
-              : '')
+              : ''
+            ) + (
+              props.showvote ? 
+              ' (此选项已被选择 ' + props.problem.count[index] + ' 次)' 
+              : ''
+            )
+            
           }
           key={choice.key}
         />
@@ -180,7 +187,7 @@ function MultiChoice(props) {
 
   return (
     <RadioGroup className={classes.content}>
-      {choice.map((choice) => (
+      {choice.map((choice, index) => (
         <FormControlLabel
           control={
             <Checkbox
@@ -191,11 +198,17 @@ function MultiChoice(props) {
           }
           label={
             choice.content +
-            (props.showquota
+            (
+              props.showquota
               ? props.quota[0] === -1
                 ? ' 余量: ' + choice.maxquota
                 : ' (' + choice.quota + '/' + choice.maxquota + ')'
-              : '')
+              : ''
+            ) + (
+              props.showvote ? 
+              ' (此选项已被选择 ' + props.problem.count[index] + ' 次)' 
+              : ''
+            ) 
           }
           key={choice.key}
         />
@@ -356,12 +369,12 @@ function Problem(props) {
 
   function handleQuery() {
     surplus({qid: props.problem.id}).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       setQuota(res.data.surplus);
     })
   }
 
-  console.log(props)
+  // console.log(props)
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -374,7 +387,7 @@ function Problem(props) {
           must={props.problem.must}
         >
           {
-            props.fillmode && isChoice(props.problem) &&
+            props.fillmode && isChoice(props.problem) && props.showquota && 
             <Button  
               color="secondary" 
               variant="contained"
@@ -456,6 +469,7 @@ function isChoice(problem) {
 Problem.defaultProps = {
   showindex: false,
   showquota: false,
+  showvote: false,
   fillmode: false,
   quota: [-1],
 }
