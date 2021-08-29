@@ -260,6 +260,16 @@ export default function FillPage(props) {
     }
   }
 
+  useEffect(() => {
+    if (props.needSubmit) {
+      enqueueSnackbar('考试时间到，系统自动提交', {
+        variant: 'warning',
+      })
+      handleClick();
+      history.push('/')
+    }
+  }, [props])
+
   return (
     <>
       <Container maxWidth='md'>

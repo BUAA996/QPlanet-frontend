@@ -202,6 +202,12 @@ function Fill() {
     }
   }
 
+  const [needSubmit, setSubmit] = useState(false);
+
+  function handleSubmit() {
+    setSubmit(true);
+  }
+
   return (
     <>
       {state === 0 && (
@@ -374,7 +380,7 @@ function Fill() {
         >
           <Grid item xs={1}></Grid>
           <Grid item xs={1}>
-            {vis && <CountDown time={endTime} />}
+            {vis && <CountDown time={endTime} setSubmit={() => handleSubmit()}/>}
           </Grid>
           <Grid item xs={8}>
             {ques.type === 0 ? (
@@ -386,6 +392,7 @@ function Fill() {
                   type: FORM_LEVEL[ques.type],
                   fillData: ques,
                 }}
+                needSubmit={needSubmit}
               />
             ) : (
               <FillPage
@@ -396,6 +403,7 @@ function Fill() {
                   type: FORM_LEVEL[ques.type],
                   fillData: ques,
                 }}
+                needSubmit={needSubmit}
               />
             )}
           </Grid>
