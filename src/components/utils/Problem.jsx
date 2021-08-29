@@ -174,6 +174,8 @@ function MultiChoice(props) {
 
   const [state, setState] = useState(option)
 
+  //console.log(props.problem.initialValue)
+
   // useEffect(() => {
   //   if (props.problem.initialValue !== undefined) {
   //     setState((state) => {
@@ -233,13 +235,17 @@ function MultiChoice(props) {
 
 function FillBlanks(props) {
   const classes = useStyles()
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(
+    props.problem.initialValue === undefined ? '' : props.problem.initialValue
+  )
 
   const handleChange = (event) => {
-    let len = props.problem.kind === 2 ? 50 : 500
-    if (event.target.value.length <= len + 1) {
-      setValue(event.target.value)
-      props.updateAns([event.target.value])
+    if (props.problem.initialValue === undefined) {
+      let len = props.problem.kind === 2 ? 50 : 500
+      if (event.target.value.length <= len + 1) {
+        setValue(event.target.value)
+        props.updateAns([event.target.value])
+      }
     }
   }
 
@@ -272,13 +278,17 @@ function FillBlanks(props) {
 
 function ShortAnswer(props) {
   const classes = useStyles()
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(
+    props.problem.initialValue === undefined ? '' : props.problem.initialValue
+  )
   const len = 500
 
   const handleChange = (event) => {
-    if (event.target.value.length <= len + 1) {
-      setValue(event.target.value)
-      props.updateAns([event.target.value])
+    if (props.problem.initialValue === undefined) {
+      if (event.target.value.length <= len + 1) {
+        setValue(event.target.value)
+        props.updateAns([event.target.value])
+      }
     }
   }
 
