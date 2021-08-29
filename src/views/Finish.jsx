@@ -7,25 +7,23 @@ import { useHistory } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '99vw',
-    height: '89vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
   card: {
     width: '36vw',
-    height: '60vh',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'column',
-    marginTop: '8vh',
+    marginTop: theme.spacing(8),
   },
   title: {
-    marginTop: '5%',
+    marginTop: theme.spacing(4),
   },
   word: {
-    marginTop: '2%',
+    marginTop: theme.spacing(4),
   },
   img: {
     marginTop: '15%',
@@ -34,13 +32,19 @@ const useStyles = makeStyles((theme) => ({
   btn: {
     color: theme.palette.background.paper,
     marginTop: '6%',
+    marginBottom: theme.spacing(4)
   },
 }))
 
-function Finish() {
+const FORM_LEVEL = ['NORMAL', 'VOTING_BEFORE', 'VOTING_AFTER', 'VOTING_BOTH', 'VOTING_NO', 'SIGNUP', 'TESTING_SCORE', 'TESTING_CORRECTION', 'TESTING_BOTH', 'TESTING_NO']
+
+function Finish(props) {
   const classes = useStyles()
   const history = useHistory()
 
+  const type = props.type
+
+  console.log(props)
   useTitle('填写已完成')
 
   return (
@@ -55,6 +59,51 @@ function Finish() {
           >
             提交成功
           </Typography>
+
+          {
+            type !== "NORMAL" && type !== 'VOTING_NO' && type !== 'TESTING_NO' && type !== "SIGNUP" && 
+            <>
+              <Typography
+                variant='h5'
+                color='textPrimary'
+                className={classes.title}
+              >
+                在这里显示一堆奇怪的问卷结果（X
+              </Typography>
+              {
+                (type === 'VOTING_AFTER' || type === 'VOTING_BOTH') && 
+                <Typography
+                  variant='body1'
+                  color='textSecondary'
+                  className={classes.word}
+                >
+                  这里大概需要展示投票结果
+                </Typography>
+              }
+              {
+                (type === 'TESTING_SCORE' || type === 'TESTING_BOTH') && 
+                <Typography
+                  variant='body1'
+                  color='textSecondary'
+                  className={classes.word}
+                >
+                  这里大概需要展示考试得分
+                </Typography>
+              }
+              {
+                (type === 'TESTING_CORRECTION' || type === 'TESTING_BOTH') && 
+                <Typography
+                  variant='body1'
+                  color='textSecondary'
+                  className={classes.word}
+                >
+                  这里大概需要展示考试答案
+                </Typography>
+              }
+            </>
+          }
+
+
           <Typography
             variant='body1'
             color='textSecondary'

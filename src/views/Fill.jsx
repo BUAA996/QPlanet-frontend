@@ -77,6 +77,7 @@ function Fill() {
   const { id } = useParams();
   const isLogin = useStateStore().isLogin
   const [ data, setData ] = useState({});
+  const [ ques, setQues ] = useState({});
 
   const CERTIFICATION_LEVEL = ['NO_CERTIFICATION', 'EMAIL_CERTIFICATION', 'WEAK_CERTIFICATION', 'STRONG_CERTIFICATION']
   const FORM_LEVEL = ['NORMAL', 'VOTING_BEFORE', 'VOTING_AFTER', 'VOTING_BOTH', 'VOTING_NO', 'SIGNUP', 'TESTING_SCORE', 'TESTING_CORRECTION', 'TESTING_BOTH', 'TESTING_NO']
@@ -93,6 +94,7 @@ function Fill() {
         // console.log(CERTIFICATION_LEVEL[data.requirement])
 
         fill({hash: id}).then((res) => {
+          setQues(res.data)
           if (res.data.deadline != null) {
             setVis(true);
             setEndTime(res.data.deadline);
@@ -183,6 +185,8 @@ function Fill() {
       })
     }
   }
+
+  
 
   return (
     <>
@@ -357,6 +361,10 @@ function Fill() {
       }
 
       {
+        state === 3 && <Finish checktypeData={data} fillDate={ques} result={res} type={FORM_LEVEL[ques.type]} />
+      }
+
+      {/* {
         state === 3 
         && 
         (
@@ -400,7 +408,7 @@ function Fill() {
         ) 
         && 
         <Finish />
-      }
+      } */}
     </>
   )
 }
