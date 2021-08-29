@@ -37,21 +37,23 @@ function NotFound() {
     <Box className={classes.root}>
       <Card className={classes.card}>
         <Typography color='primary' variant='h2' className={classes.title}>
-          404 NotFound
+          <span style={{ color: 'orange' }}>404</span> NotFound
         </Typography>
         <Typography
           color='textSecondary'
           variant='h6'
           className={classes.subTitle}
         >
-          啊呀，这里是问卷星球迷失的荒野QAQ
+          啊呀，这里是问卷星球迷失的
+          <span style={{ color: 'orange' }}>荒野</span>QAQ
         </Typography>
         <Typography
           color='textSecondary'
           variant='h6'
           className={classes.subTitle}
         >
-          迷失的路人，进入下面这个传送门返程吧
+          迷失的<span style={{ color: 'orange' }}>路人</span>
+          ，进入下面这个传送门返程吧
         </Typography>
         <Button
           className={classes.btn}
