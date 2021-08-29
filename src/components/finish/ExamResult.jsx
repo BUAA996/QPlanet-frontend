@@ -10,15 +10,18 @@ const useStyles = makeStyles((theme) => ({
   },
   score: {
     minWidth: '45%',
-    height: '150px',
+    height: '80px',
     marginTop: theme.spacing(2),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  scoreText: {
+    color: theme.palette.primary.main,
+  },
 }))
 
-function ExamResult({ questions, stdAns, score }) {
+function ExamResult({ questions, stdAns, score, showType }) {
   const classes = useStyles()
   const [questionSet, setQuestionSet] = useState([])
 
@@ -26,33 +29,41 @@ function ExamResult({ questions, stdAns, score }) {
 
   useEffect(() => {
     let data = []
+    let stdAnsSet = stdAns.map((item) => item.problem_id)
     for (let i = 0; i < questions.length; ++i) {
-      data.push({
-        id: questions[i].id,
-        key: i,
-        description: questions[i].description,
-        kind: questions[i].type,
-        must: questions[i].is_required,
-        title: questions[i].content,
-        choices: questions[i].option,
-      })
+      if (stdAnsSet.includes(questions[i].id)) {
+        data.push({
+          id: questions[i].id,
+          key: i,
+          description: questions[i].description,
+          kind: questions[i].type,
+          must: questions[i].is_required,
+          title: questions[i].content,
+          choices: questions[i].option,
+          initialValue: stdAns.filter(
+            (item) => questions[i].id === item.problem_id
+          )[0].ans,
+        })
+      }
     }
     setQuestionSet(data)
-  }, [questions])
+  }, [questions, stdAns])
 
   return (
     <Box width='100%' display='flex' flexDirection='column' alignItems='center'>
       <Typography variant='h4' color='primary' className={classes.title}>
-        试卷反馈结果
+        {showType === 'TESTING_SCORE' && '试卷得分情况'}
+        {showType === 'TESTING_CORRECTION' && '试卷标准答案'}
+        {showType === 'TESTING_BOTH' && '得分及答案明细'}
       </Typography>
       {score !== undefined && (
         <Card className={classes.score}>
-          <Typography>
-            您的得分是：<span>{score}</span>
+          <Typography variant='h4'>
+            您的得分是： <span className={classes.scoreText}>{score}</span>
           </Typography>
         </Card>
       )}
-      {questions !== undefined && (
+      {stdAns !== undefined && (
         <Box minWidth='45%'>
           {questionSet.map((problem) => (
             <Problem problem={problem} key={problem.key} updateAns={() => {}} />

@@ -64,6 +64,7 @@ function Finish() {
               questions={fillData.questions}
               stdAns={result.stand_ans}
               score={result.score}
+              showType={type}
             />
           )}
         {!showDetail && (

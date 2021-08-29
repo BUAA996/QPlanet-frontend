@@ -69,9 +69,9 @@ function ShowClasses(props) {
     <Container fixed className={classes.title}>
       <Grid
         container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="center"
+        direction='row'
+        justifyContent='flex-start'
+        alignItems='center'
       >
         <Grid item xs={7}>
           <Typography component='span' className={classes.must}>
@@ -81,9 +81,7 @@ function ShowClasses(props) {
             {props.title}
           </Typography>
         </Grid>
-        <Grid item>
-          {props.children}
-        </Grid>
+        <Grid item>{props.children}</Grid>
       </Grid>
     </Container>
   )
@@ -108,11 +106,19 @@ function SingleChoice(props) {
     setChoice(tmp)
   }, [props])
 
+  useEffect(() => {
+    if (props.problem.initialValue !== undefined) {
+      setValue('' + props.problem.initialValue[0])
+    }
+  }, [])
+
   const handleChange = (event) => {
-    setValue(event.target.value)
-    // console.log(event.target.value)
-    for (let i = 0; i < choice.length; ++i)
-      if (event.target.value === choice[i].key) props.updateAns(['' + i])
+    if (props.problem.initialValue === undefined) {
+      setValue(event.target.value)
+      // console.log(event.target.value)
+      for (let i = 0; i < choice.length; ++i)
+        if (event.target.value === choice[i].key) props.updateAns(['' + i])
+    }
   }
 
   return (
@@ -127,18 +133,14 @@ function SingleChoice(props) {
           control={<Radio key={choice.key} />}
           label={
             choice.content +
-            (
-              props.showquota
+            (props.showquota
               ? props.quota[0] === -1
                 ? ' (总容量: ' + choice.maxquota + ')'
                 : ' (剩余 ' + choice.quota + '/' + choice.maxquota + ')'
-              : ''
-            ) + (
-              props.showvote ? 
-              ' (此选项已被选择 ' + props.problem.count[index] + ' 次)' 
-              : ''
-            )
-            
+              : '') +
+            (props.showvote
+              ? ' (此选项已被选择 ' + props.problem.count[index] + ' 次)'
+              : '')
           }
           key={choice.key}
         />
@@ -198,17 +200,14 @@ function MultiChoice(props) {
           }
           label={
             choice.content +
-            (
-              props.showquota
+            (props.showquota
               ? props.quota[0] === -1
                 ? ' (总容量: ' + choice.maxquota + ')'
                 : ' (剩余 ' + choice.quota + '/' + choice.maxquota + ')'
-              : ''
-            ) + (
-              props.showvote ? 
-              ' (此选项已被选择 ' + props.problem.count[index] + ' 次)' 
-              : ''
-            ) 
+              : '') +
+            (props.showvote
+              ? ' (此选项已被选择 ' + props.problem.count[index] + ' 次)'
+              : '')
           }
           key={choice.key}
         />
@@ -365,12 +364,12 @@ function Location(props) {
 
 function Problem(props) {
   const classes = useStyles()
-  const [quota, setQuota] = useState([-1]);
+  const [quota, setQuota] = useState([-1])
 
   function handleQuery() {
-    surplus({qid: props.problem.id}).then((res) => {
+    surplus({ qid: props.problem.id }).then((res) => {
       // console.log(res.data);
-      setQuota(res.data.surplus);
+      setQuota(res.data.surplus)
       console.log(quota)
     })
   }
@@ -387,26 +386,29 @@ function Problem(props) {
           }
           must={props.problem.must}
         >
-          {
-            props.fillmode && isChoice(props.problem) && props.showquota && 
-            <Button  
-              color="secondary" 
-              variant="contained"
-              size="small"
+          {props.fillmode && isChoice(props.problem) && props.showquota && (
+            <Button
+              color='secondary'
+              variant='contained'
+              size='small'
               onClick={() => handleQuery()}
             >
               刷新余量
             </Button>
-          }
+          )}
         </ShowClasses>
-        
+
         <Divider />
         <Typography className={classes.description}>
           {' '}
           {props.problem.description}
         </Typography>
-        {isSingleChoice(props.problem) && <SingleChoice {...props} quota={quota} />}
-        {isMultiChoice(props.problem) && <MultiChoice {...props} quota={quota}/>}
+        {isSingleChoice(props.problem) && (
+          <SingleChoice {...props} quota={quota} />
+        )}
+        {isMultiChoice(props.problem) && (
+          <MultiChoice {...props} quota={quota} />
+        )}
         {isFillBlank(props.problem) && <FillBlanks {...props} />}
         {isShortAnswer(props.problem) && <ShortAnswer {...props} />}
         {isScoring(props.problem) && <Scoring {...props} />}
