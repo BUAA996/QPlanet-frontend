@@ -90,16 +90,24 @@ function IntroTemplate({ open, setOpen, steps }) {
           >
             <ChevronLeft />
           </IconButton>
-          <img
-            src={steps[activeStep].photo}
-            alt={steps[activeStep].label}
-            style={{
-              height: '100%',
-              width: '80%',
-              borderRadius: '10px',
-              userSelect: 'none',
-            }}
-          />
+          <Box
+            height='100%'
+            width='80%'
+            display='flex'
+            justifyContent='center'
+            alignItems='center'
+          >
+            <img
+              src={steps[activeStep].photo}
+              alt={steps[activeStep].label}
+              style={{
+                objectFit: 'scale-down',
+                borderRadius: '10px',
+                userSelect: 'none',
+              }}
+            />
+          </Box>
+
           <IconButton
             onClick={() => {
               setActiveStep((step) => step + 1)
