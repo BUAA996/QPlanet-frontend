@@ -19,7 +19,6 @@ import { Skeleton } from '@material-ui/lab'
 import SignInForm from 'components/auth/SignInForm'
 import { useStateStore } from 'store'
 import { sendCaptcha, checkCaptcha } from 'api/result'
-import Finish from './Finish'
 import FillPage from 'components/utils/FillPage'
 import LogicalFillPage from 'components/utils/LogicalFillPage'
 
@@ -383,12 +382,20 @@ function Fill() {
                 setState={setState}
                 phone={phone}
                 need={data.requirement}
+                finishData={{
+                  type: FORM_LEVEL[ques.type],
+                  fillData: ques,
+                }}
               />
             ) : (
               <FillPage
                 setState={setState}
                 phone={phone}
                 need={data.requirement}
+                finishData={{
+                  type: FORM_LEVEL[ques.type],
+                  fillData: ques,
+                }}
               />
             )}
           </Grid>
