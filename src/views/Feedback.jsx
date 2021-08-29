@@ -6,6 +6,12 @@ import {
   FormControl,
   MenuItem,
   InputBase,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@material-ui/core'
 import Completion from 'components/feedback/Completion'
 import Choice from 'components/feedback/Choice'
@@ -82,13 +88,56 @@ const BootstrapInput = withStyles((theme) => ({
 }))(InputBase)
 
 function DownloadDialog({ open, setOpen, hashcode }) {
-  const tmp = () => {
-    downloadStatistics({ hash: hashcode }).then((res) => {
-      download('https://api.matrix53.top/img/' + res.data.name, res.data.name)
-    })
-  }
-
-  return null
+  return (
+    <Dialog open={open}>
+      <DialogTitle>请选择下载模式</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          精简模式：Excel中会呈现选项的字母序号，如ABC等。
+          <br />
+          完整模式：Excel中会呈现选项的完整内容，不使用字母序号。
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            downloadStatistics({ hash: hashcode, type: '0' }).then((res) => {
+              download(
+                'https://api.matrix53.top/img/' + res.data.name,
+                res.data.name
+              )
+            })
+            setOpen(false)
+          }}
+          color='primary'
+        >
+          精简模式
+        </Button>
+        <Button
+          onClick={() => {
+            downloadStatistics({ hash: hashcode, type: '1' }).then((res) => {
+              download(
+                'https://api.matrix53.top/img/' + res.data.name,
+                res.data.name
+              )
+            })
+            setOpen(false)
+          }}
+          color='primary'
+        >
+          完整模式
+        </Button>
+        <Button
+          onClick={() => {
+            setOpen(false)
+          }}
+          color='primary'
+        >
+          取消下载
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
 }
 
 function Feedback() {
