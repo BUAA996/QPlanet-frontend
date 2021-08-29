@@ -7,17 +7,11 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import { view as fill, submit } from 'api/questionaire'
+import { view as fill } from 'api/questionaire'
 import { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Problem from 'components/utils/Problem'
-import useTitle from 'hooks/useTitle'
 import { useParams } from 'react-router'
 import { useHistory } from 'react-router-dom'
-import SpeedDialMenu from 'components/utils/SpeedDialMenu'
-import { downloadQuestionnaire } from 'api/questionaire'
-import { download } from 'utils'
-import useRouteDefender from 'hooks/useRouteDefender'
 import { useStateStore } from 'store'
 import Skeleton from '@material-ui/lab/Skeleton'
 
@@ -26,7 +20,6 @@ import CountDown from 'components/utils/CountDown'
 import { checkType } from 'api/questionaire'
 import SignInForm from 'components/auth/SignInForm'
 import { sendCaptcha, checkCaptcha } from 'api/result'
-import Finish from './Finish'
 import FillPage from 'components/utils/FillPage'
 import LogicalFillPage from 'components/utils/LogicalFillPage'
 
@@ -375,27 +368,14 @@ function Preview() {
   ]
 
   useEffect(() => {
-    checkType({ hash: '' + id }).then((res) => {
-      // console.log(res.data);
-      const data = res.data
-      setData(data)
-      if (data.result === 1) {
-        setCertification(CERTIFICATION_LEVEL[data.requirement])
-        setState(data.requirement === 0 ? 2 : 1)
-        if (data.requirement === 1 && isLogin) setState(2)
-        // console.log(CERTIFICATION_LEVEL[data.requirement])
 
-        fill({ hash: id }).then((res) => {
-          setQues(res.data)
-          if (res.data.deadline != null) {
-            setVis(true)
-            setEndTime(res.data.deadline)
-          }
-        })
-      } else {
-        enqueueSnackbar(data.message, { variant: 'warning' })
-        history.push('/')
+    fill({ hash: id }).then((res) => {
+      setQues(res.data)
+      if (res.data.deadline != null) {
+        setVis(true)
+        setEndTime(res.data.deadline)
       }
+      setState(2)
     })
   }, [])
 
