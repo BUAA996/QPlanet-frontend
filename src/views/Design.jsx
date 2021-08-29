@@ -1,22 +1,22 @@
-import {makeStyles} from '@material-ui/core/styles'
-import Problem, {ProblemSkeleton} from 'components/utils/Problem'
-import {Container, Button, Card, Grid, Divider} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import Problem, { ProblemSkeleton } from 'components/utils/Problem'
+import { Container, Button, Card, Grid, Divider } from '@material-ui/core'
 import MovableProblemEdit from 'components/design/MovableProblemEdit'
-import {useState} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import { useState } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
 import {
   getQuestionnaire,
   saveQuestionaire,
   transformGet,
   transformSave,
 } from 'api/design'
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 import useTitle from 'hooks/useTitle'
-import {Title} from 'views/Preview'
+import { Title } from 'views/Preview'
 import FormDialog from 'components/design/FormDialog'
-import {useStateStore} from 'store'
+import { useStateStore } from 'store'
 import useRouteDefender from 'hooks/useRouteDefender'
-import {useSnackbar} from "notistack";
+import { useSnackbar } from 'notistack'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,11 +50,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-
 function Design(props) {
   const classes = useStyles()
 
-  const {id} = useParams()
+  const { id } = useParams()
   const [title, setTitle] = useState()
   const [detail, setDetail] = useState()
   const [questionnaire, setQuestionnaire] = useState(null)
@@ -63,7 +62,7 @@ function Design(props) {
   const [type, setType] = useState('')
   const history = useHistory()
   const isLogin = useStateStore().isLogin
-  const {enqueueSnackbar} = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar()
   const [typeForTitle, setTypeforTitle] = useState()
   useRouteDefender({
     assert: !isLogin,
@@ -88,17 +87,17 @@ function Design(props) {
           setQuestionnaire(data.questions ?? [])
           setType(data.type ?? '')
 
-          console.log("type", data.type);
+          console.log('type', data.type)
           switch (data.type) {
-            case "EXAM":
-              setTypeforTitle("考试问卷");
-              break;
-            case "VOTE":
-              setTypeforTitle("投票问卷");
-              break;
-            case "SIGNUP":
-              setTypeforTitle("报名问卷");
-              break;
+            case 'EXAM':
+              setTypeforTitle('考试问卷')
+              break
+            case 'VOTE':
+              setTypeforTitle('投票问卷')
+              break
+            case 'SIGNUP':
+              setTypeforTitle('报名问卷')
+              break
           }
         }
         // if (!didCancel) { // Ignore if we started fetching something else
@@ -108,14 +107,12 @@ function Design(props) {
         // }
       }
 
-      fetchMyAPI();
+      fetchMyAPI()
 
       return () => {
         didCancel = true
       } // Remember if we start fetching something else
-
     }
-
   }, [])
 
   useTitle('问卷编辑 - 问卷星球')
@@ -169,9 +166,7 @@ function Design(props) {
     addQuestion(index, item)
   }
 
-
-  function blankFunction() {
-  }
+  function blankFunction() {}
 
   async function save() {
     const res = await saveQuestionaire(
@@ -185,15 +180,12 @@ function Design(props) {
         questions: questionnaire,
       })
     )
-    if (res.data.result === 1)
-      history.push('/overview')
+    if (res.data.result === 1) history.push('/overview')
     else {
-      enqueueSnackbar("题目不能为空", {variant: 'error'});
-      return;
+      enqueueSnackbar('题目不能为空', { variant: 'error' })
+      return
     }
-
   }
-
 
   return (
     <>
@@ -206,7 +198,7 @@ function Design(props) {
             alignItems='center'
             spacing={3}
           >
-            <Title title={title} type={typeForTitle} description={detail}/>
+            <Title title={title} type={typeForTitle} description={detail} />
 
             <FormDialog
               title={title}
@@ -225,14 +217,12 @@ function Design(props) {
             />
             {settings.showIdx}
             <Grid item className={classes.problems}>
-              {/*if questionnaire is null, display Skeleton*/}
               {questionnaire ? (
                 questionnaire.map((x, index) => (
                   <Problem
-                    problem={{...x, key: index}}
+                    problem={{ ...x, key: index }}
                     key={x.id}
                     showindex={settings.showIdx}
-
                     updateAns={() => blankFunction()}
                   >
                     <MovableProblemEdit
@@ -252,7 +242,7 @@ function Design(props) {
                   </Problem>
                 ))
               ) : (
-                <ProblemSkeleton/>
+                <ProblemSkeleton />
               )}
             </Grid>
 
