@@ -59,7 +59,13 @@ function Finish() {
         {showDetail &&
           ['TESTING_SCORE', 'TESTING_CORRECTION', 'TESTING_BOTH'].includes(
             type
-          ) && <ExamResult />}
+          ) && (
+            <ExamResult
+              questions={fillData.questions}
+              stdAns={result.stand_ans}
+              score={result.score}
+            />
+          )}
         {!showDetail && (
           <Card className={classes.card}>
             <img src={success} alt='填写完成' className={classes.img} />
