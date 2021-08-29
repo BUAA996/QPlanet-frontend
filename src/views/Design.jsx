@@ -64,7 +64,7 @@ function Design(props) {
   const history = useHistory()
   const isLogin = useStateStore().isLogin
   const {enqueueSnackbar} = useSnackbar()
-
+  const [typeForTitle, setTypeforTitle] = useState()
   useRouteDefender({
     assert: !isLogin,
     method: 'push',
@@ -87,9 +87,20 @@ function Design(props) {
           setSettings(data.settings ?? {})
           setQuestionnaire(data.questions ?? [])
           setType(data.type ?? '')
-        }
 
-        // console.log(questionare)
+          console.log("type", data.type);
+          switch (data.type) {
+            case "EXAM":
+              setTypeforTitle("考试问卷");
+              break;
+            case "VOTE":
+              setTypeforTitle("投票问卷");
+              break;
+            case "SIGNUP":
+              setTypeforTitle("报名问卷");
+              break;
+          }
+        }
         // if (!didCancel) { // Ignore if we started fetching something else
         //   // console.log(getQ);
         //   // console.log(data.questions)
@@ -97,17 +108,15 @@ function Design(props) {
         // }
       }
 
-      fetchMyAPI()
+      fetchMyAPI();
+
       return () => {
         didCancel = true
       } // Remember if we start fetching something else
-    }
-  }, [])
 
-  const qHeadSetFunc = {
-    setTitle: setTitle,
-    setDetail: setDetail,
-  }
+    }
+
+  }, [])
 
   useTitle('问卷编辑 - 问卷星球')
 
@@ -160,7 +169,6 @@ function Design(props) {
     addQuestion(index, item)
   }
 
-  // const content = <Title title={title + type} description={detail}/>
 
   function blankFunction() {
   }
@@ -186,6 +194,7 @@ function Design(props) {
 
   }
 
+
   return (
     <>
       <Container maxWidth='md' className={classes.root}>
@@ -197,7 +206,7 @@ function Design(props) {
             alignItems='center'
             spacing={3}
           >
-            <Title title={title} description={detail}/>
+            <Title title={title} type={typeForTitle} description={detail}/>
 
             <FormDialog
               title={title}

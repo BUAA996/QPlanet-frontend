@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     width: '90%',
   },
+  type:{
+    color: theme.palette.primary.dark,
+
+  },
   description: {
     color: theme.palette.primary.dark,
     textAlign: 'left',
@@ -130,6 +134,10 @@ function Title(props) {
       <Grid item className={classes.title} >
         <Typography variant='h4'>{
           props.title ? props.title : <Skeleton />
+        }</Typography>
+
+        <Typography variant='h5' className={classes.type}>{
+          props.title && props.type ? "(" + props.type + ")" : ""
         }</Typography>
       </Grid>
 
