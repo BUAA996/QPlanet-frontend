@@ -31,10 +31,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function CrossTable() {
-  return null
-}
-
 function Cross({ qid, choice }) {
   const classes = useStyles()
   const [first, setFirst] = useState('')
@@ -118,6 +114,7 @@ function Cross({ qid, choice }) {
             })
               .then((res) => {
                 let data = []
+                let radarData = []
                 for (let i = 0; i < res.data.count.length; ++i) {
                   for (let j = 0; j < res.data.count[i].length; ++j) {
                     data.push({
@@ -127,14 +124,19 @@ function Cross({ qid, choice }) {
                         choice[second].option[j],
                       count: res.data.count[i][j],
                     })
+                    radarData.push([i, j, res.data.count[i][j] || '-'])
                   }
                 }
                 let graphData = {
                   total: res.data.total,
                   title: '交叉分析',
                   choice: data,
+                  // 热力图
+                  horizontal: choice[first].option,
+                  vertical: choice[second].option,
+                  data: radarData,
                 }
-                console.log(graphData)
+                console.log(radarData)
                 setGraphData(graphData)
               })
               .then((res) => {
@@ -154,14 +156,14 @@ function Cross({ qid, choice }) {
         <Fade in={showGraph} timeout={300}>
           <Button
             color='primary'
-            variant={index === 5 ? 'contained' : 'outlined'}
+            variant={index === 7 ? 'contained' : 'outlined'}
             onClick={() => {
               setIndex((index) => {
-                return index === 5 ? 0 : 5
+                return index === 7 ? 0 : 7
               })
             }}
           >
-            表格
+            热力图
           </Button>
         </Fade>
         <Fade in={showGraph} timeout={400}>
@@ -220,7 +222,7 @@ function Cross({ qid, choice }) {
       {showGraph && index !== 0 && (
         <Fade in={showGraph} timeout={1000}>
           <Box width='100%' height='400px' marginTop='3%'>
-            {index !== 5 && <Graph type={index} data={graphData} />}
+            <Graph type={index} data={graphData} />
           </Box>
         </Fade>
       )}
