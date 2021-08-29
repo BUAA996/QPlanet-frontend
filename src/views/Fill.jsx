@@ -21,6 +21,7 @@ import { useStateStore } from 'store'
 import { sendCaptcha, checkCaptcha } from 'api/result'
 import Finish from './Finish'
 import FillPage from 'components/utils/FillPage'
+import LogicalFillPage from 'components/utils/LogicalFillPage'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -377,6 +378,7 @@ function Fill() {
             {vis && <CountDown time={endTime} />}
           </Grid>
           <Grid item xs={8}>
+<<<<<<< HEAD
             <FillPage
               setState={setState}
               phone={phone}
@@ -386,6 +388,13 @@ function Fill() {
                 fillData: ques,
               }}
             />
+=======
+            {
+              ques.type === 0 ? 
+              <LogicalFillPage setState={setState} phone={phone} need={data.requirement} setSubmit={setRes} /> :
+              <FillPage setState={setState} phone={phone} need={data.requirement} setSubmit={setRes} />
+            }
+>>>>>>> withinlover
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
