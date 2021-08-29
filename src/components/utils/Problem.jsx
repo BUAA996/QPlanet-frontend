@@ -130,8 +130,8 @@ function SingleChoice(props) {
             (
               props.showquota
               ? props.quota[0] === -1
-                ? ' 总容量: ' + choice.maxquota
-                : ' (' + choice.quota + '/' + choice.maxquota + ')'
+                ? ' (总容量: ' + choice.maxquota + ')'
+                : ' (剩余 ' + choice.quota + '/' + choice.maxquota + ')'
               : ''
             ) + (
               props.showvote ? 
@@ -201,8 +201,8 @@ function MultiChoice(props) {
             (
               props.showquota
               ? props.quota[0] === -1
-                ? ' 余量: ' + choice.maxquota
-                : ' (' + choice.quota + '/' + choice.maxquota + ')'
+                ? ' (总容量: ' + choice.maxquota + ')'
+                : ' (剩余 ' + choice.quota + '/' + choice.maxquota + ')'
               : ''
             ) + (
               props.showvote ? 
@@ -371,6 +371,7 @@ function Problem(props) {
     surplus({qid: props.problem.id}).then((res) => {
       // console.log(res.data);
       setQuota(res.data.surplus);
+      console.log(quota)
     })
   }
 
@@ -404,8 +405,8 @@ function Problem(props) {
           {' '}
           {props.problem.description}
         </Typography>
-        {isSingleChoice(props.problem) && <SingleChoice {...props} />}
-        {isMultiChoice(props.problem) && <MultiChoice {...props} />}
+        {isSingleChoice(props.problem) && <SingleChoice {...props} quota={quota} />}
+        {isMultiChoice(props.problem) && <MultiChoice {...props} quota={quota}/>}
         {isFillBlank(props.problem) && <FillBlanks {...props} />}
         {isShortAnswer(props.problem) && <ShortAnswer {...props} />}
         {isScoring(props.problem) && <Scoring {...props} />}
