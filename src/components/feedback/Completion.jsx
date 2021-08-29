@@ -79,7 +79,7 @@ function DetailDialog({ open, setOpen, data }) {
     {
       field: 'author',
       headerName: '提交者',
-      width: '85',
+      width: 121,
       type: 'string',
     },
     {
