@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttons: {},
   loginForm: {
-    marginBottom: theme.spacing(4)
+    marginBottom: theme.spacing(4),
   },
   warning: {
     color: 'red',
@@ -86,8 +86,8 @@ export default function FillPage(props) {
 
   useEffect(() => {
     fill({ hash: id }).then((res) => {
-      console.log(res);
-      setData(res.data);
+      console.log(res)
+      setData(res.data)
       if (res.data.result === 1) {
         const ori = res.data.questions
         const settings = res.data
@@ -139,7 +139,7 @@ export default function FillPage(props) {
 
   function checkMust() {
     let res = true,
-    tmp = ansList.slice()
+      tmp = ansList.slice()
     Questionare.map((problem, index) => {
       if (problem.must) {
         switch (problem.kind) {
@@ -183,16 +183,14 @@ export default function FillPage(props) {
   function handleClick() {
     // console.log({id: questionID, results: ansList})
     if (checkMust()) {
-			let tmp = { qid: questionID, results: ansList };
-			if (props.need > 1) {
-				tmp = {...tmp, phone: props.phone}
-			}
-			submit(tmp).then((res) => {
-				// console.log(res);
-				enqueueSnackbar('提交成功，感谢您的回答', { variant: 'success' })
-        props.setSubmit(res.data);
-				// history.replace('/finish')
-				props.setState(3)
+      let tmp = { qid: questionID, results: ansList }
+      if (props.need > 1) {
+        tmp = { ...tmp, phone: props.phone }
+      }
+      submit(tmp).then((res) => {
+        // console.log(res);
+        enqueueSnackbar('提交成功，感谢您的回答', { variant: 'success' })
+        history.replace('/finish', { ...props.finishData, result: res.data })
       })
     } else {
       enqueueSnackbar('有必做题尚未完成：' + getTodoID(), {
@@ -230,7 +228,7 @@ export default function FillPage(props) {
                   showindex={data.show_number}
                   showquota={problem.quota[0] === -1 ? false : true}
                   showvote={data.type === 3 || data.type === 1}
-									fillmode={true}
+                  fillmode={true}
                   key={problem.key}
                   updateAns={(ans) => handleAns(problem.key, ans)}
                 />
