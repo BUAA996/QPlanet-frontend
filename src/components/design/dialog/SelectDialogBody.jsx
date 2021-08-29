@@ -71,9 +71,13 @@ function SelectRow(props) {
             }}
             error={isNaN(props.choiceContent.limit)
             || props.choiceContent.limit < 0
-            || Math.ceil(props.choiceContent.limit) !== props.choiceContent.limit}
+            || props.choiceContent.limit % 1 !== 0
+            }
+
             helperText={(isNaN(props.choiceContent.limit) || props.choiceContent.limit < 0
-              || Math.ceil(props.choiceContent.limit) !== props.choiceContent.limit) && "请输入正整数"}
+              || props.choiceContent.limit % 1 !== 0
+            )
+            && "请输入正整数"}
             type="number"
             shrink
             fullWidth

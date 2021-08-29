@@ -137,9 +137,10 @@ function QuestionEditDialog(props) {
       enqueueSnackbar("选择题选项不能为空", {variant: 'error'});
       return;
     }
+    console.log(choices)
     if ((kind == '0' || kind == '1') && props.type === "SIGNUP" && hasLimit &&
       choices
-        .map((x) => isNaN(x.limit) || x.limit < 0 || Math.ceil(x.limit) !== x.limit)
+        .map((x) => isNaN(x.limit) || x.limit < 0 || x.limit % 1 !== 0)
         .reduce((x, y) => x || y)) {
 
       enqueueSnackbar("选项限额非法", {variant: 'error'});
@@ -154,7 +155,7 @@ function QuestionEditDialog(props) {
         enqueueSnackbar("题目分值不得小于零", {variant: 'error'});
         return;
       }
-      if (Math.ceil(score) !== score) {
+      if (score % 1 !== 0) {
         enqueueSnackbar("题目分值不得为小数", {variant: 'error'});
         return;
       }
