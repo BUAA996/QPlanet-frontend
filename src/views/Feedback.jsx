@@ -166,7 +166,6 @@ function Feedback() {
     if (isLogin) {
       getStatistics({ hash: hashcode })
         .then((res) => {
-          console.log(res.data)
           if (res.data.result === 1) {
             let map = [
               '单选题',
