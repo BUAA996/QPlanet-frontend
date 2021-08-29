@@ -101,7 +101,7 @@ function IntroTemplate({ open, setOpen, steps }) {
               src={steps[activeStep].photo}
               alt={steps[activeStep].label}
               style={{
-                objectFit: 'scale-down',
+                height: '100%',
                 borderRadius: '10px',
                 userSelect: 'none',
               }}

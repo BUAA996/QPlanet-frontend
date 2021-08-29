@@ -1,11 +1,9 @@
-import { makeStyles } from '@material-ui/core/styles'
 import IntroTemplate from './IntroTemplate'
-
-const useStyles = makeStyles((theme) => ({}))
+import img1 from 'assets/intro_img/intro_vote/1.png'
+import img2 from 'assets/intro_img/intro_vote/2.png'
+import img3 from 'assets/intro_img/intro_vote/3.png'
 
 function Apply({ open, setOpen }) {
-  const classes = useStyles()
-
   return (
     <IntroTemplate
       open={open}
@@ -13,15 +11,15 @@ function Apply({ open, setOpen }) {
       steps={[
         {
           label: '添加投票题型',
-          photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
+          photo: img1,
         },
         {
           label: '添加候选选项',
-          photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
+          photo: img2,
         },
         {
           label: '查看投票结果',
-          photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
+          photo: img3,
         },
       ]}
     />

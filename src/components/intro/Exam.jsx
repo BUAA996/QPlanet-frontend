@@ -1,14 +1,9 @@
-import { makeStyles } from '@material-ui/core/styles'
 import IntroTemplate from './IntroTemplate'
 import img1 from 'assets/intro_img/intro_exam/1.png'
 import img2 from 'assets/intro_img/intro_exam/2.png'
 import img3 from 'assets/intro_img/intro_exam/3.png'
 
-const useStyles = makeStyles((theme) => ({}))
-
 function Apply({ open, setOpen }) {
-  const classes = useStyles()
-
   return (
     <IntroTemplate
       open={open}
