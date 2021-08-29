@@ -294,7 +294,7 @@ export default function FillPage(props) {
                 <Problem
                   problem={problem}
                   showindex={data.show_number}
-                  showquota={problem.quota[0] === -1 ? false : true}
+                  showquota={problem.quota[0] === -1 ? false : data.type === 5}
                   showvote={data.type === 3 || data.type === 1}
                   fillmode={true}
                   key={problem.key}
