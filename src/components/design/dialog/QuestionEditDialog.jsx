@@ -103,9 +103,6 @@ function QuestionEditDialog(props) {
     }
   }
 
-  const handleChangeScore = (event) => {
-    setScore(event.target.value)
-  }
 
   useEffect(() => {
     if (!Boolean(choices)) {
@@ -287,7 +284,10 @@ function QuestionEditDialog(props) {
                   label="题目分值"
                   value={score}
                   type="number"
-                  onChange={handleChangeScore}
+                  onChange={(event) => {
+                    // console.log(event.target)
+                    setScore(parseInt(event.target.value))
+                  }}
                   inputProps={{
                     size: 10
                   }}
