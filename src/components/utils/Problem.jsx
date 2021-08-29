@@ -69,9 +69,9 @@ function ShowClasses(props) {
     <Container fixed className={classes.title}>
       <Grid
         container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="center"
+        direction='row'
+        justifyContent='flex-start'
+        alignItems='center'
       >
         <Grid item xs={7}>
           <Typography component='span' className={classes.must}>
@@ -81,9 +81,7 @@ function ShowClasses(props) {
             {props.title}
           </Typography>
         </Grid>
-        <Grid item>
-          {props.children}
-        </Grid>
+        <Grid item>{props.children}</Grid>
       </Grid>
     </Container>
   )
@@ -108,11 +106,19 @@ function SingleChoice(props) {
     setChoice(tmp)
   }, [props])
 
+  useEffect(() => {
+    if (props.problem.initialValue !== undefined) {
+      setValue('' + props.problem.initialValue[0])
+    }
+  }, [])
+
   const handleChange = (event) => {
-    setValue(event.target.value)
-    // console.log(event.target.value)
-    for (let i = 0; i < choice.length; ++i)
-      if (event.target.value === choice[i].key) props.updateAns(['' + i])
+    if (props.problem.initialValue === undefined) {
+      setValue(event.target.value)
+      // console.log(event.target.value)
+      for (let i = 0; i < choice.length; ++i)
+        if (event.target.value === choice[i].key) props.updateAns(['' + i])
+    }
   }
 
   return (
@@ -127,18 +133,14 @@ function SingleChoice(props) {
           control={<Radio key={choice.key} />}
           label={
             choice.content +
-            (
-              props.showquota
+            (props.showquota
               ? props.quota[0] === -1
                 ? ' (总容量: ' + choice.maxquota + ')'
                 : ' (剩余 ' + choice.quota + '/' + choice.maxquota + ')'
-              : ''
-            ) + (
-              props.showvote ? 
-              ' (此选项已被选择 ' + props.problem.count[index] + ' 次)' 
-              : ''
-            )
-            
+              : '') +
+            (props.showvote
+              ? ' (此选项已被选择 ' + props.problem.count[index] + ' 次)'
+              : '')
           }
           key={choice.key}
         />
@@ -149,10 +151,12 @@ function SingleChoice(props) {
 
 function MultiChoice(props) {
   const classes = useStyles()
-
   const [choice, setChoice] = useState([])
+  var option = {}
+  props.problem.choices.map((choice) => (option[choice.key] = false))
+  const [state, setState] = useState(option)
+
   useEffect(() => {
-    // console.log(props)
     let tmp = []
     for (let i = 0; i < props.problem.choices.length; ++i) {
       tmp.push({
@@ -163,26 +167,30 @@ function MultiChoice(props) {
       })
     }
     setChoice(tmp)
+    if (props.problem.initialValue !== undefined) {
+      let newState = {}
+      tmp.forEach((item) => {
+        newState[item.key] = props.problem.initialValue.includes(
+          Number(item.key)
+        )
+      })
+      setState(newState)
+    }
   }, [props])
 
-  // console.log(props.quota)
-
-  var option = {}
-  props.problem.choices.map((choice) => (option[choice.key] = false))
-
-  const [state, setState] = useState(option)
-
   const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked })
-    let singleAns = []
-    for (let i = 0; i < choice.length; ++i) {
-      if (choice[i].key === event.target.name) {
-        if (event.target.checked) singleAns.push('' + i)
-      } else {
-        if (state[choice[i].key]) singleAns.push('' + i)
+    if (props.problem.initialValue === undefined) {
+      setState({ ...state, [event.target.name]: event.target.checked })
+      let singleAns = []
+      for (let i = 0; i < choice.length; ++i) {
+        if (choice[i].key === event.target.name) {
+          if (event.target.checked) singleAns.push('' + i)
+        } else {
+          if (state[choice[i].key]) singleAns.push('' + i)
+        }
       }
+      props.updateAns(singleAns)
     }
-    props.updateAns(singleAns)
   }
 
   return (
@@ -191,24 +199,21 @@ function MultiChoice(props) {
         <FormControlLabel
           control={
             <Checkbox
-              checked={choice[choice.key]}
+              checked={state[choice.key]}
               onChange={handleChange}
               name={choice.key}
             />
           }
           label={
             choice.content +
-            (
-              props.showquota
+            (props.showquota
               ? props.quota[0] === -1
                 ? ' (总容量: ' + choice.maxquota + ')'
                 : ' (剩余 ' + choice.quota + '/' + choice.maxquota + ')'
-              : ''
-            ) + (
-              props.showvote ? 
-              ' (此选项已被选择 ' + props.problem.count[index] + ' 次)' 
-              : ''
-            ) 
+              : '') +
+            (props.showvote
+              ? ' (此选项已被选择 ' + props.problem.count[index] + ' 次)'
+              : '')
           }
           key={choice.key}
         />
@@ -219,13 +224,17 @@ function MultiChoice(props) {
 
 function FillBlanks(props) {
   const classes = useStyles()
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(
+    props.problem.initialValue === undefined ? '' : props.problem.initialValue
+  )
 
   const handleChange = (event) => {
-    let len = props.problem.kind === 2 ? 50 : 500
-    if (event.target.value.length <= len + 1) {
-      setValue(event.target.value)
-      props.updateAns([event.target.value])
+    if (props.problem.initialValue === undefined) {
+      let len = props.problem.kind === 2 ? 50 : 500
+      if (event.target.value.length <= len + 1) {
+        setValue(event.target.value)
+        props.updateAns([event.target.value])
+      }
     }
   }
 
@@ -258,13 +267,17 @@ function FillBlanks(props) {
 
 function ShortAnswer(props) {
   const classes = useStyles()
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(
+    props.problem.initialValue === undefined ? '' : props.problem.initialValue
+  )
   const len = 500
 
   const handleChange = (event) => {
-    if (event.target.value.length <= len + 1) {
-      setValue(event.target.value)
-      props.updateAns([event.target.value])
+    if (props.problem.initialValue === undefined) {
+      if (event.target.value.length <= len + 1) {
+        setValue(event.target.value)
+        props.updateAns([event.target.value])
+      }
     }
   }
 
@@ -314,6 +327,7 @@ function Scoring(props) {
       <Grid item className={classes.scoring}>
         <Rating
           value={value}
+          name={'test'}
           onChange={(event, newValue) => {
             handleChange(newValue)
           }}
@@ -365,19 +379,19 @@ function Location(props) {
 
 function Problem(props) {
   const classes = useStyles()
-  const [quota, setQuota] = useState([-1]);
+  const [quota, setQuota] = useState([-1])
 
   function handleQuery() {
-    surplus({qid: props.problem.id}).then((res) => {
+    surplus({ qid: props.problem.id }).then((res) => {
       // console.log(res.data);
-      setQuota(res.data.surplus);
+      setQuota(res.data.surplus)
       console.log(quota)
     })
   }
 
   // console.log(props)
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} style={props.style}>
       <CardContent>
         <ShowClasses
           title={
@@ -387,26 +401,29 @@ function Problem(props) {
           }
           must={props.problem.must}
         >
-          {
-            props.fillmode && isChoice(props.problem) && props.showquota && 
-            <Button  
-              color="secondary" 
-              variant="contained"
-              size="small"
+          {props.fillmode && isChoice(props.problem) && props.showquota && (
+            <Button
+              color='secondary'
+              variant='contained'
+              size='small'
               onClick={() => handleQuery()}
             >
               刷新余量
             </Button>
-          }
+          )}
         </ShowClasses>
-        
+
         <Divider />
         <Typography className={classes.description}>
           {' '}
           {props.problem.description}
         </Typography>
-        {isSingleChoice(props.problem) && <SingleChoice {...props} quota={quota} />}
-        {isMultiChoice(props.problem) && <MultiChoice {...props} quota={quota}/>}
+        {isSingleChoice(props.problem) && (
+          <SingleChoice {...props} quota={quota} />
+        )}
+        {isMultiChoice(props.problem) && (
+          <MultiChoice {...props} quota={quota} />
+        )}
         {isFillBlank(props.problem) && <FillBlanks {...props} />}
         {isShortAnswer(props.problem) && <ShortAnswer {...props} />}
         {isScoring(props.problem) && <Scoring {...props} />}
@@ -483,5 +500,6 @@ export {
   isFillBlank,
   isShortAnswer,
   isScoring,
+  isChoice,
   ProblemSkeleton,
 }

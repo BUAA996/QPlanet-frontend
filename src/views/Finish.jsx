@@ -2,11 +2,14 @@ import { Card, Box, Typography, Button } from '@material-ui/core'
 import useTitle from 'hooks/useTitle'
 import { makeStyles } from '@material-ui/core/styles'
 import success from 'assets/success.png'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import ExamResult from 'components/finish/ExamResult'
+import VoteResult from 'components/finish/VoteResult'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '99vw',
+    width: '98vw',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-start',
@@ -23,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
   },
   word: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(2),
   },
   img: {
     marginTop: '15%',
@@ -31,98 +34,96 @@ const useStyles = makeStyles((theme) => ({
   },
   btn: {
     color: theme.palette.background.paper,
-    marginTop: '6%',
-    marginBottom: theme.spacing(4)
+    marginRight: '2.5%',
+    marginLeft: '2.5%',
   },
 }))
 
-const FORM_LEVEL = ['NORMAL', 'VOTING_BEFORE', 'VOTING_AFTER', 'VOTING_BOTH', 'VOTING_NO', 'SIGNUP', 'TESTING_SCORE', 'TESTING_CORRECTION', 'TESTING_BOTH', 'TESTING_NO']
-
-function Finish(props) {
+function Finish() {
   const classes = useStyles()
   const history = useHistory()
+  const location = useLocation()
+  const [showDetail, setShowDetail] = useState(false)
 
-  const type = props.type
+  const { type, fillData, result } = location.state
 
-  console.log(props)
+  console.log({ type, fillData, result })
   useTitle('填写已完成')
 
   return (
     <>
       <Box className={classes.root}>
-        <Card className={classes.card}>
-          <img src={success} alt='填写完成' className={classes.img} />
-          <Typography
-            variant='h5'
-            color='textPrimary'
-            className={classes.title}
-          >
-            提交成功
-          </Typography>
-
-          {
-            type !== "NORMAL" && type !== 'VOTING_NO' && type !== 'TESTING_NO' && type !== "SIGNUP" && 
-            <>
-              <Typography
-                variant='h5'
-                color='textPrimary'
-                className={classes.title}
+        {showDetail && ['VOTING_AFTER', 'VOTING_BOTH'].includes(type) && (
+          <VoteResult votes={result.votes} />
+        )}
+        {showDetail &&
+          ['TESTING_SCORE', 'TESTING_CORRECTION', 'TESTING_BOTH'].includes(
+            type
+          ) && (
+            <ExamResult
+              questions={fillData.questions}
+              stdAns={result.stand_ans}
+              score={result.score}
+              showType={type}
+            />
+          )}
+        {!showDetail && (
+          <Card className={classes.card}>
+            <img src={success} alt='填写完成' className={classes.img} />
+            <Typography
+              variant='h5'
+              color='textPrimary'
+              className={classes.title}
+            >
+              提交成功
+            </Typography>
+            <Typography
+              variant='body1'
+              color='textSecondary'
+              className={classes.word}
+            >
+              问卷到此结束，感谢您的参与
+            </Typography>
+            <Box
+              display='flex'
+              justifyContent='center'
+              width='100%'
+              marginTop='10%'
+              marginBottom='6%'
+            >
+              <Button
+                variant='contained'
+                color='primary'
+                size='large'
+                onClick={() => {
+                  history.push('/')
+                }}
+                className={classes.btn}
               >
-                在这里显示一堆奇怪的问卷结果（X
-              </Typography>
-              {
-                (type === 'VOTING_AFTER' || type === 'VOTING_BOTH') && 
-                <Typography
-                  variant='body1'
-                  color='textSecondary'
-                  className={classes.word}
+                返回首页
+              </Button>
+              {[
+                'VOTING_AFTER',
+                'VOTING_BOTH',
+                'TESTING_SCORE',
+                'TESTING_CORRECTION',
+                'TESTING_BOTH',
+              ].includes(type) && (
+                <Button
+                  variant='contained'
+                  color='primary'
+                  size='large'
+                  onClick={() => {
+                    setShowDetail(true)
+                  }}
+                  className={classes.btn}
                 >
-                  这里大概需要展示投票结果
-                </Typography>
-              }
-              {
-                (type === 'TESTING_SCORE' || type === 'TESTING_BOTH') && 
-                <Typography
-                  variant='body1'
-                  color='textSecondary'
-                  className={classes.word}
-                >
-                  这里大概需要展示考试得分
-                </Typography>
-              }
-              {
-                (type === 'TESTING_CORRECTION' || type === 'TESTING_BOTH') && 
-                <Typography
-                  variant='body1'
-                  color='textSecondary'
-                  className={classes.word}
-                >
-                  这里大概需要展示考试答案
-                </Typography>
-              }
-            </>
-          }
-
-
-          <Typography
-            variant='body1'
-            color='textSecondary'
-            className={classes.word}
-          >
-            问卷到此结束，感谢您的参与
-          </Typography>
-          <Button
-            variant='contained'
-            color='primary'
-            size='large'
-            onClick={() => {
-              history.push('/')
-            }}
-            className={classes.btn}
-          >
-            返回首页
-          </Button>
-        </Card>
+                  查看详情
+                </Button>
+              )}
+            </Box>
+          </Card>
+        )}
       </Box>
     </>
   )
