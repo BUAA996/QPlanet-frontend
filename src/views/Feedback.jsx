@@ -144,9 +144,14 @@ function Feedback() {
             let crossData = {
               qid: res.data.qid,
               choice: res.data.questions
-                .filter((item) => item.id !== undefined)
-                .map((item) => {
-                  return { id: item.id, content: item.content }
+                .filter((item) => item.type <= 1)
+                .map((item, index) => {
+                  return {
+                    id: index,
+                    content: item.content,
+                    sendId: item.id,
+                    option: item.option,
+                  }
                 }),
             }
             setCrossData(crossData)

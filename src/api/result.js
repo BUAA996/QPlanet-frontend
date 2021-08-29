@@ -19,7 +19,19 @@ function checkCaptcha(data) {
 }
 
 function surplus(data) {
-  return axios.post('question/surplus/', data);
+  return axios.post('question/surplus/', data)
 }
 
-export { getStatistics, downloadStatistics, sendCaptcha, checkCaptcha, surplus}
+// cross_analyze
+function crossAnalyze(data) {
+  return axios.post('result/cross_analyze/', data)
+}
+
+export {
+  getStatistics,
+  downloadStatistics,
+  crossAnalyze,
+  sendCaptcha,
+  checkCaptcha,
+  surplus,
+}
