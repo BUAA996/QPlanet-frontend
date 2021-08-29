@@ -14,7 +14,15 @@ import { Close } from '@material-ui/icons'
 import { useState } from 'react'
 import Graph from './Graph'
 import { useSnackbar } from 'notistack'
-import { DataGrid, GridToolbar } from '@mui/x-data-grid'
+import {
+  DataGrid,
+  GridExportCsvOptions,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+} from '@mui/x-data-grid'
 import { localeText } from 'utils.js'
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +34,17 @@ const useStyles = makeStyles((theme) => ({
     right: theme.spacing(1),
   },
 }))
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+      <GridToolbarExport csvOptions={{ utf8WithBom: true }} />
+    </GridToolbarContainer>
+  )
+}
 
 function DialogTemplate({ open, setOpen, title, children }) {
   const classes = useStyles()
@@ -76,7 +95,7 @@ function DetailDialog({ open, setOpen, data }) {
           disableSelectionOnClick
           localeText={localeText}
           components={{
-            Toolbar: GridToolbar,
+            Toolbar: CustomToolbar,
           }}
           rowsPerPageOptions={[5]}
           componentsProps={{ panel: { disablePortal: true } }}

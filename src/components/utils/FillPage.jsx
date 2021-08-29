@@ -69,8 +69,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1.2em',
   },
   info: {
-    color: theme.palette.text.secondary
-  }
+    color: theme.palette.text.secondary,
+  },
 }))
 
 export default function FillPage(props) {
@@ -90,7 +90,7 @@ export default function FillPage(props) {
   useEffect(() => {
     fill({ hash: id }).then((res) => {
       // console.log(res);
-      setData(res.data);
+      setData(res.data)
       if (res.data.result === 1) {
         const ori = res.data.questions
         const settings = res.data
@@ -142,7 +142,7 @@ export default function FillPage(props) {
 
   function checkMust() {
     let res = true,
-    tmp = ansList.slice()
+      tmp = ansList.slice()
     Questionare.map((problem, index) => {
       if (problem.must) {
         switch (problem.kind) {
@@ -154,7 +154,11 @@ export default function FillPage(props) {
           case 5:
           case 6:
           case 7:
-            if (tmp[index].answer.length === 0 || tmp[index].answer[0] == '' || tmp[index].answer[0] == null)
+            if (
+              tmp[index].answer.length === 0 ||
+              tmp[index].answer[0] == '' ||
+              tmp[index].answer[0] == null
+            )
               res = false
             break
           default:
@@ -179,7 +183,11 @@ export default function FillPage(props) {
           case 5:
           case 6:
           case 7:
-            if (tmp[index].answer.length === 0 || tmp[index].answer[0] == '' || tmp[index].answer[0] == null)
+            if (
+              tmp[index].answer.length === 0 ||
+              tmp[index].answer[0] == '' ||
+              tmp[index].answer[0] == null
+            )
               if (res === '') res = res + (index + 1)
               else res = res + ', ' + (index + 1)
             break
@@ -192,9 +200,9 @@ export default function FillPage(props) {
   }
 
   function handleClick() {
-    if (props.demo) { 
-			enqueueSnackbar('预览模式下无法提交', { variant: 'warning' })
-      return ;
+    if (props.demo) {
+      enqueueSnackbar('预览模式下无法提交', { variant: 'warning' })
+      return
     }
     // console.log({id: questionID, results: ansList})
     if (checkMust()) {
@@ -225,12 +233,13 @@ export default function FillPage(props) {
             alignItems='center'
             spacing={3}
           >
-          {
-            props.demo && 
-            <Grid item className={classes.description}>
-              <Typography varient='h6' className={classes.info}>"注意：预览模式下仅展示问卷实际效果，不可提交"</Typography>
-            </Grid>
-          }
+            {props.demo && (
+              <Grid item className={classes.description}>
+                <Typography varient='h6' className={classes.info}>
+                  "注意：预览模式下仅展示问卷实际效果，不可提交"
+                </Typography>
+              </Grid>
+            )}
             <Grid item className={classes.title}>
               <Typography variant='h4'>{title}</Typography>
             </Grid>
