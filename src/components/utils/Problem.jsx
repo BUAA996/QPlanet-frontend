@@ -390,7 +390,8 @@ function Problem(props) {
   }
 
   useEffect(() => {
-    handleQuery();
+    if(isChoice(props.problem) && props.showquota && props.fillmode) 
+      handleQuery();
   }, [])
 
   // console.log(props)
