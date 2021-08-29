@@ -389,6 +389,10 @@ function Problem(props) {
     })
   }
 
+  useEffect(() => {
+    handleQuery();
+  }, [])
+
   // console.log(props)
   return (
     <Card className={classes.root} style={props.style}>
