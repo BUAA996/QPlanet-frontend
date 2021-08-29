@@ -145,8 +145,13 @@ function Feedback() {
               qid: res.data.qid,
               choice: res.data.questions
                 .filter((item) => item.type <= 1)
-                .map((item) => {
-                  return { id: item.id, content: item.content }
+                .map((item, index) => {
+                  return {
+                    id: index,
+                    content: item.content,
+                    sendId: item.id,
+                    option: item.option,
+                  }
                 }),
             }
             setCrossData(crossData)

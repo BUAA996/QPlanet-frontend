@@ -11,6 +11,7 @@ import {
 import { useState } from 'react'
 import { useSnackbar } from 'notistack'
 import { Autorenew } from '@material-ui/icons'
+import Graph from './Graph'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +36,8 @@ function Cross({ qid, choice }) {
   const [second, setSecond] = useState('')
   const [showGraph, setShowGraph] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
+  const [index, setIndex] = useState(0)
+  const [graphData, setGraphData] = useState([])
 
   return (
     <Card className={classes.root}>
@@ -97,45 +100,96 @@ function Cross({ qid, choice }) {
           color='primary'
           variant='contained'
           onClick={() => {
-            setShowGraph((showGraph) => !showGraph)
+            if (first === '' || second === '') {
+              enqueueSnackbar('自变量和因变量均不能缺失', {
+                variant: 'warning',
+              })
+              return
+            }
+
+            if (!showGraph) {
+              setShowGraph(true)
+            }
           }}
         >
           交叉分析
         </Button>
         <Fade in={showGraph} timeout={300}>
-          <Button color='primary' variant='contained'>
+          <Button
+            color='primary'
+            variant={index === 1 ? 'contained' : 'outlined'}
+            onClick={() => {
+              setIndex((index) => {
+                return index === 1 ? 0 : 1
+              })
+            }}
+          >
             表格
           </Button>
         </Fade>
         <Fade in={showGraph} timeout={400}>
-          <Button color='primary' variant='contained'>
+          <Button
+            color='primary'
+            variant={index === 3 ? 'contained' : 'outlined'}
+            onClick={() => {
+              setIndex((index) => {
+                return index === 3 ? 0 : 3
+              })
+            }}
+          >
             柱状图
           </Button>
         </Fade>
         <Fade in={showGraph} timeout={500}>
-          <Button color='primary' variant='contained'>
+          <Button
+            color='primary'
+            variant={index === 4 ? 'contained' : 'outlined'}
+            onClick={() => {
+              setIndex((index) => {
+                return index === 4 ? 0 : 4
+              })
+            }}
+          >
             条形图
           </Button>
         </Fade>
         <Fade in={showGraph} timeout={600}>
-          <Button color='primary' variant='contained'>
+          <Button
+            color='primary'
+            variant={index === 6 ? 'contained' : 'outlined'}
+            onClick={() => {
+              setIndex((index) => {
+                return index === 6 ? 0 : 6
+              })
+            }}
+          >
             雷达图
           </Button>
         </Fade>
         <Fade in={showGraph} timeout={700}>
-          <Button color='primary' variant='contained'>
+          <Button
+            color='primary'
+            variant={index === 7 ? 'contained' : 'outlined'}
+            onClick={() => {
+              setIndex((index) => {
+                return index === 7 ? 0 : 7
+              })
+            }}
+          >
             折线图
           </Button>
         </Fade>
       </Box>
-      {showGraph && (
+      {showGraph && index !== 0 && (
         <Fade in={showGraph} timeout={1000}>
           <Box
             style={{ backgroundColor: 'blue' }}
             width='100%'
             height='400px'
             marginTop='3%'
-          ></Box>
+          >
+            {index !== 1 && <Graph type={index} data={graphData} />}
+          </Box>
         </Fade>
       )}
     </Card>
