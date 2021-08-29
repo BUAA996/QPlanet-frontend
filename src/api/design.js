@@ -61,15 +61,15 @@ async function transformGet(data) {
       settings.displayAns = false;
       break;
   }
-
+  const date = new Date().toISOString().substr(0, 16);
   settings.showIdx = data.show_number;
   settings.selectLessScore = data.select_less_score;
   settings.randomOrder = data.random_order;
-  settings.hasQuota = data.quota !== -1;
+  settings.hasQuota = data.quota !== -1 && data.quota !== null && data.quota !== undefined;
   settings.quota = data.quota;
   settings.certification = data.certification;
-  settings.hasDdl = !!data.deadline ;
-  settings.deadline = data.deadline;
+  settings.hasDdl = !!data.deadline;
+  settings.deadline = data.deadline ?? date.substr(0, 10) + ' ' + date.substr(11, 5);
 
   return {
     qid: data.qid,
@@ -99,25 +99,25 @@ function transformSave(data) {
 
   let type = 0;
   const settings = data.settings;
-  if(data.type === "VOTE"){
-    if(settings.displayBefore && ! settings.displayAfter)
+  if (data.type === "VOTE") {
+    if (settings.displayBefore && !settings.displayAfter)
       type = 1;
-    else if(! settings.displayBefore && settings.displayAfter)
+    else if (!settings.displayBefore && settings.displayAfter)
       type = 2
-    else if(settings.displayBefore && settings.displayAfter)
+    else if (settings.displayBefore && settings.displayAfter)
       type = 3
-    else if(! settings.displayBefore && ! settings.displayAfter)
+    else if (!settings.displayBefore && !settings.displayAfter)
       type = 4
-  }else if(data.type === "SIGNUP"){
+  } else if (data.type === "SIGNUP") {
     type = 5;
-  }else if(data.type === "EXAM"){
-    if(settings.displayScore && ! settings.displayAns)
+  } else if (data.type === "EXAM") {
+    if (settings.displayScore && !settings.displayAns)
       type = 6;
-    else if(!settings.displayScore && settings.displayAns)
+    else if (!settings.displayScore && settings.displayAns)
       type = 7;
-    else if(settings.displayScore && settings.displayAns)
+    else if (settings.displayScore && settings.displayAns)
       type = 8;
-    else if(! settings.displayScore && ! settings.displayAns)
+    else if (!settings.displayScore && !settings.displayAns)
       type = 9;
   }
 
@@ -126,27 +126,28 @@ function transformSave(data) {
     qid: data.qid,
     title: data.title,
     description: data.detail,
-    deadline: data.settings.hasDdl? data.settings.deadline: null,/////// data.settings.deadline, ////////
+    deadline: data.settings.hasDdl ? data.settings.deadline : null,/////// data.settings.deadline, ////////
     duration: 300,
     random_order: data.settings.randomOrder,
     certification: data.settings.certification,
     show_number: data.settings.showIdx,
-    type: type ,
-    quota: data.settings.hasQuota? data.settings.quota : -1,
+    type: type,
+    quota: data.settings.hasQuota ? data.settings.quota : -1,
     questions: data.questions.map((x) => {
-      return {
-        id: x.id,
-        type: x.kind,
-        content: x.title,
-        is_required: x.must === 1,
-        is_essential: x.isEssential ?? false,
-        description: x.detail ?? "",
-        option: x.choices,
-        lower: x.lower ?? 0,
-        upper: x.upper ?? 500,
-        requirement: x.requirement ?? 0,
-        standard_answer: x.standardAnswer
-      };
+        return {
+          id: x.id,
+          type: x.kind,
+          content: x.title,
+          is_required: x.must === 1,
+          is_essential: x.isEssential ?? false,
+          quota: x.quota,
+          description: x.detail ?? "",
+          option: x.choices,
+          lower: x.lower ?? 0,
+          upper: x.upper ?? 500,
+          requirement: x.requirement ?? 0,
+          standard_answer: x.standardAnswer
+        };
       }
     )
   }
@@ -156,7 +157,7 @@ async function saveQuestionaire(info) {
   console.log("push", info)
   console.log("info", JSON.stringify(info))
   const ans = await axios.post("questionnaire/modify/", info);
-  console.log("get save" , ans)
+  console.log("get save", ans)
   return ans;
 }
 
