@@ -121,7 +121,7 @@ export default function FillPage(props) {
         }
       })
     } else {
-      fill({ hash: id }).then((res) => {
+      view({ hash: id }).then((res) => {
         // console.log(res);
         setData(res.data)
         if (res.data.result === 1) {
