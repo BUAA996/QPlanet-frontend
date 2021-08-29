@@ -12,15 +12,15 @@ function Apply({ open, setOpen }) {
       setOpen={setOpen}
       steps={[
         {
-          label: '步骤一',
+          label: '添加考试题型',
           photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
         },
         {
-          label: '步骤二',
+          label: '设置正确答案',
           photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
         },
         {
-          label: '步骤三',
+          label: '设置题目分值',
           photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
         },
       ]}

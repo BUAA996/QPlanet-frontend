@@ -12,15 +12,15 @@ function Apply({ open, setOpen }) {
       setOpen={setOpen}
       steps={[
         {
-          label: '步骤一',
+          label: '添加投票题型',
           photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
         },
         {
-          label: '步骤二',
+          label: '添加候选选项',
           photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
         },
         {
-          label: '步骤三',
+          label: '查看投票结果',
           photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
         },
       ]}

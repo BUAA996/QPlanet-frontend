@@ -6,7 +6,7 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core'
-import { fill, view, submit } from 'api/questionaire'
+import { fill, submit, view } from 'api/questionaire'
 import { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Problem from 'components/utils/Problem'
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttons: {},
   loginForm: {
-    marginBottom: theme.spacing(4)
+    marginBottom: theme.spacing(4),
   },
   warning: {
     color: 'red',
@@ -62,8 +62,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1.2em',
   },
   info: {
-    color: theme.palette.text.secondary
-  }
+    color: theme.palette.text.secondary,
+  },
 }))
 
 export default function LogicalFillPage(props) {
@@ -176,8 +176,8 @@ export default function LogicalFillPage(props) {
 
   function checkMust() {
     let res = true,
-    tmp = ansList.slice()
-    console.log(tmp);
+      tmp = ansList.slice()
+    console.log(tmp)
     Questionare.map((problem, index) => {
       if (problem.must) {
         switch (problem.kind) {
@@ -189,7 +189,11 @@ export default function LogicalFillPage(props) {
           case 5:
           case 6:
           case 7:
-            if (tmp[index].answer.length === 0 || tmp[index].answer[0] == '' || tmp[index].answer[0] == null)
+            if (
+              tmp[index].answer.length === 0 ||
+              tmp[index].answer[0] == '' ||
+              tmp[index].answer[0] == null
+            )
               res = false
             break
           default:
@@ -214,7 +218,11 @@ export default function LogicalFillPage(props) {
           case 5:
           case 6:
           case 7:
-            if (tmp[index].answer.length === 0 || tmp[index].answer[0] == '' || tmp[index].answer[0] == null)
+            if (
+              tmp[index].answer.length === 0 ||
+              tmp[index].answer[0] == '' ||
+              tmp[index].answer[0] == null
+            )
               if (res === '') res = res + (index + 1)
               else res = res + ', ' + (index + 1)
             break
@@ -227,16 +235,16 @@ export default function LogicalFillPage(props) {
   }
 
   function handleClick() {
-    if (props.demo) { 
-			enqueueSnackbar('预览模式下无法提交', { variant: 'warning' })
-      return ;
+    if (props.demo) {
+      enqueueSnackbar('预览模式下无法提交', { variant: 'warning' })
+      return
     }
     if (checkMust()) {
-			let tmp = { qid: questionID, results: ansList };
-			if (props.need > 1) {
-				tmp = {...tmp, phone: props.phone}
-			}
-			submit(tmp).then((res) => {
+      let tmp = { qid: questionID, results: ansList }
+      if (props.need > 1) {
+        tmp = { ...tmp, phone: props.phone }
+      }
+      submit(tmp).then((res) => {
         if (res.data.result === 1) {
           enqueueSnackbar('提交成功，感谢您的回答', { variant: 'success' })
           history.replace('/finish', { ...props.finishData, result: res.data })
@@ -251,50 +259,49 @@ export default function LogicalFillPage(props) {
     }
   }
 
-	function getVisableQues() {
-		let vis = new Array(Questionare.length), hasPre = new Array(Questionare.length);
-		if (vis.length === 0) return [];
-		// 填过答案的，显示出来
-		for (let i = 0;i < Questionare.length; ++i) {
-			vis[i] = ansList[i] === undefined ? false : ansList[i].answer[0] !== "";
-			hasPre[i] = false;
-		}
-		// 没有前置题目的，显示出来
-		for (let i = 0;i < Questionare.length; ++i) {
-			let edge = Questionare[i].logic.nextProblem;
-			for (let j = 0;j < edge.length; ++j) {
-				if (edge[j] != -1) 
-					hasPre[edge[j]] = true; 
-			}
-		}
+  function getVisableQues() {
+    let vis = new Array(Questionare.length),
+      hasPre = new Array(Questionare.length)
+    if (vis.length === 0) return []
+    // 填过答案的，显示出来
+    for (let i = 0; i < Questionare.length; ++i) {
+      vis[i] = ansList[i] === undefined ? false : ansList[i].answer[0] !== ''
+      hasPre[i] = false
+    }
+    // 没有前置题目的，显示出来
+    for (let i = 0; i < Questionare.length; ++i) {
+      let edge = Questionare[i].logic.nextProblem
+      for (let j = 0; j < edge.length; ++j) {
+        if (edge[j] != -1) hasPre[edge[j]] = true
+      }
+    }
 
-		for (let i = 0;i < Questionare.length; ++i) {
-			if (hasPre[i] === false) 
-				vis[i] = true;
-		}
+    for (let i = 0; i < Questionare.length; ++i) {
+      if (hasPre[i] === false) vis[i] = true
+    }
 
-		// 存在前置题目已完成时，显示出来
-		for (let i = 0;i < Questionare.length; ++i) if (vis[i]) {
-			// console.log('ans' , ansList[i]);
-			if (ansList[i] === undefined) break;
-			let ans = ansList[i].answer; 
-			let edge = Questionare[i].logic.nextProblem;
-			let type = isChoice(Questionare[i]);
-			for (let j = 0;j < ans.length; ++j) {
-				let u = ans[j];
-				if (u === "") continue;
-				if (type == false) vis[edge[0]] = true
-				vis[edge[u]] = true;
-			}
-		}
+    // 存在前置题目已完成时，显示出来
+    for (let i = 0; i < Questionare.length; ++i)
+      if (vis[i]) {
+        // console.log('ans' , ansList[i]);
+        if (ansList[i] === undefined) break
+        let ans = ansList[i].answer
+        let edge = Questionare[i].logic.nextProblem
+        let type = isChoice(Questionare[i])
+        for (let j = 0; j < ans.length; ++j) {
+          let u = ans[j]
+          if (u === '') continue
+          if (type == false) vis[edge[0]] = true
+          vis[edge[u]] = true
+        }
+      }
 
-		let tmp = []
-		for (let i = 0;i < Questionare.length; ++i)
-			if (vis[i])	
-				tmp.push(Questionare[i]);
-		// console.log('tmp', tmp);
-		return tmp;	
-	}
+    let tmp = []
+    for (let i = 0; i < Questionare.length; ++i)
+      if (vis[i]) tmp.push(Questionare[i])
+    // console.log('tmp', tmp);
+    return tmp
+  }
 
   return (
     <>
@@ -307,12 +314,13 @@ export default function LogicalFillPage(props) {
             alignItems='center'
             spacing={3}
           >
-            {
-              props.demo && 
+            {props.demo && (
               <Grid item className={classes.description}>
-                <Typography varient='h6' className={classes.info}>"注意：预览模式下仅展示问卷实际效果，不可提交"</Typography>
+                <Typography varient='h6' className={classes.info}>
+                  "注意：预览模式下仅展示问卷实际效果，不可提交"
+                </Typography>
               </Grid>
-            }
+            )}
             <Grid item className={classes.title}>
               <Typography variant='h4'>{title}</Typography>
             </Grid>
@@ -331,7 +339,7 @@ export default function LogicalFillPage(props) {
                   showindex={data.show_number}
                   showquota={problem.quota[0] === -1 ? false : true}
                   showvote={data.type === 3 || data.type === 1}
-									fillmode={true}
+                  fillmode={true}
                   key={problem.key}
                   updateAns={(ans) => handleAns(problem.key, ans)}
                 />

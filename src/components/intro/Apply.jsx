@@ -12,15 +12,15 @@ function Apply({ open, setOpen }) {
       setOpen={setOpen}
       steps={[
         {
-          label: '步骤一',
+          label: '创建报名问卷',
           photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
         },
         {
-          label: '步骤二',
+          label: '限额填写问卷',
           photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
         },
         {
-          label: '步骤三',
+          label: '分享报名问卷',
           photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
         },
       ]}
