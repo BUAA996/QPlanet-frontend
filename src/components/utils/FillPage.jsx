@@ -89,13 +89,8 @@ export default function FillPage(props) {
 
   useEffect(() => {
     fill({ hash: id }).then((res) => {
-<<<<<<< HEAD
-      console.log(res)
-      setData(res.data)
-=======
       // console.log(res);
       setData(res.data);
->>>>>>> withinlover
       if (res.data.result === 1) {
         const ori = res.data.questions
         const settings = res.data
@@ -280,10 +275,7 @@ export default function FillPage(props) {
     </>
   )
 }
-<<<<<<< HEAD
-=======
 
 FillPage.defaultProps = {
   demo: false,
 }
->>>>>>> withinlover

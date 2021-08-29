@@ -378,23 +378,11 @@ function Fill() {
             {vis && <CountDown time={endTime} />}
           </Grid>
           <Grid item xs={8}>
-<<<<<<< HEAD
-            <FillPage
-              setState={setState}
-              phone={phone}
-              need={data.requirement}
-              finishData={{
-                type: FORM_LEVEL[ques.type],
-                fillData: ques,
-              }}
-            />
-=======
             {
               ques.type === 0 ? 
               <LogicalFillPage setState={setState} phone={phone} need={data.requirement} setSubmit={setRes} /> :
               <FillPage setState={setState} phone={phone} need={data.requirement} setSubmit={setRes} />
             }
->>>>>>> withinlover
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
