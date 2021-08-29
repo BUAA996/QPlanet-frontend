@@ -9,7 +9,7 @@ import VoteResult from 'components/finish/VoteResult'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '99vw',
+    width: '98vw',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-start',
