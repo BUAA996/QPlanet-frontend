@@ -81,7 +81,7 @@ function LogicField(props) {
 
   const classes = useStyles();
   const title = isChoice(props.problem) ? '选项 ' + (props.index + 1) + ' 跳转' : '选择后跳转'
-  const [nextProblem, setNextProblem] = useState('');
+  const [nextProblem, setNextProblem] = useState(props.problem.logic.nextProblem[props.index] == -1 ? '' : props.problem.logic.nextProblem[props.index]);
   const [list, setList] = useState([]);
 
   const handleChange = (event) => {
@@ -104,7 +104,7 @@ function LogicField(props) {
         value={nextProblem}
         onChange={handleChange}
       >
-        {list.map((value) => <MenuItem value={value} key={value}>第 {value + 1} 题</MenuItem>)}
+        {list.map((value) => <MenuItem value={value} key={value}>第 {value + 1} 题: {props.allProblem[value].title}</MenuItem>)}
       </Select>
     </FormControl>
   );
@@ -114,17 +114,17 @@ function Fields(props) {
   const classes = useStyles();
   // console.log(props.problem.logic.nextProblem)
 
-  const list = props.problem.logic.nextProblems.map((value, index) => (
-    <Grid item xs={3} key={props.problem.id + '' + index}>
-      <LogicField 
-        index={index} 
-        problem={props.problem}
-        handleChange={(next) => props.handleChange(index, next) }
-        total={props.total}
-        self={props.self}
-      />
-    </Grid>
-  ))
+  // const list = props.problem.logic.nextProblem.map((value, index) => (
+  //   <Grid item xs={3} key={props.problem.id + '' + index}>
+  //     <LogicField 
+  //       index={index} 
+  //       problem={props.problem}
+  //       handleChange={(next) => props.handleChange(index, next) }
+  //       total={props.total}
+  //       self={props.self}
+  //     />
+  //   </Grid>
+  // ))
 
 
   return (
@@ -134,7 +134,21 @@ function Fields(props) {
       justifyContent="flex-start"
       alignItems="center"
     >
-      {list}
+      {/* {list} */}
+      { props.problem.logic.nextProblem !== undefined && 
+        props.problem.logic.nextProblem.map((value, index) => (
+          <Grid item xs={3} key={props.problem.id + '' + index}>
+            <LogicField 
+              index={index} 
+              problem={props.problem}
+              handleChange={(next) => props.handleChange(index, next) }
+              total={props.total}
+              self={props.self}
+              allProblem={props.allProblem}
+            />
+          </Grid>
+        ))
+      }
     </Grid>
   );
 }
@@ -172,7 +186,7 @@ export default function EditLogic(props) {
             choices: ori[i].option,
             quota: ori[i].quota,
             count: ori[i].count,
-            logic: ori[i].logic === undefined ? {nextProblems: [-1, -1, -1]} : ori[i].logic
+            logic: ori[i].logic === undefined ? {nextProblem: [-1] } : ori[i].logic
           })
         }
         setQuestionare([].concat(tmp))
@@ -212,7 +226,7 @@ export default function EditLogic(props) {
     Questionare.map((problem) => (
       tmp.push({
         qid: problem.id,
-        logic: problem.logic,
+        logic: {nextProblems: problem.logic.nextProblem},
       })
     ))
     // console.log(tmp);
@@ -225,7 +239,7 @@ export default function EditLogic(props) {
 
   function hanldeLogicChange(problemIndex, choiceIndex, nextProblem) {
     let tmp = Questionare.slice();
-    tmp[problemIndex].logic.nextProblems[choiceIndex] = nextProblem;
+    tmp[problemIndex].logic.nextProblem[choiceIndex] = nextProblem;
     setQuestionare(tmp);
     // console.log(tmp);
   }
@@ -277,6 +291,7 @@ export default function EditLogic(props) {
                           handleChange={(choice, next) => hanldeLogicChange(index, choice, next)}
                           total={Questionare.length}
                           self={index}
+                          allProblem={Questionare}
                         />
                       }
                   </Problem>
