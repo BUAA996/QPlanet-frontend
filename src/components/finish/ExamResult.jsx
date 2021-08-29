@@ -2,10 +2,10 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({}))
 
-function ExamAnswer() {
+function ExamResult() {
   const classes = useStyles()
 
   return null
 }
 
-export default ExamAnswer
+export default ExamResult
