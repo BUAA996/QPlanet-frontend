@@ -19,6 +19,7 @@ import { useParams } from 'react-router'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import { isChoice } from 'components/utils/Problem'
+import { color } from 'echarts/core'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,6 +76,10 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  red: {
+    fontWeight: 'bold',
+    color: 'red'
+  }
 }))
 
 function LogicField(props) {
@@ -264,7 +269,10 @@ export default function EditLogic(props) {
               spacing={3}
             >
               <Grid item className={classes.hint}>
-                <Typography varient='h6'>本页面仅限于修改跳题逻辑，编辑完成后如果题目发生了修改，则跳题逻辑也会被清空</Typography>
+                <Typography varient='h6'>本页面仅限于修改跳题逻辑，编辑完成后如果题目发生了修改，则跳题逻辑也会被<span className={classes.red}>清空</span></Typography>
+              </Grid>
+              <Grid item className={classes.hint}>
+                <Typography varient='h6'>如果因为跳题而导致必做题无法填写，其后果用户<span className={classes.red}>自行承担</span></Typography>
               </Grid>
               <Grid item className={classes.hint}>
                 <Typography varient='h6'>以下内容为您的原始问卷</Typography>

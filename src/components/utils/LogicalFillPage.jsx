@@ -6,7 +6,7 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core'
-import { fill, submit } from 'api/questionaire'
+import { fill, view, submit } from 'api/questionaire'
 import { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Problem from 'components/utils/Problem'
@@ -83,8 +83,7 @@ export default function LogicalFillPage(props) {
   useEffect(() => {
     if (props.demo === false) {
       fill({ hash: id }).then((res) => {
-        // console.log(res);
-        setData(res.data)
+        setData(res.data);
         if (res.data.result === 1) {
           const ori = res.data.questions
           const settings = res.data
@@ -100,13 +99,14 @@ export default function LogicalFillPage(props) {
               choices: ori[i].option,
               quota: ori[i].quota,
               count: ori[i].count,
+              logic: ori[i].logic === undefined ? {nextProblem: [-1]} : ori[i].logic
             })
           }
           setQuestionare([].concat(tmp))
           setTitle(settings.title)
           setDescription(settings.description)
           setID(settings.qid)
-  
+
           tmp = new Array(ori.length)
           for (let i = 0; i < ori.length; ++i) {
             tmp[i] = {
@@ -123,8 +123,7 @@ export default function LogicalFillPage(props) {
       })
     } else {
       view({ hash: id }).then((res) => {
-        // console.log(res);
-        setData(res.data)
+        setData(res.data);
         if (res.data.result === 1) {
           const ori = res.data.questions
           const settings = res.data
@@ -140,6 +139,7 @@ export default function LogicalFillPage(props) {
               choices: ori[i].option,
               quota: ori[i].quota,
               count: ori[i].count,
+              logic: ori[i].logic === undefined ? {nextProblem: [-1]} : ori[i].logic
             })
           }
           setQuestionare([].concat(tmp))
