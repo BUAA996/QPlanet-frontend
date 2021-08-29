@@ -195,6 +195,7 @@ function Feedback() {
                         id: innerIndex,
                         time: item.submit_time[innerIndex],
                         ans: innerItem,
+                        author: item.authors[innerIndex],
                       }
                     })
                   : [],
