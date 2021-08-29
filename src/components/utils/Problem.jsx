@@ -151,10 +151,12 @@ function SingleChoice(props) {
 
 function MultiChoice(props) {
   const classes = useStyles()
-
   const [choice, setChoice] = useState([])
+  var option = {}
+  props.problem.choices.map((choice) => (option[choice.key] = false))
+  const [state, setState] = useState(option)
+
   useEffect(() => {
-    // console.log(props)
     let tmp = []
     for (let i = 0; i < props.problem.choices.length; ++i) {
       tmp.push({
@@ -165,29 +167,16 @@ function MultiChoice(props) {
       })
     }
     setChoice(tmp)
+    if (props.problem.initialValue !== undefined) {
+      let newState = {}
+      tmp.forEach((item) => {
+        newState[item.key] = props.problem.initialValue.includes(
+          Number(item.key)
+        )
+      })
+      setState(newState)
+    }
   }, [props])
-
-  // console.log(props.quota)
-
-  var option = {}
-  props.problem.choices.map((choice) => (option[choice.key] = false))
-
-  const [state, setState] = useState(option)
-
-  //console.log(props.problem.initialValue)
-
-  // useEffect(() => {
-  //   if (props.problem.initialValue !== undefined) {
-  //     setState((state) => {
-  //       let newState = {}
-  //       for (let item in Object.keys(state)) {
-  //         newState[item] = props.problem.initialValue.includes(Number(item))
-  //       }
-
-  //       return newState
-  //     })
-  //   }
-  // }, [])
 
   const handleChange = (event) => {
     if (props.problem.initialValue === undefined) {
@@ -210,7 +199,7 @@ function MultiChoice(props) {
         <FormControlLabel
           control={
             <Checkbox
-              checked={choice[choice.key]}
+              checked={state[choice.key]}
               onChange={handleChange}
               name={choice.key}
             />
