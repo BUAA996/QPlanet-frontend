@@ -378,11 +378,19 @@ function Fill() {
             {vis && <CountDown time={endTime} />}
           </Grid>
           <Grid item xs={8}>
-            {
-              ques.type === 0 ? 
-              <LogicalFillPage setState={setState} phone={phone} need={data.requirement} setSubmit={setRes} /> :
-              <FillPage setState={setState} phone={phone} need={data.requirement} setSubmit={setRes} />
-            }
+            {ques.type === 0 ? (
+              <LogicalFillPage
+                setState={setState}
+                phone={phone}
+                need={data.requirement}
+              />
+            ) : (
+              <FillPage
+                setState={setState}
+                phone={phone}
+                need={data.requirement}
+              />
+            )}
           </Grid>
           <Grid item xs={1}></Grid>
           <Grid item xs={1}></Grid>
