@@ -1,7 +1,7 @@
 const SURVEY = {
   title: '调查问卷',
   description: '感谢您能抽时间参与本次问卷，您的意见和建议就是我们前行的动力！',
-  deadline: '2121-01-08 11:59',
+  deadline: '2022-09-01 11:59',
   // duration: 120,
   type: 0,
   // random_order: true,
@@ -26,7 +26,7 @@ const SURVEY = {
 const VOTE = {
   title: '投票问卷',
   description: '欢迎参与本次投票，快来为您心仪的选项投上一票吧！',
-  deadline: '2121-01-08 11:59',
+  deadline: '2022-09-01 11:59',
   // duration: 120,
   type: 3,
   // random_order: true,
@@ -51,7 +51,7 @@ const VOTE = {
 const EXAM = {
   title: '考试问卷',
   description: '欢迎参加本场考试，预祝您在考试中取得好成绩！',
-  deadline: '2121-01-08 11:59',
+  deadline: '2022-09-01 11:59',
   duration: 120,
   type: 8,
   random_order: true,
@@ -89,7 +89,7 @@ const EXAM = {
 const CLOCK = {
   title: '疫情打卡问卷',
   description: '请按时打卡，为防控疫情尽到一份自己的责任。',
-  deadline: '2121-01-08 11:59',
+  deadline: '2022-09-01 11:59',
   // duration: 120,
   type: 0,
   // random_order: true,
@@ -159,7 +159,7 @@ const CLOCK = {
 const FORM = {
   title: '报名问卷',
   description: '心动不如行动，填写您的信息，加入我们吧~',
-  deadline: '2121-01-08 11:59',
+  deadline: '2022-09-01 11:59',
   // duration: 120,
   type: 5,
   // random_order: true,

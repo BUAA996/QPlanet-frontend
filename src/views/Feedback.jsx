@@ -81,6 +81,16 @@ const BootstrapInput = withStyles((theme) => ({
   },
 }))(InputBase)
 
+function DownloadDialog({ open, setOpen, hashcode }) {
+  const tmp = () => {
+    downloadStatistics({ hash: hashcode }).then((res) => {
+      download('https://api.matrix53.top/img/' + res.data.name, res.data.name)
+    })
+  }
+
+  return null
+}
+
 function Feedback() {
   const classes = useStyles()
   const [open, setOpen] = useState(true)
@@ -92,6 +102,7 @@ function Feedback() {
   const [shareOpen, setShareOpen] = useState(false)
   const isLogin = useStateStore().isLogin
   const [crossData, setCrossData] = useState({})
+  const [openDownload, setOpenDownload] = useState(false)
 
   useRouteDefender({
     assert: !isLogin,
@@ -173,9 +184,7 @@ function Feedback() {
 
   const handleClick = (name) => {
     if (name === '下载原始数据') {
-      downloadStatistics({ hash: hashcode }).then((res) => {
-        download('https://api.matrix53.top/img/' + res.data.name, res.data.name)
-      })
+      setOpenDownload(true)
     } else if (name === '发送问卷') {
       setShareOpen(true)
     } else if (name === '预览问卷') {
@@ -253,6 +262,11 @@ function Feedback() {
         open={shareOpen}
         setOpen={setShareOpen}
         url={'https://qplanet.matrix53.top/fill/' + hashcode}
+      />
+      <DownloadDialog
+        open={openDownload}
+        setOpen={setOpenDownload}
+        hashcode={hashcode}
       />
     </>
   )
