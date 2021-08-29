@@ -10,14 +10,17 @@ const useStyles = makeStyles((theme) => ({
   },
   score: {
     minWidth: '45%',
-    height: '80px',
+    height: '60px',
     marginTop: theme.spacing(2),
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   scoreText: {
-    color: theme.palette.primary.main,
+    color: 'orange',
+    fontSize: '1.5em',
+    position: 'relative',
+    top: '0.11em',
   },
 }))
 
@@ -52,21 +55,29 @@ function ExamResult({ questions, stdAns, score, showType }) {
   return (
     <Box width='100%' display='flex' flexDirection='column' alignItems='center'>
       <Typography variant='h4' color='primary' className={classes.title}>
-        {showType === 'TESTING_SCORE' && '试卷得分情况'}
-        {showType === 'TESTING_CORRECTION' && '试卷标准答案'}
-        {showType === 'TESTING_BOTH' && '得分及答案明细'}
+        {(showType === 'TESTING_SCORE' || showType === 'TESTING_BOTH') &&
+          '试卷得分情况'}
       </Typography>
       {score !== undefined && (
         <Card className={classes.score}>
-          <Typography variant='h4'>
+          <Typography variant='h5'>
             您的得分是： <span className={classes.scoreText}>{score}</span>
           </Typography>
         </Card>
       )}
+      <Typography variant='h4' color='primary' className={classes.title}>
+        {(showType === 'TESTING_SCORE' || showType === 'TESTING_BOTH') &&
+          '试卷标准答案'}
+      </Typography>
       {stdAns !== undefined && (
         <Box minWidth='45%'>
           {questionSet.map((problem) => (
-            <Problem problem={problem} key={problem.key} updateAns={() => {}} />
+            <Problem
+              problem={problem}
+              key={problem.key}
+              updateAns={() => {}}
+              style={{ marginTop: '16px' }}
+            />
           ))}
         </Box>
       )}
