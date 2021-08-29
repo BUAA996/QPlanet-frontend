@@ -80,13 +80,16 @@ function QuestionEditDialog(props) {
         })
       }
     },
-    [props.type, kind, props.questionInfo, props.questionInfo.standardAnswer.content, closeId]
+    [props.type, props.questionInfo, props.questionInfo.standardAnswer.content, closeId]
   )
 
 
   const handleChangeKind = (event) => {
+    console.log("kind1:", kind);
+    console.log("kind2:", event.target.value)
     // TODO: I believe there is a bug when change question type
     setKind(event.target.value);
+
     if (((kind == '0' || kind == '1') && (props.questionInfo.kind != '0' && props.questionInfo.kind != '1'))
       || ((kind != '0' && kind != '1') && (props.questionInfo.kind == '0' || props.questionInfo.kind == '1'))) {
       setFillAns("");
@@ -298,7 +301,7 @@ function QuestionEditDialog(props) {
           }
 
           {/*填空题答案*/}
-          {(kind == '2' || kind == '3') && props.type === "EXAM" ?
+          {(kind == '2') && props.type === "EXAM" ?
             <Grid item className={classes.grid}>
               <TextField
                 required
