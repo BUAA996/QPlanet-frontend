@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'red'
   },
   select: {
-    textOverflow: 'ellipsis',
+    maxWidth: theme.spacing(15),
   }
 }))
 
@@ -110,6 +110,7 @@ function LogicField(props) {
     <FormControl className={classes.formControl}>
       <InputLabel>{title}</InputLabel>
       <Select
+        className={classes.select}
         value={nextProblem}
         onChange={handleChange}
       >
