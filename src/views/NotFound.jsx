@@ -1,9 +1,7 @@
-import Problem from 'components/utils/Problem'
-import { CardContent, Container } from '@material-ui/core'
+import { Container } from '@material-ui/core'
 import useTitle from 'hooks/useTitle'
-import {Title, PreviewPage} from 'views/Preview'
+import { Title, PreviewPage } from 'views/Preview'
 import { makeStyles } from '@material-ui/core/styles'
-import CountDown from 'components/utils/CountDown'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,81 +36,21 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function NotFound() {
+  const classes = useStyles()
+
   useTitle('找不到网页')
-  const Questionare = [
-    {
-      id: 1,
-      kind: 0,
-      must: 1,
-      title: '第一题 balabalabalabala',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-      quota: [1, 2, 5, 8],
-    },
-    {
-      id: 2,
-      kind: 1,
-      must: 1,
-      title: '第二题 balabalabalabala',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-      quota: [1, 3, 5, 7],
-    },
-    {
-      id: 3,
-      kind: 2,
-      must: 0,
-      title: '第三题',
-      choices: [],
-    },
-    {
-      id: 4,
-      kind: 1,
-      must: 0,
-      title: '第四题',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-    },
-    {
-      id: 5,
-      kind: 2,
-      must: 1,
-      title: '第五题',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-    },
-    {
-      id: 6,
-      kind: 4,
-      must: 1,
-      title: '窝窝头一块钱四个嘿嘿',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-    },
-    {
-      id: 6,
-      kind: 5,
-      must: 1,
-      title: '窝窝头一块钱四个嘿嘿',
-      description: '当你的程序以一个奇怪的方式跑起来了，那么就不要在动他了',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-    },
-  ]
 
-  
-  function blankFunction() {}
-
-  const classes = useStyles();
-  const title = <Title title="404 NotFound" description="啊呀，问卷走丢了QAQ。请检查问卷链接，或者与问卷发布者联系。"/>  
-  const Questions = Questionare.map((problem, index) => (
-    <Problem problem={{...problem, key: index}} 
-      showindex={true} 
-      showquota={true} 
-      showscore={true}
-      // quota={[1, 2, 3, 4]} 
-      updateAns={(ans) => blankFunction()} />
-  ));
+  const title = (
+    <Title
+      title='404 NotFound'
+      description='啊呀，问卷走丢了QAQ。请检查问卷链接，或者与问卷发布者联系。'
+    />
+  )
 
   return (
     <>
-      <CountDown time="2021-08-27 16:30:11" duration={300}/>
-      <Container maxWidth="md" className={classes.root}>
-        <PreviewPage title={title} Questionare={Questions}/>
+      <Container maxWidth='md' className={classes.root}>
+        <PreviewPage title={title} />
       </Container>
     </>
   )

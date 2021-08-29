@@ -391,7 +391,7 @@ function Problem(props) {
 
   // console.log(props)
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} style={props.style}>
       <CardContent>
         <ShowClasses
           title={
