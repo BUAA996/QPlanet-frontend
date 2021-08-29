@@ -17,6 +17,7 @@ import FormDialog from 'components/design/FormDialog'
 import {useStateStore} from 'store'
 import useRouteDefender from 'hooks/useRouteDefender'
 import {useSnackbar} from "notistack";
+import {Outline} from "../components/design/Outline/Outline";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -197,94 +198,103 @@ function Design(props) {
 
   return (
     <>
+
       <Container maxWidth='md' className={classes.root}>
-        <Card className={classes.card}>
-          <Grid
-            container
-            direction='column'
-            justifyContent='center'
-            alignItems='center'
-            spacing={3}
-          >
-            <Title title={title} type={typeForTitle} description={detail}/>
+        <Grid container direction="row">
 
-            <FormDialog
-              title={title}
-              type={type}
-              description={detail}
-              settings={settings}
-              setTitle={setTitle}
-              setDescription={setDetail}
-              setSettings={setSettings}
-            />
-
-            <Divider
-              flexItem={true}
-              variant={'middle'}
-              className={classes.divider}
-            />
-            {settings.showIdx}
-            <Grid item className={classes.problems}>
-              {/*if questionnaire is null, display Skeleton*/}
-              {questionnaire ? (
-                questionnaire.map((x, index) => (
-                  <Problem
-                    problem={{...x, key: index}}
-                    key={x.id}
-                    showindex={settings.showIdx}
-
-                    updateAns={() => blankFunction()}
-                  >
-                    <MovableProblemEdit
-                      key={x.id}
-                      type={type}
-                      settings={settings}
-                      questionInfo={x}
-                      index={index}
-                      move={(newIndex) => move(index, newIndex)}
-                      del={() => delQuestion(index)}
-                      add={addQuestion}
-                      addDefault={addDefault}
-                      edit={(item) => {
-                        editQuestion(index, item)
-                      }}
-                    />
-                  </Problem>
-                ))
-              ) : (
-                <ProblemSkeleton/>
-              )}
-            </Grid>
-
-            <Grid item className={classes.buttons}>
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={() => addDefault(-1)}
-                className={classes.buttons}
-              >
-                {' 添加题目 '}
-              </Button>
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={() => save()}
-                className={classes.buttons}
-              >
-                {' 保存并返回 '}
-              </Button>
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={() => history.go(-1)}
-                className={classes.buttons}
-              >
-                {' 取消编辑 '}
-              </Button>
-              {/* <Button variant='contained' color='secondary' onClick={() => print()} className={classes.buttons}> 打印 </Button> */}
-            </Grid>
+          <Grid item>
+            <Outline questions={questionnaire ?? []}/>
           </Grid>
-        </Card>
+          <Grid item>
+            <Card className={classes.card}>
+              <Grid
+                container
+                direction='column'
+                justifyContent='center'
+                alignItems='center'
+                spacing={3}
+              >
+                <Title title={title} type={typeForTitle} description={detail}/>
+
+                <FormDialog
+                  title={title}
+                  type={type}
+                  description={detail}
+                  settings={settings}
+                  setTitle={setTitle}
+                  setDescription={setDetail}
+                  setSettings={setSettings}
+                />
+
+                <Divider
+                  flexItem={true}
+                  variant={'middle'}
+                  className={classes.divider}
+                />
+                {settings.showIdx}
+                <Grid item className={classes.problems}>
+                  {/*if questionnaire is null, display Skeleton*/}
+                  {questionnaire ? (
+                    questionnaire.map((x, index) => (
+                      <Problem
+                        problem={{...x, key: index}}
+                        key={x.id}
+                        showindex={settings.showIdx}
+
+                        updateAns={() => blankFunction()}
+                      >
+                        <MovableProblemEdit
+                          key={x.id}
+                          type={type}
+                          settings={settings}
+                          questionInfo={x}
+                          index={index}
+                          move={(newIndex) => move(index, newIndex)}
+                          del={() => delQuestion(index)}
+                          add={addQuestion}
+                          addDefault={addDefault}
+                          edit={(item) => {
+                            editQuestion(index, item)
+                          }}
+                        />
+                      </Problem>
+                    ))
+                  ) : (
+                    <ProblemSkeleton/>
+                  )}
+                </Grid>
+
+                <Grid item className={classes.buttons}>
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={() => addDefault(-1)}
+                    className={classes.buttons}
+                  >
+                    {' 添加题目 '}
+                  </Button>
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={() => save()}
+                    className={classes.buttons}
+                  >
+                    {' 保存并返回 '}
+                  </Button>
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={() => history.go(-1)}
+                    className={classes.buttons}
+                  >
+                    {' 取消编辑 '}
+                  </Button>
+                  {/* <Button variant='contained' color='secondary' onClick={() => print()} className={classes.buttons}> 打印 </Button> */}
+                </Grid>
+              </Grid>
+            </Card>
+          </Grid>
+        </Grid>
       </Container>
     </>
   )
