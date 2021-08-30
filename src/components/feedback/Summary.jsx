@@ -52,6 +52,7 @@ function Summary() {
           field: 'item' + index,
           headerName: item,
           width: index === 0 ? 110 : 160,
+          type: index === 1 ? 'dateTime' : 'string',
         }
       })
       let rows = []
@@ -78,6 +79,7 @@ function Summary() {
         components={{
           Toolbar: CustomToolbar,
         }}
+        rowsPerPageOptions={[10]}
         className={classes.table}
       />
     </Card>
