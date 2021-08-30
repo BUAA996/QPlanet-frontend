@@ -73,13 +73,13 @@ function Summary() {
       <DataGrid
         rows={data.rows}
         columns={data.columns}
-        pageSize={10}
+        pageSize={7}
         disableSelectionOnClick
         localeText={localeText}
         components={{
           Toolbar: CustomToolbar,
         }}
-        rowsPerPageOptions={[10]}
+        rowsPerPageOptions={[7]}
         className={classes.table}
       />
     </Card>
