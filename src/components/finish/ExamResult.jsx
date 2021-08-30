@@ -10,9 +10,10 @@ const useStyles = makeStyles((theme) => ({
   },
   score: {
     minWidth: '45%',
-    height: '60px',
+    height: '120px',
     marginTop: theme.spacing(2),
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 function ExamResult({ questions, stdAns, score, showType }) {
   const classes = useStyles()
   const [questionSet, setQuestionSet] = useState([])
+  const [total, setTotal] = useState(0)
 
   console.log({ questions, stdAns, score })
 
@@ -50,6 +52,13 @@ function ExamResult({ questions, stdAns, score, showType }) {
       }
     }
     setQuestionSet(data)
+    let total = 0
+    questions.forEach((item) => {
+      if (item.standard_answer !== undefined) {
+        total += item.standard_answer.score
+      }
+    })
+    setTotal(total)
   }, [questions, stdAns])
 
   return (
@@ -62,6 +71,9 @@ function ExamResult({ questions, stdAns, score, showType }) {
         <Card className={classes.score}>
           <Typography variant='h5'>
             您的得分是： <span className={classes.scoreText}>{score}</span>
+          </Typography>
+          <Typography variant='h5'>
+            试卷总分是： <span className={classes.scoreText}>{total}</span>
           </Typography>
         </Card>
       )}
