@@ -64,10 +64,10 @@ const useStyles = makeStyles((theme) => ({
 const ITEM_HEIGHT = 48;
 const options = [
 	{title: '默认顺序', id: 0, key: 0},
-	{title: '时间升序', id: 1, key: 1},
-	{title: '时间降序', id: 2, key: 2},
-	{title: '问卷数量升序', id: 3, key: 3},
-	{title: '问卷数量降序', id: 4, key: 4},
+	{title: '创建时间升序', id: 1, key: 1},
+	{title: '创建时间降序', id: 2, key: 2},
+	{title: '答卷数量升序', id: 3, key: 3},
+	{title: '答卷数量降序', id: 4, key: 4},
 	{title: '发布时间升序', id: 5, key: 5},
 	{title: '发布时间降序', id: 6, key: 6},
 	{title: '发布状态排序', id: 7, key: 7},
