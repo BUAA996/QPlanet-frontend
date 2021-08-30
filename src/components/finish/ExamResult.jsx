@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   score: {
-    minWidth: '45%',
+    minWidth: '25%',
     height: '120px',
     marginTop: theme.spacing(2),
     display: 'flex',
