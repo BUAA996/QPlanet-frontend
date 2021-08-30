@@ -13,6 +13,11 @@ import {
   Typography,
   Button,
   Grid,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogTitle,
+  DialogContentText,
 } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
 import { useEffect } from 'react'
@@ -340,9 +345,42 @@ function Scoring(props) {
   )
 }
 
+function LocationDialog({ open, setOpen, confirm}) {
+  return (
+    <Dialog open={open}>
+      <DialogTitle>定位</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          我们需要获取您的位置信息
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            setOpen(false)
+            confirm()
+          }}
+          color='primary'
+        >
+          同意
+        </Button>
+        <Button
+          onClick={() => {
+            setOpen(false)
+          }}
+          color='primary'
+        >
+          取消
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
+
 function Location(props) {
   const classes = useStyles()
   const [address, setAddress] = useState('')
+  const [open, setOpen] = useState(false)
 
   function handleSetAddress(address) {
     setAddress(address)
@@ -361,20 +399,23 @@ function Location(props) {
   }
 
   return (
-    <Grid
-      container
-      direction='row'
-      justifyContent='flex-start'
-      alignItems='center'
-      className={classes.Location}
-    >
-      {address === '' && (
-        <Button color='primary' onClick={handleGetLocation} variant='outlined'>
-          点击获取位置信息
-        </Button>
-      )}
-      {address !== '' && <Typography>您的位置：{address}</Typography>}
-    </Grid>
+    <>
+      <Grid
+        container
+        direction='row'
+        justifyContent='flex-start'
+        alignItems='center'
+        className={classes.Location}
+      >
+        {address === '' && (
+          <Button color='primary' onClick={() => setOpen(true)} variant='outlined'>
+            点击获取位置信息
+          </Button>
+        )}
+        {address !== '' && <Typography>您的位置：{address}</Typography>}
+      </Grid>
+      <LocationDialog open={open} setOpen={setOpen} confirm={handleGetLocation}/>
+    </>
   )
 }
 
