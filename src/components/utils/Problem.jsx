@@ -351,7 +351,7 @@ function LocationDialog({ open, setOpen, confirm}) {
       <DialogTitle>定位</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          我们需要获取您的位置信息
+          我们即将获取您的位置信息
         </DialogContentText>
       </DialogContent>
       <DialogActions>
