@@ -21,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
+    height: '600px',
+    width: '100%',
+  },
+  table: {
+    width: '100%',
   },
 }))
 
@@ -37,22 +42,24 @@ function CustomToolbar() {
 
 function Summary() {
   const classes = useStyles()
-  const [data, setData] = useState([])
+  const [data, setData] = useState({ rows: [], columns: [] })
   const { id: hashcode } = useParams()
 
   useEffect(() => {
     getTotal({ hash: hashcode }).then((res) => {
-      let columns = res.data.column.map((item) => {
+      let columns = res.data.column.map((item, index) => {
         return {
-          field: item,
+          field: 'item' + index,
           headerName: item,
+          width: index === 0 ? 110 : 160,
         }
       })
       let rows = []
       for (let index = 0; index < res.data.row.length; ++index) {
         let tmp = {}
+        tmp['id'] = index
         for (let i = 0; i < columns.length; ++i) {
-          tmp[columns[i].field] = res.data.row[index][i]
+          tmp['item' + i] = res.data.row[index][i]
         }
         rows.push(tmp)
       }
@@ -65,12 +72,13 @@ function Summary() {
       <DataGrid
         rows={data.rows}
         columns={data.columns}
-        pageSize={15}
+        pageSize={10}
         disableSelectionOnClick
         localeText={localeText}
         components={{
           Toolbar: CustomToolbar,
         }}
+        className={classes.table}
       />
     </Card>
   )
