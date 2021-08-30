@@ -16,6 +16,7 @@ import {
 import Completion from 'components/feedback/Completion'
 import Choice from 'components/feedback/Choice'
 import Cross from 'components/feedback/Cross'
+import Summary from 'components/feedback/Summary'
 import { useEffect } from 'react'
 import { getStatistics, downloadStatistics } from 'api/result'
 import useTitle from 'hooks/useTitle'
@@ -265,12 +266,13 @@ function Feedback() {
             >
               <MenuItem value={1}>默认报告</MenuItem>
               <MenuItem value={2}>交叉分析</MenuItem>
+              <MenuItem value={3}>总览模式</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         <Grid item xs={6} container>
           <Grid item xs={12} style={{ marginTop: '2.6%' }}>
-            {model === 1 ? (
+            {model === 1 &&
               data.map((item) => {
                 if (
                   item.type === '填空题' ||
@@ -279,10 +281,9 @@ function Feedback() {
                 )
                   return <Completion data={item} key={item.key} />
                 else return <Choice data={item} key={item.key} />
-              })
-            ) : (
-              <Cross {...crossData} />
-            )}
+              })}
+            {model === 2 && <Cross {...crossData} />}
+            {model === 3 && <Summary />}
           </Grid>
         </Grid>
         <Grid item xs={3}>

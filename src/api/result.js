@@ -27,6 +27,11 @@ function crossAnalyze(data) {
   return axios.post('result/cross_analyze/', data)
 }
 
+// get_total
+function getTotal(data) {
+  return axios.post('result/get_total/', data)
+}
+
 export {
   getStatistics,
   downloadStatistics,
@@ -34,4 +39,5 @@ export {
   sendCaptcha,
   checkCaptcha,
   surplus,
+  getTotal,
 }
