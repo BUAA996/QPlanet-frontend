@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    color: theme.palette.secondary.contrastText,
+    color: 'black',
     padding: theme.spacing(1),
   },
   title: {},
