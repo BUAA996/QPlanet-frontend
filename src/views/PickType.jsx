@@ -152,7 +152,7 @@ function PickType() {
           />
           <TypeCard
             title='投票'
-            word='实时计算，微信投票'
+            word='实时计算，便捷投票'
             url={vote}
             onClick={() => {
               createQuestionnaire(VOTE).then((res) => {
