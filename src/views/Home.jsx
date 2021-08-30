@@ -293,7 +293,7 @@ function Home() {
         position='left'
         imgUrl={survey}
         title='问卷调查，从"星"开始'
-        subTitle='深度集成微信填写、问卷密码等功能，帮您轻松完成意向调查、满意度调查等各类在线问卷调查。'
+        subTitle='深度集成身份认证、重置问卷等功能，帮您轻松完成意向调查、满意度调查等各类在线问卷调查。'
         callback={() => {
           setShowIcon(false)
         }}
