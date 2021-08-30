@@ -435,7 +435,7 @@ function Problem(props) {
   // }
 
   const [lastTime, setTime] = useState(new Date().getSeconds() - 20)
-
+  
   function handleQuery() {
     let now = new Date().getSeconds() - lastTime
     console.log(now)
@@ -454,6 +454,7 @@ function Problem(props) {
   }
 
   useEffect(() => {
+    console.log(props);
     if(isChoice(props.problem) && props.showquota && props.fillmode) {
       surplus({ qid: props.problem.id }).then((res) => {
         setQuota(res.data.surplus)
@@ -469,7 +470,7 @@ function Problem(props) {
           title={
             (props.showindex === true
               ? '第 ' + (props.problem.key + 1) + ' 题 '
-              : '') + props.problem.title
+              : '') + props.problem.title + (props.problem.ans > 0 ? (' （' + props.problem.ans + ' 分）') : '')
           }
           must={props.problem.must}
         >

@@ -160,7 +160,6 @@ function PreviewPage(props) {
         container
         direction='column'
         justifyContent='center'
-        S
         alignItems='center'
         spacing={3}
       >

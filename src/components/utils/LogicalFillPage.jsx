@@ -99,7 +99,8 @@ export default function LogicalFillPage(props) {
               choices: ori[i].option,
               quota: ori[i].quota,
               count: ori[i].count,
-              logic: ori[i].logic === undefined ? {nextProblem: [-1]} : ori[i].logic
+              logic: ori[i].logic === undefined ? {nextProblem: [-1]} : ori[i].logic,
+              ans: ori[i].standard_answer === undefined ? -1 : ori[i].standard_answer.score  
             })
           }
           setQuestionare([].concat(tmp))
@@ -139,7 +140,8 @@ export default function LogicalFillPage(props) {
               choices: ori[i].option,
               quota: ori[i].quota,
               count: ori[i].count,
-              logic: ori[i].logic === undefined ? {nextProblem: [-1]} : ori[i].logic
+              logic: ori[i].logic === undefined ? {nextProblem: [-1]} : ori[i].logic,
+              ans: ori[i].standard_answer === undefined ? -1 : ori[i].standard_answer.score 
             })
           }
           setQuestionare([].concat(tmp))

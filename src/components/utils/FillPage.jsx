@@ -99,6 +99,7 @@ export default function FillPage(props) {
               choices: ori[i].option,
               quota: ori[i].quota,
               count: ori[i].count,
+              ans: ori[i].standard_answer === undefined ? -1 : ori[i].standard_answer.score 
             })
           }
           setQuestionare([].concat(tmp))
@@ -122,7 +123,7 @@ export default function FillPage(props) {
       })
     } else {
       view({ hash: id }).then((res) => {
-        // console.log(res);
+        console.log(res);
         setData(res.data)
         if (res.data.result === 1) {
           const ori = res.data.questions
@@ -139,6 +140,7 @@ export default function FillPage(props) {
               choices: ori[i].option,
               quota: ori[i].quota,
               count: ori[i].count,
+              ans: ori[i].standard_answer === undefined ? -1 :  ori[i].standard_answer.score 
             })
           }
           setQuestionare([].concat(tmp))
