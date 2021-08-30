@@ -44,6 +44,7 @@ function ExamResult({ questions, stdAns, score, showType }) {
           kind: questions[i].type,
           must: questions[i].is_required,
           title: questions[i].content,
+          ans: questions[i].standard_answer.score,
           choices: questions[i].option,
           initialValue: stdAns.filter(
             (item) => questions[i].id === item.problem_id
