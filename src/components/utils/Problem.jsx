@@ -352,6 +352,8 @@ function LocationDialog({ open, setOpen, confirm}) {
       <DialogContent>
         <DialogContentText>
           我们即将获取您的位置信息
+          <br />
+          此位置信息仅有问卷发起人能看到
         </DialogContentText>
       </DialogContent>
       <DialogActions>
