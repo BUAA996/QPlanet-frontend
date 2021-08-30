@@ -1,120 +1,73 @@
-import Problem from 'components/utils/Problem'
-import { CardContent, Container } from '@material-ui/core'
+import { Box, Card, Typography, Button } from '@material-ui/core'
 import useTitle from 'hooks/useTitle'
-import {Title, PreviewPage} from 'views/Preview'
 import { makeStyles } from '@material-ui/core/styles'
-import CountDown from 'components/utils/CountDown'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(5),
-    textAlign: 'center',
-    paddingBottom: theme.spacing(5),
+    display: 'flex',
+    justifyContent: 'center',
   },
   card: {
-    padding: theme.spacing(3),
+    height: '50vh',
+    width: '30vw',
+    marginTop: '12.5vh',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   title: {
-    color: theme.palette.primary.main,
+    marginTop: '15%',
   },
-  description: {
-    color: theme.palette.primary.dark,
-    textAlign: 'left',
-    width: '80%',
+  subTitle: {
+    marginTop: '7%',
   },
-  problems: {
-    minWidth: '90%',
-  },
-  divider: {
-    height: theme.spacing(1),
-  },
-  buttons: {
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
-  },
-  test: {
-    backgroundColor: theme.palette.secondary.main,
+  btn: {
+    marginTop: '12%',
   },
 }))
 
 function NotFound() {
+  const classes = useStyles()
+  const history = useHistory()
+
   useTitle('找不到网页')
-  const Questionare = [
-    {
-      id: 1,
-      kind: 0,
-      must: 1,
-      title: '第一题 balabalabalabala',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-      quota: [1, 2, 5, 8],
-    },
-    {
-      id: 2,
-      kind: 1,
-      must: 1,
-      title: '第二题 balabalabalabala',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-      quota: [1, 3, 5, 7],
-    },
-    {
-      id: 3,
-      kind: 2,
-      must: 0,
-      title: '第三题',
-      choices: [],
-    },
-    {
-      id: 4,
-      kind: 1,
-      must: 0,
-      title: '第四题',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-    },
-    {
-      id: 5,
-      kind: 2,
-      must: 1,
-      title: '第五题',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-    },
-    {
-      id: 6,
-      kind: 4,
-      must: 1,
-      title: '窝窝头一块钱四个嘿嘿',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-    },
-    {
-      id: 6,
-      kind: 5,
-      must: 1,
-      title: '窝窝头一块钱四个嘿嘿',
-      description: '当你的程序以一个奇怪的方式跑起来了，那么就不要在动他了',
-      choices: ['选项1', '选项2', '选项3', '选项4'],
-    },
-  ]
-
-  
-  function blankFunction() {}
-
-  const classes = useStyles();
-  const title = <Title title="404 NotFound" description="啊呀，问卷走丢了QAQ。请检查问卷链接，或者与问卷发布者联系。"/>  
-  const Questions = Questionare.map((problem, index) => (
-    <Problem problem={{...problem, key: index}} 
-      showindex={true} 
-      showquota={true} 
-      showscore={true}
-      // quota={[1, 2, 3, 4]} 
-      updateAns={(ans) => blankFunction()} />
-  ));
 
   return (
-    <>
-      <CountDown time="2021-08-27 16:30:11" duration={300}/>
-      <Container maxWidth="md" className={classes.root}>
-        <PreviewPage title={title} Questionare={Questions}/>
-      </Container>
-    </>
+    <Box className={classes.root}>
+      <Card className={classes.card}>
+        <Typography color='primary' variant='h2' className={classes.title}>
+          <span style={{ color: 'orange' }}>404</span> NotFound
+        </Typography>
+        <Typography
+          color='textSecondary'
+          variant='h6'
+          className={classes.subTitle}
+        >
+          啊呀，这里是问卷星球迷失的
+          <span style={{ color: 'orange' }}>荒野</span>QAQ
+        </Typography>
+        <Typography
+          color='textSecondary'
+          variant='h6'
+          className={classes.subTitle}
+        >
+          迷失的<span style={{ color: 'orange' }}>路人</span>
+          ，进入下面这个传送门返程吧
+        </Typography>
+        <Button
+          className={classes.btn}
+          color='primary'
+          variant='outlined'
+          size='large'
+          onClick={() => {
+            history.goBack()
+          }}
+        >
+          传送返程
+        </Button>
+      </Card>
+    </Box>
   )
 }
 

@@ -100,11 +100,16 @@ function TitleEditDialog(props) {
                         label="截止日期"
                         margin="normal"
                         format="yyyy/MM/dd hh:mm"
+                        ampm={false}
                         disablePast
                         value={props.settings.deadline}
-                        onChange={(event) => {
+                        onChange={(time) => {
                           const ori = JSON.parse(JSON.stringify(props.settings));
-                          const data = event.toISOString().substr(0, 16);
+                          const data = "" + time.getFullYear() + "-" +
+                            (time.getMonth() + 1 >= 10 ? time.getMonth() + 1 : "0" + (time.getMonth() + 1))
+                            + "-" + (time.getDate() >= 10 ? time.getDate() : "0" + time.getDate())
+                            + " " + (time.getHours() >= 10 ? time.getHours() : "0" + time.getHours())
+                            + ":" + (time.getMinutes()>=10? time.getMinutes(): "0" + time.getMinutes());
                           ori.deadline = data.substr(0, 10) + ' ' + data.substr(11, 5);
                           props.setSettings(ori)
                         }}/>

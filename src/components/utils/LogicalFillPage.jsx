@@ -6,7 +6,7 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core'
-import { fill, view, submit } from 'api/questionaire'
+import { fill, submit, view } from 'api/questionaire'
 import { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Problem from 'components/utils/Problem'
@@ -17,6 +17,7 @@ import SpeedDialMenu from 'components/utils/SpeedDialMenu'
 import { download } from 'utils'
 import { useSnackbar } from 'notistack'
 import { downloadQuestionnaire } from 'api/questionaire'
+import { isChoice } from './Problem'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function FillPage(props) {
+export default function LogicalFillPage(props) {
   useTitle('填写问卷 - 问卷星球')
 
   const classes = useStyles()
@@ -82,8 +83,7 @@ export default function FillPage(props) {
   useEffect(() => {
     if (props.demo === false) {
       fill({ hash: id }).then((res) => {
-        // console.log(res);
-        setData(res.data)
+        setData(res.data);
         if (res.data.result === 1) {
           const ori = res.data.questions
           const settings = res.data
@@ -99,14 +99,15 @@ export default function FillPage(props) {
               choices: ori[i].option,
               quota: ori[i].quota,
               count: ori[i].count,
-              ans: ori[i].standard_answer === undefined ? -1 : ori[i].standard_answer.score 
+              logic: ori[i].logic === undefined ? {nextProblem: [-1]} : ori[i].logic,
+              ans: ori[i].standard_answer === undefined ? -1 : ori[i].standard_answer.score  
             })
           }
           setQuestionare([].concat(tmp))
           setTitle(settings.title)
           setDescription(settings.description)
           setID(settings.qid)
-  
+
           tmp = new Array(ori.length)
           for (let i = 0; i < ori.length; ++i) {
             tmp[i] = {
@@ -123,8 +124,7 @@ export default function FillPage(props) {
       })
     } else {
       view({ hash: id }).then((res) => {
-        console.log(res);
-        setData(res.data)
+        setData(res.data);
         if (res.data.result === 1) {
           const ori = res.data.questions
           const settings = res.data
@@ -140,7 +140,8 @@ export default function FillPage(props) {
               choices: ori[i].option,
               quota: ori[i].quota,
               count: ori[i].count,
-              ans: ori[i].standard_answer === undefined ? -1 :  ori[i].standard_answer.score 
+              logic: ori[i].logic === undefined ? {nextProblem: [-1]} : ori[i].logic,
+              ans: ori[i].standard_answer === undefined ? -1 : ori[i].standard_answer.score 
             })
           }
           setQuestionare([].concat(tmp))
@@ -173,12 +174,12 @@ export default function FillPage(props) {
       answer: singleAns,
     }
     setAns(tmp)
-    // console.log(tmp)
   }
 
   function checkMust() {
     let res = true,
       tmp = ansList.slice()
+    console.log(tmp)
     Questionare.map((problem, index) => {
       if (problem.must) {
         switch (problem.kind) {
@@ -240,14 +241,12 @@ export default function FillPage(props) {
       enqueueSnackbar('预览模式下无法提交', { variant: 'warning' })
       return
     }
-    // console.log({id: questionID, results: ansList})
     if (checkMust()) {
       let tmp = { qid: questionID, results: ansList }
       if (props.need > 1) {
         tmp = { ...tmp, phone: props.phone }
       }
       submit(tmp).then((res) => {
-        // console.log(res);
         if (res.data.result === 1) {
           enqueueSnackbar('提交成功，感谢您的回答', { variant: 'success' })
           history.replace('/finish', { ...props.finishData, result: res.data })
@@ -271,6 +270,50 @@ export default function FillPage(props) {
       history.push('/')
     }
   }, [props])
+
+  function getVisableQues() {
+    let vis = new Array(Questionare.length),
+      hasPre = new Array(Questionare.length)
+    if (vis.length === 0) return []
+    // 填过答案的，显示出来
+    for (let i = 0; i < Questionare.length; ++i) {
+      vis[i] = ansList[i] === undefined ? false : ansList[i].answer[0] !== ''
+      hasPre[i] = false
+    }
+    // 没有前置题目的，显示出来
+    for (let i = 0; i < Questionare.length; ++i) {
+      let edge = Questionare[i].logic.nextProblem
+      for (let j = 0; j < edge.length; ++j) {
+        if (edge[j] != -1) hasPre[edge[j]] = true
+      }
+    }
+
+    for (let i = 0; i < Questionare.length; ++i) {
+      if (hasPre[i] === false) vis[i] = true
+    }
+
+    // 存在前置题目已完成时，显示出来
+    for (let i = 0; i < Questionare.length; ++i)
+      if (vis[i]) {
+        // console.log('ans' , ansList[i]);
+        if (ansList[i] === undefined) break
+        let ans = ansList[i].answer
+        let edge = Questionare[i].logic.nextProblem
+        let type = isChoice(Questionare[i])
+        for (let j = 0; j < ans.length; ++j) {
+          let u = ans[j]
+          if (u === '') continue
+          if (type == false) vis[edge[0]] = true
+          vis[edge[u]] = true
+        }
+      }
+
+    let tmp = []
+    for (let i = 0; i < Questionare.length; ++i)
+      if (vis[i]) tmp.push(Questionare[i])
+    // console.log('tmp', tmp);
+    return tmp
+  }
 
   return (
     <>
@@ -302,11 +345,11 @@ export default function FillPage(props) {
               className={classes.divider}
             />
             <Grid item className={classes.problems}>
-              {Questionare.map((problem) => (
+              {getVisableQues().map((problem) => (
                 <Problem
                   problem={problem}
                   showindex={data.show_number}
-                  showquota={problem.quota[0] === -1 ? false : data.type === 5}
+                  showquota={problem.quota[0] === -1 ? false :  data.type === 5}
                   showvote={data.type === 3 || data.type === 1}
                   fillmode={true}
                   key={problem.key}
@@ -320,8 +363,7 @@ export default function FillPage(props) {
                 color='secondary'
                 onClick={() => handleClick()}
               >
-                {' '}
-                提交{' '}
+                提交
               </Button>
             </Grid>
           </Grid>
@@ -343,6 +385,6 @@ export default function FillPage(props) {
   )
 }
 
-FillPage.defaultProps = {
+LogicalFillPage.defaultProps = {
   demo: false,
 }

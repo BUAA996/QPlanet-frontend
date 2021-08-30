@@ -1,4 +1,4 @@
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import Auth from 'views/Auth'
 import Home from 'views/Home'
 import NotFound from 'views/NotFound'
@@ -12,6 +12,7 @@ import SignUpForm from 'components/auth/SignUpForm'
 import Preview from 'views/Preview'
 import Finish from 'views/Finish'
 import PickType from 'views/PickType'
+import EditLogic from 'views/EditLogic'
 
 function AppContent() {
   return (
@@ -49,6 +50,9 @@ function AppContent() {
         </Route>
         <Route exact path='/finish'>
           <Finish />
+        </Route>
+        <Route exact path='/editlogic/:id'>
+          <EditLogic />
         </Route>
         <Route exact path='*'>
           <NotFound />

@@ -1,27 +1,25 @@
-import { makeStyles } from '@material-ui/core/styles'
 import IntroTemplate from './IntroTemplate'
-
-const useStyles = makeStyles((theme) => ({}))
+import img1 from 'assets/intro_img/intro_apply/1.png'
+import img2 from 'assets/intro_img/intro_apply/2.png'
+import img3 from 'assets/intro_img/intro_apply/3.png'
 
 function Apply({ open, setOpen }) {
-  const classes = useStyles()
-
   return (
     <IntroTemplate
       open={open}
       setOpen={setOpen}
       steps={[
         {
-          label: '步骤一',
-          photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
+          label: '创建报名问卷',
+          photo: img1,
         },
         {
-          label: '步骤二',
-          photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
+          label: '限额填写问卷',
+          photo: img2,
         },
         {
-          label: '步骤三',
-          photo: 'https://image.wjx.com/images/newimg/index/banner.jpg',
+          label: '分享报名问卷',
+          photo: img3,
         },
       ]}
     />

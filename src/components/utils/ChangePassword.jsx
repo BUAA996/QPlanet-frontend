@@ -111,7 +111,8 @@ function ChangePassword({ open, setOpen }) {
             display='flex'
             justifyContent='center'
             width='100%'
-            marginTop={1}
+            marginTop={1.6}
+            marginBottom={2.5}
           >
             <Grid container spacing={1} justifyContent='space-between'>
               <Grid item xs={6}>

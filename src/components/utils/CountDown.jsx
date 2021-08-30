@@ -1,10 +1,11 @@
 import { Card, Divider, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { propTypes } from 'qrcode.react'
 import { useEffect, useState } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    color: theme.palette.secondary.contrastText,
+    color: 'black',
     padding: theme.spacing(1),
   },
   title: {},
@@ -30,6 +31,8 @@ export default function CountDown(props) {
         setContent('' + min + ' 分 ' + seconds + ' 秒');
       }
       if (duration == 0) {
+        console.log('submit!!!!!!!!')
+        props.setSubmit();
         clearInterval(myInterval);
       }
     }, 1000)

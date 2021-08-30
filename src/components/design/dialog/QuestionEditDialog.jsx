@@ -47,7 +47,9 @@ function QuestionEditDialog(props) {
 
   useEffect(() => {
       setTitle(props.questionInfo.title)
-      setChoices(props.questionInfo.choices.map((x, index) => ({
+      console.log(props.questionInfo.choices)
+      setChoices(null)
+      setChoices(props.questionInfo.choices.slice().map((x, index) => ({
         content: x,
         selected: false,
         key: index,
@@ -66,27 +68,34 @@ function QuestionEditDialog(props) {
       if (props.type === "EXAM" && (kind == "0" || kind == "1")) { // edit choice for right answer
         props.questionInfo.standardAnswer.content.forEach((x) => {
           if (isNaN(x)) return;
-          const newChoice = choices.slice();
-          newChoice[x].selected = true;
-          setChoices(newChoice)
+          // newChoice[x].selected = true;
+          setChoices((old) => {
+            const newChoice = old.slice()
+            newChoice[x].selected = true;
+            return newChoice
+          })
         })
       }
       if (props.type === "SIGNUP" && (kind == "0" || kind == "1")) { // edit choice for right answer
         props.questionInfo.quota.map((x, index) => {
-          const newChoice = choices.slice();
-          if (isNaN(x) || newChoice[index] === undefined) return;
-          newChoice[index].limit = x
-          setChoices(newChoice)
+          if (isNaN(x) || choices[index] === undefined) return;
+
+          setChoices((old) => {
+            const newChoice = old.slice();
+            newChoice[index].limit = x;
+            return newChoice
+          })
         })
       }
     },
-    [props.type, kind, props.questionInfo, props.questionInfo.standardAnswer.content, closeId]
+    [props.type, props.questionInfo, props.questionInfo.standardAnswer.content, closeId]
   )
 
 
   const handleChangeKind = (event) => {
     // TODO: I believe there is a bug when change question type
     setKind(event.target.value);
+
     if (((kind == '0' || kind == '1') && (props.questionInfo.kind != '0' && props.questionInfo.kind != '1'))
       || ((kind != '0' && kind != '1') && (props.questionInfo.kind == '0' || props.questionInfo.kind == '1'))) {
       setFillAns("");
@@ -94,9 +103,6 @@ function QuestionEditDialog(props) {
     }
   }
 
-  const handleChangeScore = (event) => {
-    setScore(event.target.value)
-  }
 
   useEffect(() => {
     if (!Boolean(choices)) {
@@ -107,7 +113,7 @@ function QuestionEditDialog(props) {
 
   const handleClose = () => {
     props.close()
-    setCloseId(closeId + 1)
+    setCloseId((e) => e + 1)
   }
 
 
@@ -128,9 +134,10 @@ function QuestionEditDialog(props) {
       enqueueSnackbar("选择题选项不能为空", {variant: 'error'});
       return;
     }
+    console.log(choices)
     if ((kind == '0' || kind == '1') && props.type === "SIGNUP" && hasLimit &&
       choices
-        .map((x) => isNaN(x.limit) || x.limit < 0)
+        .map((x) => isNaN(x.limit) || x.limit < 0 || x.limit % 1 !== 0)
         .reduce((x, y) => x || y)) {
 
       enqueueSnackbar("选项限额非法", {variant: 'error'});
@@ -143,6 +150,10 @@ function QuestionEditDialog(props) {
       }
       if (score < 0) {
         enqueueSnackbar("题目分值不得小于零", {variant: 'error'});
+        return;
+      }
+      if (score % 1 !== 0) {
+        enqueueSnackbar("题目分值不得为小数", {variant: 'error'});
         return;
       }
     }
@@ -273,7 +284,10 @@ function QuestionEditDialog(props) {
                   label="题目分值"
                   value={score}
                   type="number"
-                  onChange={handleChangeScore}
+                  onChange={(event) => {
+                    // console.log(event.target)
+                    setScore(parseInt(event.target.value))
+                  }}
                   inputProps={{
                     size: 10
                   }}
@@ -298,7 +312,7 @@ function QuestionEditDialog(props) {
           }
 
           {/*填空题答案*/}
-          {(kind == '2' || kind == '3') && props.type === "EXAM" ?
+          {(kind == '2') && props.type === "EXAM" ?
             <Grid item className={classes.grid}>
               <TextField
                 required

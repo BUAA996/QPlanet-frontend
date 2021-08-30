@@ -229,7 +229,7 @@ function SignUpForm() {
         to='/signin'
         className={classes.link}
       >
-        Already have an account? Sign In
+        已经有帐号了吗？ 登录
       </Link>
     </>
   )
