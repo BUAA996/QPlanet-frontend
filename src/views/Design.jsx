@@ -198,14 +198,19 @@ function Design(props) {
 
   return (
     <>
-      <Container  className={classes.root}>
+      <Container
+        className={classes.root}
+        // fixed
+      >
         <Grid
           spacing={3}
           container
-          direction="row">
+          direction="row"
+        >
 
-          <Grid item
-
+          <Grid
+            item
+            xs={3}
           >
             <Outline questions={questionnaire ?? []} move={move} setQuestions={setQuestionnaire}/>
           </Grid>

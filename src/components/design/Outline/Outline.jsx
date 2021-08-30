@@ -3,11 +3,37 @@ import {useDrop} from 'react-dnd';
 import {QuestionTitle} from './QuestionTitle';
 import update from 'immutability-helper';
 import {ItemTypes} from './ItemTypes';
-import {Card, Paper} from "@material-ui/core";
+import {Card, Divider, Paper, Typography} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    margin: theme.spacing(1)
+  },
+  title: {
+    color: theme.palette.primary.main,
+    margin: theme.spacing(2)
+  },
+  paper: {
+    // height: 140,
+    width: theme.spacing(10),
+    minWidth: theme.spacing(10),
+    // background: "white"
+  },
+  control: {
+    padding: theme.spacing(2),
+  },
+  divider: {
+    height: theme.spacing(1),
+  },
+}));
 
 
 export const Outline = memo(function Container({questions, move, setQuestions}) {
-  const [cards, setCards] = useState(questions??[]);
+  const classes = useStyles();
+  const [cards, setCards] = useState(questions ?? []);
 
   useEffect(() => {
     setCards(questions ?? [])
@@ -35,17 +61,43 @@ export const Outline = memo(function Container({questions, move, setQuestions}) 
     }));
   }, [findCard, cards, setCards]);
   const [, drop] = useDrop(() => ({accept: ItemTypes.CARD}));
-  return (<Card ref={drop} >
-    {cards.map((card) => (
-      <QuestionTitle
-        key={card.id}
-        id={`${card.id}`}
-        text={card.title}
-        moveCard={moveCard}
-        findCard={findCard}
-        move={() => {
-          setQuestions(cards)
-        }}
-      />))}
-  </Card>);
+  return (
+    <Card
+      className={classes.root}
+
+      ref={drop}
+      // raised={true}
+    >
+
+      <Card
+        elevation={0}
+      >
+        <Typography
+          variant="h5"
+          className={classes.title}>
+          问卷大纲 </Typography>
+      </Card>
+
+      <Divider
+        flexItem={true}
+        variant={'middle'}
+        className={classes.divider}
+      />
+
+      {cards.map((card, index) => (
+        <>
+          <QuestionTitle
+            key={card.id}
+            id={`${card.id}`}
+            idx={index}
+            text={card.title}
+            moveCard={moveCard}
+            findCard={(id) => findCard(id)}
+            move={() => {
+              setQuestions(cards)
+            }}
+          />
+          <Divider variant="middle"/>
+        </>))}
+    </Card>);
 });
