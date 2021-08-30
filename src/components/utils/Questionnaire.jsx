@@ -163,7 +163,7 @@ function Questionare(props) {
               {Questionaire_STATUS[props.status]}
             </Info>
             <TimeInfo {...props} xs={6} />
-            <Info xs={3}>填写人数：{props.count}</Info>
+            <Info xs={3}>答卷数量：{props.count}</Info>
           </Grid>
         </Grid>
         <Divider variant='middle' />
